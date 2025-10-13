@@ -3,14 +3,14 @@ echo off
 echo %~dp0
 
 IF NOT "%~2"=="" (
-  IF "%~2" == "ccr" (
-    CALL :do_cmake
-    CALL :do_make %~1
-  ) ELSE (
-    IF "%~2" == "cr" (
-      CALL :do_make %~1
-    )
-  )
+	IF "%~2" == "ccr" (
+		CALL :do_cmake
+		CALL :do_make %~1
+	) ELSE (
+		IF "%~2" == "cr" (
+			CALL :do_make %~1
+		)
+	)
 )
 CALL :do_run "%~1"
 

@@ -2,7 +2,7 @@
 #This configures the Cmake system with multiple properties, depending
 #on the platform and configuration it is set to build in.
 project(tinyobjloader)
-cmake_minimum_required(VERSION 2.8.6)
+cmake_minimum_required(VERSION 3.10)
 
 #Folder Shortcuts
 set(TINYOBJLOADEREXAMPLES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/examples)
