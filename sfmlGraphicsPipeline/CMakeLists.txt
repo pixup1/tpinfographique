@@ -3,7 +3,7 @@ else()
 	message( FATAL_ERROR "Dear student, you just tried to launch"
 	" cmake in another directory than build/. We encourage you to"
 	" be more careful in the future and NEVER DO THAT AGAIN. Now "
-	"the build system will stop, and you will remove " 
+	"the build system will stop, and you will remove "
 	"../CMakeCache.txt and ../CMakefiles/.\n--Your 3D Computer Graphics teachers.")
 endif()
 
@@ -39,13 +39,15 @@ set(GLEW_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/extlib/glew-1.13.0/include" C
 include_directories(${GLEW_INCLUDE_DIRS})
 
 #SFML Libraries
-if(UNIX)
-    set(SFML_INCLUDE_DIRS "usr/include/SFML" CACHE PATH "sfml")
-else()
-    set(SFML_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/extlib/SFML-2.5.1/include" CACHE PATH "sfml")
-endif()
+# if(UNIX)
+#     set(SFML_INCLUDE_DIRS "usr/include/SFML" CACHE PATH "sfml")
+# else()
+#     set(SFML_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/extlib/SFML-2.5.1/include" CACHE PATH "sfml")
+# endif()
+#
+# include_directories(${SFML_INCLUDE_DIRS})
 
-include_directories(${SFML_INCLUDE_DIRS})
+find_package(SFML 2.6 REQUIRED COMPONENTS graphics)
 
 #FREETYPE Libraries
 set(FREETYPE_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/extlib/freetype-2.5.5/include" CACHE PATH "freetype")
@@ -71,7 +73,7 @@ file(
     SOURCE_FILES
     src/*.cpp
     )
-    
+
 file(
     GLOB_RECURSE
     SHADER_FILES
@@ -79,9 +81,10 @@ file(
     )
 
 #==============================================
-#Project library 
+#Project library
 #==============================================
 add_library(SFML_GRAPHICS_PIPELINE ${HEADER_FILES} ${SOURCE_FILES} ${SHADER_FILES})
+target_link_libraries(SFML_GRAPHICS_PIPELINE PRIVATE sfml-graphics)
 
 # Uncomment to compile in debug mode
 # so you can have access to glcheck(...) macro
