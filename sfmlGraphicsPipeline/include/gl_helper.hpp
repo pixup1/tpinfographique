@@ -2,8 +2,8 @@
  *      Author: T. Delame (tdelame@gmail.com)
  */
 
-# ifndef GL_HELPER_HPP_
-# define GL_HELPER_HPP_
+#ifndef GL_HELPER_HPP_
+#define GL_HELPER_HPP_
 
 /** @file
  * @brief Helper functions to use OpenGL.
@@ -19,14 +19,12 @@
  * If you use the macro glcheck() for all your GL API calls,
  * this function would be useless :-}.
  */
-extern
-void check_previous_gl_errors();
+extern void check_previous_gl_errors();
 
 /**
  * @brief Check if a GL API call produce errors and place them in the log.
  */
-extern
-void check_gl_error( const char* call, const char* file, const int line );
+extern void check_gl_error(const char* call, const char* file, const int line);
 
 /**
  * @brief This macro should be used for ALL GL API calls!
@@ -58,12 +56,12 @@ void check_gl_error( const char* call, const char* file, const int line );
  * compile in debug mode (have the variable CMAKE_BUILD_TYPE set to Debug
  * in the CMakeLists.txt) if you want to track down a bug.
  */
-# ifdef DEBUG
-#   define glcheck( call )                  \
-  check_previous_gl_errors();               \
-  call;                                     \
-  check_gl_error( #call, __FILE__,__LINE__ );
-# else
-#   define glcheck( call ) call;
-# endif
-# endif /* GL_HELPER_HPP_ */
+#ifdef DEBUG
+#define glcheck(call)           \
+	check_previous_gl_errors(); \
+	call;                       \
+	check_gl_error(#call, __FILE__, __LINE__);
+#else
+#define glcheck(call) call;
+#endif
+#endif /* GL_HELPER_HPP_ */

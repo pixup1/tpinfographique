@@ -1,8 +1,8 @@
 #ifndef CONTROLLED_FORCE_FIELD_RENDERABLE_HPP
 #define CONTROLLED_FORCE_FIELD_RENDERABLE_HPP
 
-#include "ConstantForceFieldRenderable.hpp"
 #include "ConstantForceField.hpp"
+#include "ConstantForceFieldRenderable.hpp"
 
 /**@brief Status of a ControlledForceField.
  *
@@ -12,32 +12,31 @@
  */
 class ControlledForceFieldStatus
 {
-public:
-    ControlledForceFieldStatus();
-    ControlledForceFieldStatus(const glm::vec3& initial_direction);
-    ~ControlledForceFieldStatus();
-    void clear();
+   public:
+	ControlledForceFieldStatus();
+	ControlledForceFieldStatus(const glm::vec3& initial_direction);
+	~ControlledForceFieldStatus();
+	void clear();
 	void compute_movement();
 
-public:
-    glm::vec3 initial;
-    glm::vec3 movement;
-    float angle;
-    float last_time;
-    float intensity;
-    float min_intensity;
-    float max_intensity;
-    float acceleration;
-    float deacceleration;
-    float angularSpeed;
-    float dampingFactor;
+   public:
+	glm::vec3 initial;
+	glm::vec3 movement;
+	float angle;
+	float last_time;
+	float intensity;
+	float min_intensity;
+	float max_intensity;
+	float acceleration;
+	float deacceleration;
+	float angularSpeed;
+	float dampingFactor;
 
-    bool accelerating;
-    bool deaccelerating;
-    bool turning_left;
-    bool turning_right;
+	bool accelerating;
+	bool deaccelerating;
+	bool turning_left;
+	bool turning_right;
 };
-
 
 /**@brief Implement a force field controlled by user input.
  *
@@ -52,27 +51,26 @@ public:
  */
 class ControlledForceFieldRenderable : public ConstantForceFieldRenderable
 {
-public:
-  /**@brief Build a new controlled force field renderable.
-   *
-   * Build a new controlled force field by user inputs.
-   * @param program The shader program used to render the force applied to particles.
-   * @param forceField The force field to control with user inputs.
-   */
-  ControlledForceFieldRenderable(ShaderProgramPtr program, ConstantForceFieldPtr forceField );
-  ~ControlledForceFieldRenderable();
+   public:
+	/**@brief Build a new controlled force field renderable.
+	 *
+	 * Build a new controlled force field by user inputs.
+	 * @param program The shader program used to render the force applied to particles.
+	 * @param forceField The force field to control with user inputs.
+	 */
+	ControlledForceFieldRenderable(ShaderProgramPtr program, ConstantForceFieldPtr forceField);
+	~ControlledForceFieldRenderable();
 
-protected:
-	virtual void do_animate( float time );
+   protected:
+	virtual void do_animate(float time);
 
-private:
-	virtual void do_keyPressedEvent( sf::Event& e );
-	virtual void do_keyReleasedEvent( sf::Event& e );
-
+   private:
+	virtual void do_keyPressedEvent(sf::Event& e);
+	virtual void do_keyReleasedEvent(sf::Event& e);
 
 	ControlledForceFieldStatus m_status;
 };
 
 typedef std::shared_ptr<ControlledForceFieldRenderable> ControlledForceFieldRenderablePtr;
 
-#endif //CONTROLLED_FORCE_FIELD_RENDERABLE_HPP
+#endif  // CONTROLLED_FORCE_FIELD_RENDERABLE_HPP

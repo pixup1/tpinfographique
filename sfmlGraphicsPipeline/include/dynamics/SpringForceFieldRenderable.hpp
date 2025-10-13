@@ -12,24 +12,23 @@
  */
 class SpringForceFieldRenderable : public MeshRenderable
 {
-public:
-    ~SpringForceFieldRenderable();
-    /**@brief Build a renderable to render a spring.
-     *
-     * Build a new renderable to render a spring between two particles.
-     * @param program The shader program used to render the spring.
-     * @param springForceField The force field to model the spring we want to render.
-     */
-    SpringForceFieldRenderable( ShaderProgramPtr program, SpringForceFieldPtr springForceField );
+   public:
+	~SpringForceFieldRenderable();
+	/**@brief Build a renderable to render a spring.
+	 *
+	 * Build a new renderable to render a spring between two particles.
+	 * @param program The shader program used to render the spring.
+	 * @param springForceField The force field to model the spring we want to render.
+	 */
+	SpringForceFieldRenderable(ShaderProgramPtr program, SpringForceFieldPtr springForceField);
 
-protected:
-    void do_draw();
+   protected:
+	void do_draw();
 
-private:
-    SpringForceFieldPtr m_springForceField;
+   private:
+	SpringForceFieldPtr m_springForceField;
 };
 
 typedef std::shared_ptr<SpringForceFieldRenderable> SpringForceFieldRenderablePtr;
 
-#endif // SPRING_RENDERABLE_HPP
-
+#endif  // SPRING_RENDERABLE_HPP

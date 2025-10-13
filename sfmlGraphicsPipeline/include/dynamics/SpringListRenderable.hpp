@@ -1,11 +1,11 @@
 #ifndef SPRING_LIST_RENDERABLE_HPP
 #define SPRING_LIST_RENDERABLE_HPP
 
-#include "../MeshRenderable.hpp"
-#include "SpringForceField.hpp"
 #include <list>
 #include <vector>
 
+#include "../MeshRenderable.hpp"
+#include "SpringForceField.hpp"
 
 /**@brief Render a collection of springs.
  *
@@ -15,27 +15,26 @@
  */
 class SpringListRenderable : public MeshRenderable
 {
-public:
-    ~SpringListRenderable();
-    /**@brief Build a renderable to render a list of springs.
-     *
-     * Build a new renderable to render a list of springs.
-     * @param program The shader program used to render the springs.
-     * @param springForceFields The set of springs force fields that model
-     * the springs we want to render.
-     */
-    SpringListRenderable( ShaderProgramPtr program, std::list<SpringForceFieldPtr>& springForceFields );
+   public:
+	~SpringListRenderable();
+	/**@brief Build a renderable to render a list of springs.
+	 *
+	 * Build a new renderable to render a list of springs.
+	 * @param program The shader program used to render the springs.
+	 * @param springForceFields The set of springs force fields that model
+	 * the springs we want to render.
+	 */
+	SpringListRenderable(ShaderProgramPtr program, std::list<SpringForceFieldPtr>& springForceFields);
 
-protected:
-    void do_draw();
+   protected:
+	void do_draw();
 
-private:
-    void update_spring_positions();
+   private:
+	void update_spring_positions();
 
-    std::list<SpringForceFieldPtr> m_springForceFields;
+	std::list<SpringForceFieldPtr> m_springForceFields;
 };
 
 typedef std::shared_ptr<SpringListRenderable> SpringListRenderablePtr;
 
-#endif // SPRING_LIST_RENDERABLE_HPP
-
+#endif  // SPRING_LIST_RENDERABLE_HPP

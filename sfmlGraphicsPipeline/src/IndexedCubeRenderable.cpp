@@ -46,8 +46,7 @@ IndexedCubeRenderable::IndexedCubeRenderable(ShaderProgramPtr shaderProgram)
 	m_indices.push_back(glm::uvec3(4, 0, 1));
 	m_indices.push_back(glm::uvec3(4, 1, 7));
 
-	// Set the model matrix to identity
-	m_model = glm::mat4(1.0);
+	// model matrix is provided by the base Renderable (initialized to identity)
 
 	// Create buffers
 	glGenBuffers(1, &m_vBuffer);  // vertices

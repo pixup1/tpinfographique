@@ -6,9 +6,9 @@
  *
  * Currently, this file only contains I/O functions for OBJ meshes.*/
 
-#include <vector>
 #include <glm/glm.hpp>
 #include <string>
+#include <vector>
 
 /**@brief Collect mesh data from an OBJ file.
  *
@@ -24,11 +24,10 @@
  * @return False if import failed, true otherwise.
  */
 bool read_obj(
-        const std::string& filename, 
-        std::vector<glm::vec3>& positions, 
-        std::vector<unsigned int>& indices,
-        std::vector<glm::vec3>& normals,
-        std::vector<glm::vec2>& texcoords
-        );
+    const std::string& filename,
+    std::vector<glm::vec3>& positions,
+    std::vector<unsigned int>& indices,
+    std::vector<glm::vec3>& normals,
+    std::vector<glm::vec2>& texcoords);
 
-#endif //IO_HPP
+#endif  // IO_HPP

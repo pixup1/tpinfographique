@@ -10,24 +10,24 @@
  */
 class ConstantForceFieldRenderable : public MeshRenderable
 {
-public:
-    ~ConstantForceFieldRenderable();
-    /**@brief Build a renderable for a constant force field.
-     *
-     * Create a renderable for a constant force field.
-     * @param program Shader program to use to render the constant force field.
-     * @param forceField The constant force field to render.
-     */
-    ConstantForceFieldRenderable( ShaderProgramPtr program, ConstantForceFieldPtr forceField);
-protected:
-    void do_draw();
-    ConstantForceFieldPtr m_forceField;
+   public:
+	~ConstantForceFieldRenderable();
+	/**@brief Build a renderable for a constant force field.
+	 *
+	 * Create a renderable for a constant force field.
+	 * @param program Shader program to use to render the constant force field.
+	 * @param forceField The constant force field to render.
+	 */
+	ConstantForceFieldRenderable(ShaderProgramPtr program, ConstantForceFieldPtr forceField);
 
-private:
-    void update_particle_positions();
+   protected:
+	void do_draw();
+	ConstantForceFieldPtr m_forceField;
+
+   private:
+	void update_particle_positions();
 };
 
 typedef std::shared_ptr<ConstantForceFieldRenderable> ConstantForceFieldRenderablePtr;
 
-#endif // CONSTANT_RENDERABLE_HPP
-
+#endif  // CONSTANT_RENDERABLE_HPP

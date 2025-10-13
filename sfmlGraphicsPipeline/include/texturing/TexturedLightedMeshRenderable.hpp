@@ -1,14 +1,14 @@
 #ifndef TEXTURED_LIGHTED_MESH_RENDERABLE_HPP
 #define TEXTURED_LIGHTED_MESH_RENDERABLE_HPP
 
-#include "TexturedMeshRenderable.hpp"
-#include "../lighting/Material.hpp"
-
+#include <glm/glm.hpp>
 #include <string>
 #include <vector>
-#include <glm/glm.hpp>
 
-// This class could be made using multiple inheritance 
+#include "../lighting/Material.hpp"
+#include "TexturedMeshRenderable.hpp"
+
+// This class could be made using multiple inheritance
 // (derived from LightedMeshRenderable AND TextureMeshRenderable).
 // We will not do that since MeshRenderable::do_draw() would be called two times.
 // Inheritance is not the prefered method for designing a 3D engine anyway.
@@ -16,41 +16,39 @@
 
 class TexturedLightedMeshRenderable : public TexturedMeshRenderable
 {
-    public:
-        ~TexturedLightedMeshRenderable();
-            
-        TexturedLightedMeshRenderable(ShaderProgramPtr program,
-                                      const std::string & mesh_filename,
-                                      const MaterialPtr & material,
-                                      const std::string & texture_filename);
-        
-        TexturedLightedMeshRenderable(ShaderProgramPtr shaderProgram,
-                                      const std::vector< glm::vec3 > & positions,
-                                      const std::vector< unsigned int > & indices,
-                                      const std::vector< glm::vec3 > & normals,
-                                      const std::vector< glm::vec4 > & colors,
-                                      const MaterialPtr & material,
-                                      const sf::Image & image,
-                                      const std::vector< glm::vec2 > & tcoords);
+   public:
+	~TexturedLightedMeshRenderable();
 
-        TexturedLightedMeshRenderable(ShaderProgramPtr shaderProgram,
-                                      const std::vector< glm::vec3 > & positions,
-                                      const std::vector< glm::vec3 > & normals,
-                                      const std::vector< glm::vec4 > & colors,
-                                      const MaterialPtr & material,
-                                      const sf::Image & image,
-                                      const std::vector< glm::vec2 > & tcoords);
+	TexturedLightedMeshRenderable(ShaderProgramPtr program,
+	                              const std::string& mesh_filename,
+	                              const MaterialPtr& material,
+	                              const std::string& texture_filename);
 
-    
-        const MaterialPtr & getMaterial() const;
-        void setMaterial(const MaterialPtr &);
+	TexturedLightedMeshRenderable(ShaderProgramPtr shaderProgram,
+	                              const std::vector<glm::vec3>& positions,
+	                              const std::vector<unsigned int>& indices,
+	                              const std::vector<glm::vec3>& normals,
+	                              const std::vector<glm::vec4>& colors,
+	                              const MaterialPtr& material,
+	                              const sf::Image& image,
+	                              const std::vector<glm::vec2>& tcoords);
 
-    protected:
+	TexturedLightedMeshRenderable(ShaderProgramPtr shaderProgram,
+	                              const std::vector<glm::vec3>& positions,
+	                              const std::vector<glm::vec3>& normals,
+	                              const std::vector<glm::vec4>& colors,
+	                              const MaterialPtr& material,
+	                              const sf::Image& image,
+	                              const std::vector<glm::vec2>& tcoords);
 
-        void do_draw();
+	const MaterialPtr& getMaterial() const;
+	void setMaterial(const MaterialPtr&);
 
-    private:
-        MaterialPtr m_material;
+   protected:
+	void do_draw();
+
+   private:
+	MaterialPtr m_material;
 };
 
 typedef std::shared_ptr<TexturedLightedMeshRenderable> TexturedLightedMeshRenderablePtr;

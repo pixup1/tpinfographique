@@ -9,13 +9,14 @@
  */
 class EulerExplicitSolver : public Solver
 {
-public:
-    EulerExplicitSolver();
-    ~EulerExplicitSolver();
-private:
-    void do_solve(const float& dt, std::vector<ParticlePtr>& particles);
+   public:
+	EulerExplicitSolver();
+	~EulerExplicitSolver();
+
+   private:
+	void do_solve(const float& dt, std::vector<ParticlePtr>& particles);
 };
 
 typedef std::shared_ptr<EulerExplicitSolver> EulerExplicitSolverPtr;
 
-#endif //EULER_EXPLICIT_SOLVER_HPP
+#endif  // EULER_EXPLICIT_SOLVER_HPP

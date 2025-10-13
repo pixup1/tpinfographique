@@ -6,9 +6,10 @@
  *
  * This file defines the class FrameRenderable to render the world frame.
  */
-#include "MeshRenderable.hpp"
-#include <vector>
 #include <glm/glm.hpp>
+#include <vector>
+
+#include "MeshRenderable.hpp"
 
 /**@brief Render the world frame.
  *
@@ -23,16 +24,15 @@
 // class inherit publicly from Renderable.
 class FrameRenderable : public MeshRenderable
 {
-// Only the constructor and the destructor are meant to be called outside of
-// the class. This is why they constitute the only public methods.
-public :
+	// Only the constructor and the destructor are meant to be called outside of
+	// the class. This is why they constitute the only public methods.
+   public:
+	virtual ~FrameRenderable();
 
-    virtual ~FrameRenderable();
+	FrameRenderable(ShaderProgramPtr shaderProgram);
 
-    FrameRenderable(ShaderProgramPtr shaderProgram);
-
-private:
-    void do_draw();
+   private:
+	void do_draw();
 };
 
 typedef std::shared_ptr<FrameRenderable> FrameRenderablePtr;

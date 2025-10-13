@@ -1,11 +1,11 @@
 #ifndef PARTICLE_RENDERABLE_HPP
 #define PARTICLE_RENDERABLE_HPP
 
+#include <glm/glm.hpp>
+#include <vector>
+
 #include "../MeshRenderable.hpp"
 #include "Particle.hpp"
-
-#include <vector>
-#include <glm/glm.hpp>
 
 /**@brief Render a particle to the screen.
  *
@@ -15,24 +15,23 @@
  */
 class ParticleRenderable : public MeshRenderable
 {
-public:
-    ~ParticleRenderable();
-    /**@brief Build a particle renderable.
-        *
-        * Build a renderable to render a particle.
-        * @param program The shader program used to render the particle.
-        * @param particle The particle to render.
-        */
-    ParticleRenderable( ShaderProgramPtr program, const ParticlePtr & particle, unsigned int strips=10u, unsigned int slices=20u);
+   public:
+	~ParticleRenderable();
+	/**@brief Build a particle renderable.
+	 *
+	 * Build a renderable to render a particle.
+	 * @param program The shader program used to render the particle.
+	 * @param particle The particle to render.
+	 */
+	ParticleRenderable(ShaderProgramPtr program, const ParticlePtr& particle, unsigned int strips = 10u, unsigned int slices = 20u);
 
-protected:
-    void do_draw();
+   protected:
+	void do_draw();
 
-private:
-    ParticlePtr m_particle;
-
+   private:
+	ParticlePtr m_particle;
 };
 
 typedef std::shared_ptr<ParticleRenderable> ParticleRenderablePtr;
 
-#endif //PARTICLE_RENDERABLE_HPP
+#endif  // PARTICLE_RENDERABLE_HPP

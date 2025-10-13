@@ -13,20 +13,10 @@
 CubeRenderable::CubeRenderable(ShaderProgramPtr shaderProgram)
 	: Renderable(shaderProgram), m_vBuffer(0), m_cBuffer(0)
 {
-	// Build the geometry : just a simple triangle for now
-	// m_positions.push_back(glm::vec3(-1, 0, 0));
-	// m_positions.push_back(glm::vec3(1, 0, 0));
-	// m_positions.push_back(glm::vec3(0, 1, 0));
-	// m_colors.push_back(glm::vec4(1, 0, 0, 1));
-	// m_colors.push_back(glm::vec4(0, 1, 0, 1));
-	// m_colors.push_back(glm::vec4(0, 0, 1, 1));
-
 	// provide an lvalue for normals so a non-const reference can be bound
 	std::vector<glm::vec3> normals;
 	std::vector<glm::vec2> uvs;
 	getUnitCube(m_positions, normals, uvs);
-
-	// ...existing code...
 
 	// Couleurs pour chaque face du cube (12 triangles, 3 sommets par triangle) (merci Copilot)
 	m_colors.push_back(glm::vec4(1, 0, 0, 1)); // Rouge
@@ -77,8 +67,7 @@ CubeRenderable::CubeRenderable(ShaderProgramPtr shaderProgram)
 	m_colors.push_back(glm::vec4(0.5, 1, 1, 1));
 	m_colors.push_back(glm::vec4(0.5, 1, 1, 1));
 
-	// Set the model matrix to identity
-	m_model = glm::mat4(1.0);
+	// model matrix is provided by the base Renderable (initialized to identity)
 
 	// Create buffers
 	glGenBuffers(1, &m_vBuffer);  // vertices

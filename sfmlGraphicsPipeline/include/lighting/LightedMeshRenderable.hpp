@@ -1,46 +1,46 @@
 #ifndef LIGHTED_MESH_RENDERABLE_HPP
 #define LIGHTED_MESH_RENDERABLE_HPP
 
-#include "../MeshRenderable.hpp"
-#include "Material.hpp"
-#include "Light.hpp"
-
+#include <glm/glm.hpp>
 #include <string>
 #include <vector>
-#include <glm/glm.hpp>
+
+#include "../MeshRenderable.hpp"
+#include "Light.hpp"
+#include "Material.hpp"
 
 class LightedMeshRenderable : public MeshRenderable
 {
-    public:
-        ~LightedMeshRenderable();
-        
-        LightedMeshRenderable(ShaderProgramPtr program,
-                              const std::string & filename,
-                              const MaterialPtr & material);
-        
-        LightedMeshRenderable(ShaderProgramPtr shaderProgram,
-                              const std::vector< glm::vec3 > & positions,
-                              const std::vector< unsigned int > & indices,
-                              const std::vector< glm::vec3 > & normals,
-                              const std::vector< glm::vec4 > & colors,
-                              const MaterialPtr & material);
+   public:
+	~LightedMeshRenderable();
 
-        LightedMeshRenderable(ShaderProgramPtr shaderProgram,
-                              const std::vector< glm::vec3 > & positions,
-                              const std::vector< glm::vec3 > & normals,
-                              const std::vector< glm::vec4 > & colors,
-                              const MaterialPtr & material);
-    
-        const MaterialPtr & getMaterial() const;
-        void setMaterial(const MaterialPtr &);
+	LightedMeshRenderable(ShaderProgramPtr program,
+	                      const std::string& filename,
+	                      const MaterialPtr& material);
 
-    protected:
-        LightedMeshRenderable(ShaderProgramPtr shaderProgram, bool indexed, const MaterialPtr & material);
+	LightedMeshRenderable(ShaderProgramPtr shaderProgram,
+	                      const std::vector<glm::vec3>& positions,
+	                      const std::vector<unsigned int>& indices,
+	                      const std::vector<glm::vec3>& normals,
+	                      const std::vector<glm::vec4>& colors,
+	                      const MaterialPtr& material);
 
-        void do_draw();
+	LightedMeshRenderable(ShaderProgramPtr shaderProgram,
+	                      const std::vector<glm::vec3>& positions,
+	                      const std::vector<glm::vec3>& normals,
+	                      const std::vector<glm::vec4>& colors,
+	                      const MaterialPtr& material);
 
-    private:
-        MaterialPtr m_material;
+	const MaterialPtr& getMaterial() const;
+	void setMaterial(const MaterialPtr&);
+
+   protected:
+	LightedMeshRenderable(ShaderProgramPtr shaderProgram, bool indexed, const MaterialPtr& material);
+
+	void do_draw();
+
+   private:
+	MaterialPtr m_material;
 };
 
 typedef std::shared_ptr<LightedMeshRenderable> LightedMeshRenderablePtr;

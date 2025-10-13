@@ -8,15 +8,13 @@
  * be rendered in the practicals.
  */
 
-
-
+#include <SFML/Graphics.hpp>
 #include <glm/glm.hpp>
-#include <unordered_set>
 #include <memory>
+#include <unordered_set>
 #include <vector>
 
 #include "ShaderProgram.hpp"
-#include <SFML/Graphics.hpp>
 
 /* Forward declaration of the Viewer class in order to store a pointer to a
  * renderable's viewer and to define this class as a friend of Renderable.
@@ -66,292 +64,287 @@ class Viewer;
  */
 class Renderable
 {
-public:
-
-	enum RENDER_MODE {
+   public:
+	enum RENDER_MODE
+	{
 		/** Render to the main window pixel matrix only. */
-		WINDOW, // new
+		WINDOW,  // new
 		/** Render to the main window AND to the a hidden texture of the same size as the main window.*/
 		WINDOW_TEXTURE,
 		/** Render only to a hidden texture of the same size as the main window. */
 		TEXTURE,
-    };
+	};
 
-    /** @name Construction/Destruction of renderable instances.*/
-    /** @brief Destructor.
-     *
-     * Some smart pointers to this base class could be stored, such as in
-     * Viewer. As such, the destructor needs to be public and virtual (guideline
-     * #4).
-     */
-    virtual ~Renderable();
+	/** @name Construction/Destruction of renderable instances.*/
+	/** @brief Destructor.
+	 *
+	 * Some smart pointers to this base class could be stored, such as in
+	 * Viewer. As such, the destructor needs to be public and virtual (guideline
+	 * #4).
+	 */
+	virtual ~Renderable();
 
-    /** @brief Renderable program constructor.
-     *
-     * Initialize the model matrix \ref m_model to identity.
-     * Set the shader program \ref m_shaderProgram to \a program.
-     * \param program Shader program to use to draw this.
-     * \sa ShaderProgram
-     */
-    Renderable(ShaderProgramPtr program);
+	/** @brief Renderable program constructor.
+	 *
+	 * Initialize the model matrix \ref m_model to identity.
+	 * Set the shader program \ref m_shaderProgram to \a program.
+	 * \param program Shader program to use to draw this.
+	 * \sa ShaderProgram
+	 */
+	Renderable(ShaderProgramPtr program);
 
-    /** @name Public interface */
-    /** @brief Set the model matrix.
-     *
-     * Define the model matrix, that is the way this object is scaled, oriented
-     * and placed in world space.
-     * @param model The new model matrix.
-     */
-    void setModelMatrix( const glm::mat4& model );
+	/** @name Public interface */
+	/** @brief Set the model matrix.
+	 *
+	 * Define the model matrix, that is the way this object is scaled, oriented
+	 * and placed in world space.
+	 * @param model The new model matrix.
+	 */
+	void setModelMatrix(const glm::mat4& model);
 
-    /**@brief Get the model matrix.
-     *
-     * Allow a read-only access to the model matrix.
-     * @return The model matrix.
-     */
-    const glm::mat4& getModelMatrix() const;
+	/**@brief Get the model matrix.
+	 *
+	 * Allow a read-only access to the model matrix.
+	 * @return The model matrix.
+	 */
+	const glm::mat4& getModelMatrix() const;
 
-    /**@brief Change the shader program.
-     *
-     * Set a new shader program to use for the rendering.
-     * @param prog The new shader program.
-     * \sa ShaderProgram
-     */
-    void setShaderProgram( ShaderProgramPtr prog );
+	/**@brief Change the shader program.
+	 *
+	 * Set a new shader program to use for the rendering.
+	 * @param prog The new shader program.
+	 * \sa ShaderProgram
+	 */
+	void setShaderProgram(ShaderProgramPtr prog);
 
-    /** @name Public interface used by Viewer.
-     * Those functions are automatically called by the Viewer on added Renderable.
-     * You are not expected to call them directly. */
-    /** \brief Bind the shader program on the GPU.
-     *
-     * Modify the OpenGL state such that the next drawing command use the
-     * program shader of this renderable to render the primitives.
-     */
-    void bindShaderProgram();
+	/** @name Public interface used by Viewer.
+	 * Those functions are automatically called by the Viewer on added Renderable.
+	 * You are not expected to call them directly. */
+	/** \brief Bind the shader program on the GPU.
+	 *
+	 * Modify the OpenGL state such that the next drawing command use the
+	 * program shader of this renderable to render the primitives.
+	 */
+	void bindShaderProgram();
 
-    /**\brief Unbind the shader program of the GPU.
-     *
-     * Change the OpenGL state such that the next drawing command does not use
-     * any shader program.
-     */
-    void unbindShaderProgram();
-    /**
-     * \brief Get the location of the projection matrix in the shader program.
-     *
-     * Get the uniform identifier of the projection matrix for the shader program
-     * of this renderable. This uniform should be named "projMat" in your shader
-     * to be automatically set by the Viewer.
-     *
-     * \return the location of the projection matrix uniform or -1 if the
-     * associated shader program does not use such an uniform ("projMat").
-     */
-    int projectionLocation();
+	/**\brief Unbind the shader program of the GPU.
+	 *
+	 * Change the OpenGL state such that the next drawing command does not use
+	 * any shader program.
+	 */
+	void unbindShaderProgram();
+	/**
+	 * \brief Get the location of the projection matrix in the shader program.
+	 *
+	 * Get the uniform identifier of the projection matrix for the shader program
+	 * of this renderable. This uniform should be named "projMat" in your shader
+	 * to be automatically set by the Viewer.
+	 *
+	 * \return the location of the projection matrix uniform or -1 if the
+	 * associated shader program does not use such an uniform ("projMat").
+	 */
+	int projectionLocation();
 
-    /** \brief Get the location of the view matrix in the shader program.
-     *
-     * Get the uniform identifier of the view matrix for the shader program of
-     * this renderable. This uniform should be named "viewMat" in your shader
-     * to be automatically set by the Viewer.
-     * \return the location of the view matrix uniform or -1 if the associated
-     * shader program does not use such an uniform ("viewMat").
-     */
-    int viewLocation();
+	/** \brief Get the location of the view matrix in the shader program.
+	 *
+	 * Get the uniform identifier of the view matrix for the shader program of
+	 * this renderable. This uniform should be named "viewMat" in your shader
+	 * to be automatically set by the Viewer.
+	 * \return the location of the view matrix uniform or -1 if the associated
+	 * shader program does not use such an uniform ("viewMat").
+	 */
+	int viewLocation();
 
-    /** \brief Draw this renderable.
-     *
-     * This function calls the private pure virtual function <tt> do_draw() </tt>
-     * (guidelines #1 and #2). When this function is called by the Viewer,
-     * the shader program is already binded, the view and projection matrices are
-     * already set.
-     */
-    void draw();
+	/** \brief Draw this renderable.
+	 *
+	 * This function calls the private pure virtual function <tt> do_draw() </tt>
+	 * (guidelines #1 and #2). When this function is called by the Viewer,
+	 * the shader program is already binded, the view and projection matrices are
+	 * already set.
+	 */
+	void draw();
 
-    /** \brief Animate this renderable.
-     *
-     * This function calls the private pure virtual function <tt> do_animate(time) </tt>
-     * (guidelines #1 and #2). The simulation time equals zero when the animation is
-     * started (see Viewer::startAnimation()).
-     * \param time Current simulation time.
-     */
-    virtual void animate( float time );
+	/** \brief Animate this renderable.
+	 *
+	 * This function calls the private pure virtual function <tt> do_animate(time) </tt>
+	 * (guidelines #1 and #2). The simulation time equals zero when the animation is
+	 * started (see Viewer::startAnimation()).
+	 * \param time Current simulation time.
+	 */
+	virtual void animate(float time);
 
-    /**
-     * \brief Handle a key pressed event.
-     *
-     * React to a key pressed.
-     * \param e The key pressed event.
-     */
-    void keyPressedEvent(sf::Event& e);
+	/**
+	 * \brief Handle a key pressed event.
+	 *
+	 * React to a key pressed.
+	 * \param e The key pressed event.
+	 */
+	void keyPressedEvent(sf::Event& e);
 
-    /** \brief Handle a key released event.
-     *
-     * React to a key released.
-     * \param e The key released event.
-     */
-    void keyReleasedEvent(sf::Event& e);
+	/** \brief Handle a key released event.
+	 *
+	 * React to a key released.
+	 * \param e The key released event.
+	 */
+	void keyReleasedEvent(sf::Event& e);
 
-    /** \brief Handle a mouse pressed event.
-     *
-     * React to a mouse pressed.
-     * \param e The mouse pressed event.
-     */
-    void mousePressEvent(sf::Event& e);
+	/** \brief Handle a mouse pressed event.
+	 *
+	 * React to a mouse pressed.
+	 * \param e The mouse pressed event.
+	 */
+	void mousePressEvent(sf::Event& e);
 
-    /** \brief Handle a mouse released event.
-     *
-     * React to a mouse released.
-     * \param e The mouse release event.
-     */
-    void mouseReleaseEvent(sf::Event& e);
+	/** \brief Handle a mouse released event.
+	 *
+	 * React to a mouse released.
+	 * \param e The mouse release event.
+	 */
+	void mouseReleaseEvent(sf::Event& e);
 
-    /** \brief Handle a mouse wheel event.
-     *
-     * React to a mouse wheel change.
-     * \param e The mouse wheel event.
-     */
-    void mouseWheelEvent(sf::Event& e);
+	/** \brief Handle a mouse wheel event.
+	 *
+	 * React to a mouse wheel change.
+	 * \param e The mouse wheel event.
+	 */
+	void mouseWheelEvent(sf::Event& e);
 
-    /** \brief Handle a mouse move event.
-     *
-     * React to a mouse displacement.
-     * \param e The mouse displacement event.
-     */
-    void mouseMoveEvent(sf::Event& e);
+	/** \brief Handle a mouse move event.
+	 *
+	 * React to a mouse displacement.
+	 * \param e The mouse displacement event.
+	 */
+	void mouseMoveEvent(sf::Event& e);
 
-    ShaderProgramPtr getShaderProgram() const;
+	ShaderProgramPtr getShaderProgram() const;
 
-    int priority() const;
-    int & priority();
+	int priority() const;
+	int& priority();
 
-    RENDER_MODE getRenderMode() const;
-    void setRenderMode(RENDER_MODE);
+	RENDER_MODE getRenderMode() const;
+	void setRenderMode(RENDER_MODE);
 
-    //void displayTextInViewer(std::string text) const;
+	// void displayTextInViewer(std::string text) const;
 
-private:
+   private:
+	/**
+	 * \brief Handle a key pressed event.
+	 *
+	 * Implementation to react to a key pressed.
+	 * \param e The key pressed event.
+	 */
+	virtual void do_keyPressedEvent(sf::Event& e);
 
-    /**
-     * \brief Handle a key pressed event.
-     *
-     * Implementation to react to a key pressed.
-     * \param e The key pressed event.
-     */
-    virtual void do_keyPressedEvent(sf::Event& e);
+	/** \brief Handle a key released event.
+	 *
+	 * Implementation to react to a key released.
+	 * \param e The key released event.
+	 */
+	virtual void do_keyReleasedEvent(sf::Event& e);
 
-    /** \brief Handle a key released event.
-     *
-     * Implementation to react to a key released.
-     * \param e The key released event.
-     */
-    virtual void do_keyReleasedEvent(sf::Event& e);
+	/** \brief Handle a mouse pressed event.
+	 *
+	 * Implementation to react to a mouse pressed.
+	 * \param e The mouse pressed event.
+	 */
+	virtual void do_mousePressEvent(sf::Event& e);
 
-    /** \brief Handle a mouse pressed event.
-     *
-     * Implementation to react to a mouse pressed.
-     * \param e The mouse pressed event.
-     */
-    virtual void do_mousePressEvent(sf::Event& e);
+	/** \brief Handle a mouse released event.
+	 *
+	 * Implementation to react to a mouse released.
+	 * \param e The mouse release event.
+	 */
+	virtual void do_mouseReleaseEvent(sf::Event& e);
 
-    /** \brief Handle a mouse released event.
-     *
-     * Implementation to react to a mouse released.
-     * \param e The mouse release event.
-     */
-    virtual void do_mouseReleaseEvent(sf::Event& e);
+	/** \brief Handle a mouse wheel event.
+	 *
+	 * Implementation to react to a mouse wheel change.
+	 * \param e The mouse wheel event.
+	 */
+	virtual void do_mouseWheelEvent(sf::Event& e);
 
-    /** \brief Handle a mouse wheel event.
-     *
-     * Implementation to react to a mouse wheel change.
-     * \param e The mouse wheel event.
-     */
-    virtual void do_mouseWheelEvent(sf::Event& e);
+	/** \brief Handle a mouse move event.
+	 *
+	 * Implementation to react to a mouse displacement.
+	 * \param e The mouse displacement event.
+	 */
+	virtual void do_mouseMoveEvent(sf::Event& e);
 
-    /** \brief Handle a mouse move event.
-     *
-     * Implementation to react to a mouse displacement.
-     * \param e The mouse displacement event.
-     */
-    virtual void do_mouseMoveEvent(sf::Event& e);
+	/** @name Private interface for Renderable sub classes.
+	 * Those functions are meant to be overridden in subclassed of Renderable,
+	 * in order to have additional operations done before and after drawing
+	 * and animating.
+	 * \sa HierarchicalRenderable.*/
+	/**@brief Perform operation before drawing a renderable.
+	 *
+	 * Override this function to perform additional operations before calling
+	 * do_draw() of the concrete renderable class.
+	 */
+	virtual void beforeDraw();
+	/**@brief Perform operation after drawing a renderable.
+	 *
+	 * Override this function to perform additional operations after calling
+	 * do_draw() of the concrete renderable class.
+	 */
+	virtual void afterDraw();
+	/**@brief Perform operation before animating a renderable.
+	 *
+	 * Override this function to perform additional operations before calling
+	 * do_animate() of the concrete renderable class.
+	 * @param time The current simulation time.
+	 */
+	virtual void beforeAnimate(float time);
+	/**@brief Perform operation after animating a renderable.
+	 *
+	 * Override this function to perform additional operations after calling
+	 * do_animate() of the concrete renderable class.
+	 * @param time The current simulation time.
+	 */
+	virtual void afterAnimate(float time);
 
+	Viewer* getViewer() const;
 
-    /** @name Private interface for Renderable sub classes.
-      * Those functions are meant to be overridden in subclassed of Renderable,
-      * in order to have additional operations done before and after drawing
-      * and animating.
-      * \sa HierarchicalRenderable.*/
-    /**@brief Perform operation before drawing a renderable.
-     *
-     * Override this function to perform additional operations before calling
-     * do_draw() of the concrete renderable class.
-     */
-    virtual void beforeDraw();
-    /**@brief Perform operation after drawing a renderable.
-     *
-     * Override this function to perform additional operations after calling
-     * do_draw() of the concrete renderable class.
-     */
-    virtual void afterDraw();
-    /**@brief Perform operation before animating a renderable.
-     *
-     * Override this function to perform additional operations before calling
-     * do_animate() of the concrete renderable class.
-     * @param time The current simulation time.
-     */
-    virtual void beforeAnimate( float time );
-    /**@brief Perform operation after animating a renderable.
-     *
-     * Override this function to perform additional operations after calling
-     * do_animate() of the concrete renderable class.
-     * @param time The current simulation time.
-     */
-    virtual void afterAnimate( float time );
-
-    Viewer* getViewer() const;
-
-    
-
-protected:
-
+   protected:
 	/** @name Private viewer interface.
-     * According to guideline #1, we have used the Template method. Now we are
-     * using guideline #2 for virtual methods.*/
-    /** \brief Draw virtual function.
-     *
-     * Implementation to draw this renderable.
-     */
-    virtual void do_draw() = 0;
+	 * According to guideline #1, we have used the Template method. Now we are
+	 * using guideline #2 for virtual methods.*/
+	/** \brief Draw virtual function.
+	 *
+	 * Implementation to draw this renderable.
+	 */
+	virtual void do_draw() = 0;
 
-    /** \brief Animate virtual function.
-     *
-     * Implementation to animate this renderable.
-     * \param time The current simulation time.
-     */
-    virtual void do_animate( float time );
+	/** \brief Animate virtual function.
+	 *
+	 * Implementation to animate this renderable.
+	 * \param time The current simulation time.
+	 */
+	virtual void do_animate(float time);
 
-    /** @name Protected members.
-     * We want those members to be accessible in the derived classes.
-     */
-    glm::mat4 m_model; /*!< Model matrix of the renderable. */
-    ShaderProgramPtr m_shaderProgram; /*!< Shader program of the renderable. */
+	/** @name Protected members.
+	 * We want those members to be accessible in the derived classes.
+	 */
+	glm::mat4 m_model;                /*!< Model matrix of the renderable. */
+	ShaderProgramPtr m_shaderProgram; /*!< Shader program of the renderable. */
 
-    /* The viewer is declared as a friend to be able to set the field m_viewer
-     * when a Renderable is added to a viewer. If we want to get rid of the
-     * the friend declaration, we have two solutions:
-     *
-     * - passing the viewer as a constructor parameter. Then the constructor
-     * could had the instance itself to the viewer. We chose to not do that
-     * this year as it would mean to change the code students wrote in
-     * previous practicals.
-     *
-     * - having a method setViewer() publicly defined. However, this means
-     * that we could set a null viewer or to set a viewer that is not
-     * managing the Renderable. We ignored this solution.
-     */
-    friend Viewer;
-    Viewer* m_viewer; /*!< Viewer instance that manage this renderable */
+	/* The viewer is declared as a friend to be able to set the field m_viewer
+	 * when a Renderable is added to a viewer. If we want to get rid of the
+	 * the friend declaration, we have two solutions:
+	 *
+	 * - passing the viewer as a constructor parameter. Then the constructor
+	 * could had the instance itself to the viewer. We chose to not do that
+	 * this year as it would mean to change the code students wrote in
+	 * previous practicals.
+	 *
+	 * - having a method setViewer() publicly defined. However, this means
+	 * that we could set a null viewer or to set a viewer that is not
+	 * managing the Renderable. We ignored this solution.
+	 */
+	friend Viewer;
+	Viewer* m_viewer; /*!< Viewer instance that manage this renderable */
 
-    int m_priority;
-    RENDER_MODE m_render_mode;
+	int m_priority;
+	RENDER_MODE m_render_mode;
 };
 
 typedef std::shared_ptr<Renderable> RenderablePtr; /*!< Typedef for smart pointer to renderable.*/

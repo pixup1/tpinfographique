@@ -1,8 +1,9 @@
 #include <Viewer.hpp>
 #include <glm/glm.hpp>
 
-#include "./../include/IndexedCubeRenderable.hpp"
+#include "./../include/CubeRenderable.hpp"
 #include "./../include/FrameRenderable.hpp"
+#include "./../include/IndexedCubeRenderable.hpp"
 #include "./../include/ShaderProgram.hpp"
 
 #define SCR_WIDTH 1024
@@ -33,14 +34,26 @@ int main(int argc, char* argv[])
 	// Add the shader to the Viewer
 	viewer.addShaderProgram(flatShader);
 
-	// When instantiating a renderable ,
-	// you must specify the shader program used to draw it .
+	// When instantiating a renderable,
+	// you must specify the shader program used to draw it.
 	FrameRenderablePtr frame = std::make_shared<FrameRenderable>(defaultShader);
 	viewer.addRenderable(frame);
 
-	// Instantiate a IndexedCubeRenderable while specifying its shader program
-	IndexedCubeRenderablePtr cube = std::make_shared<IndexedCubeRenderable>(flatShader);
+	// Instantiate a renderable while specifying its shader program
+	IndexedCubeRenderablePtr indexedCube = std::make_shared<IndexedCubeRenderable>(flatShader);
+	glm::mat4 indexedCubeModel = glm::mat4(1.0);
+	indexedCubeModel = glm::translate(indexedCubeModel, glm::vec3(0.5, 0.5, 0.0));
+	indexedCubeModel = glm::rotate(indexedCubeModel, glm::radians(30.0f), glm::vec3(1.0, 1.0, 0.0));
+	indexedCube->setModelMatrix(indexedCubeModel);
+
+	CubeRenderablePtr cube = std::make_shared<CubeRenderable>(flatShader);
+	glm::mat4 cubeModel = glm::mat4(1.0);
+	cubeModel = glm::translate(cubeModel, glm::vec3(-0.5, -0.5, 0.0));
+	cubeModel = glm::scale(cubeModel, glm::vec3(0.5, 1, 0.75));
+	cube->setModelMatrix(cubeModel);
+
 	// Add the renderable to the Viewer
+	viewer.addRenderable(indexedCube);
 	viewer.addRenderable(cube);
 
 	// Stage 3: Our program loop

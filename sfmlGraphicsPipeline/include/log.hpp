@@ -6,11 +6,10 @@
  *
  * This file groups all the log features of the project. You are only expected
  * to use the LOG() macro.*/
-# ifndef LOG_H_
-# define LOG_H_
-# include <iostream>
-# include <ctime>
-
+#ifndef LOG_H_
+#define LOG_H_
+#include <ctime>
+#include <iostream>
 
 /**@brief  Log severity levels.
  *
@@ -19,21 +18,22 @@
  * importance, from ::trace which is the less important to
  * ::fatal which is critical.
  */
-enum severity_level {
-  /** the log entry is a trace to understand the program flow */
-  trace,
-  /** the log entry is a debug information, that should not appear in production
-   * code */
-  debug,
-  /** the log entry is an information that might interest the user */
-  info,
-  /** the log entry is a warning about something that is not an error but might
-   * not be what the user expected */
-  warning,
-  /** the log entry is an error, something needs to be fixed */
-  error,
-  /** the log entry is a fatal error, terminating immediately the application */
-  fatal
+enum severity_level
+{
+	/** the log entry is a trace to understand the program flow */
+	trace,
+	/** the log entry is a debug information, that should not appear in production
+	 * code */
+	debug,
+	/** the log entry is an information that might interest the user */
+	info,
+	/** the log entry is a warning about something that is not an error but might
+	 * not be what the user expected */
+	warning,
+	/** the log entry is an error, something needs to be fixed */
+	error,
+	/** the log entry is a fatal error, terminating immediately the application */
+	fatal
 };
 
 /** @brief Holds the string version of the severity levels.
@@ -42,29 +42,29 @@ enum severity_level {
  * log entry.
  */
 extern const std::string severity_names[6];
-# define LOG_WITH_LINE_FILE( level, message, line, file )                   \
-{                                                                           \
-  if( severity_level::level > severity_level::warning )                     \
-  {                                                                         \
-    std::time_t time = std::time( nullptr );                                \
-    char mbstr[ 30 ];                                                       \
-    std::strftime(mbstr, sizeof(mbstr), "%c", std::localtime(&time));       \
-    std::cout<< '[' << mbstr << ']'                                         \
-             << severity_names[severity_level::level]<< " "                 \
-             << message                                                     \
-             << " (in "<< file <<":"<< line <<")"                           \
-             << std::endl;                                                  \
-  }                                                                         \
-  else                                                                      \
-  {                                                                         \
-    std::time_t time = std::time( nullptr );                                \
-    char mbstr[ 30 ];                                                       \
-    std::strftime(mbstr, sizeof(mbstr), "%c", std::localtime(&time));       \
-    std::cout<< '[' << mbstr << ']'                                         \
-             << severity_names[severity_level::level]<< " "                 \
-             << message << std::endl;                                       \
-  }                                                                         \
-}
+#define LOG_WITH_LINE_FILE(level, message, line, file)                        \
+	{                                                                         \
+		if (severity_level::level > severity_level::warning)                  \
+		{                                                                     \
+			std::time_t time = std::time(nullptr);                            \
+			char mbstr[30];                                                   \
+			std::strftime(mbstr, sizeof(mbstr), "%c", std::localtime(&time)); \
+			std::cout << '[' << mbstr << ']'                                  \
+			          << severity_names[severity_level::level] << " "         \
+			          << message                                              \
+			          << " (in " << file << ":" << line << ")"                \
+			          << std::endl;                                           \
+		}                                                                     \
+		else                                                                  \
+		{                                                                     \
+			std::time_t time = std::time(nullptr);                            \
+			char mbstr[30];                                                   \
+			std::strftime(mbstr, sizeof(mbstr), "%c", std::localtime(&time)); \
+			std::cout << '[' << mbstr << ']'                                  \
+			          << severity_names[severity_level::level] << " "         \
+			          << message << std::endl;                                \
+		}                                                                     \
+	}
 
 /**
  * Log an entry with a specific #severity_level. For levels above
@@ -77,6 +77,6 @@ extern const std::string severity_names[6];
  * LOG( debug, "the 2D point is at {" << x << ", " << y << "}");
  * \endcode
  */
-# define LOG( level, message ) LOG_WITH_LINE_FILE( level, message, __LINE__, __FILE__ )
+#define LOG(level, message) LOG_WITH_LINE_FILE(level, message, __LINE__, __FILE__)
 
 #endif /* LOG_H_ */
