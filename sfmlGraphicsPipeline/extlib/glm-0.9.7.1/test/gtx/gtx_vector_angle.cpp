@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -36,7 +36,7 @@
 int test_angle()
 {
 	int Error = 0;
-	
+
 	float AngleA = glm::angle(glm::vec2(1, 0), glm::normalize(glm::vec2(1, 1)));
 	Error += glm::epsilonEqual(AngleA, glm::pi<float>() * 0.25f, 0.01f) ? 0 : 1;
 	float AngleB = glm::angle(glm::vec3(1, 0, 0), glm::normalize(glm::vec3(1, 1, 0)));
@@ -50,7 +50,7 @@ int test_angle()
 int test_orientedAngle_vec2()
 {
 	int Error = 0;
-	
+
 	float AngleA = glm::orientedAngle(glm::vec2(1, 0), glm::normalize(glm::vec2(1, 1)));
 	Error += AngleA == glm::pi<float>() * 0.25f ? 0 : 1;
 	float AngleB = glm::orientedAngle(glm::vec2(0, 1), glm::normalize(glm::vec2(1, 1)));
@@ -64,7 +64,7 @@ int test_orientedAngle_vec2()
 int test_orientedAngle_vec3()
 {
 	int Error = 0;
-	
+
 	float AngleA = glm::orientedAngle(glm::vec3(1, 0, 0), glm::normalize(glm::vec3(1, 1, 0)), glm::vec3(0, 0, 1));
 	Error += AngleA == glm::pi<float>() * 0.25f ? 0 : 1;
 	float AngleB = glm::orientedAngle(glm::vec3(0, 1, 0), glm::normalize(glm::vec3(1, 1, 0)), glm::vec3(0, 0, 1));
@@ -78,12 +78,10 @@ int test_orientedAngle_vec3()
 int main()
 {
 	int Error(0);
-	
+
 	Error += test_angle();
 	Error += test_orientedAngle_vec2();
 	Error += test_orientedAngle_vec3();
 
 	return Error;
 }
-
-

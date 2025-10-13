@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -46,11 +46,11 @@ int main()
 	glm::mat3 m(1, 2, 3, 4, 5, 6, 7, 8, 9);
 	glm::vec3 w = 0.5f * m * v;
 
-	Error += glm::all(glm::equal((m*v)/2, w)) ? 0 : 1;
-	Error += glm::all(glm::equal(m*(v/2), w)) ? 0 : 1;
-	Error += glm::all(glm::equal((m/2)*v, w)) ? 0 : 1;
-	Error += glm::all(glm::equal((0.5*m)*v, w)) ? 0 : 1;
-	Error += glm::all(glm::equal(0.5*(m*v), w)) ? 0 : 1;
+	Error += glm::all(glm::equal((m * v) / 2, w)) ? 0 : 1;
+	Error += glm::all(glm::equal(m * (v / 2), w)) ? 0 : 1;
+	Error += glm::all(glm::equal((m / 2) * v, w)) ? 0 : 1;
+	Error += glm::all(glm::equal((0.5 * m) * v, w)) ? 0 : 1;
+	Error += glm::all(glm::equal(0.5 * (m * v), w)) ? 0 : 1;
 
 	return Error;
 }

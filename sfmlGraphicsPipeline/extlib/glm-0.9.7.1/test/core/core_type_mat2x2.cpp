@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -30,8 +30,6 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 #include <glm/gtc/epsilon.hpp>
-#include <glm/matrix.hpp>
-#include <glm/vector_relational.hpp>
 #include <glm/mat2x2.hpp>
 #include <glm/mat2x3.hpp>
 #include <glm/mat2x4.hpp>
@@ -41,6 +39,8 @@
 #include <glm/mat4x2.hpp>
 #include <glm/mat4x3.hpp>
 #include <glm/mat4x4.hpp>
+#include <glm/matrix.hpp>
+#include <glm/vector_relational.hpp>
 #include <vector>
 
 int test_operators()
@@ -92,84 +92,78 @@ int test_ctr()
 
 #if GLM_HAS_INITIALIZER_LISTS
 	glm::mat2x2 m0(
-		glm::vec2(0, 1), 
-		glm::vec2(2, 3));
+	    glm::vec2(0, 1),
+	    glm::vec2(2, 3));
 
 	glm::mat2x2 m1{0, 1, 2, 3};
 
 	glm::mat2x2 m2{
-		{0, 1},
-		{2, 3}};
+	    {0, 1},
+	    {2, 3}};
 
-	for(glm::length_t i = 0; i < m0.length(); ++i)
+	for (glm::length_t i = 0; i < m0.length(); ++i)
 		Error += glm::all(glm::equal(m0[i], m2[i])) ? 0 : 1;
 
-	for(glm::length_t i = 0; i < m1.length(); ++i)
+	for (glm::length_t i = 0; i < m1.length(); ++i)
 		Error += glm::all(glm::equal(m1[i], m2[i])) ? 0 : 1;
 
 	std::vector<glm::mat2x2> v1{
-		{0, 1, 2, 3},
-		{0, 1, 2, 3}
-	};
+	    {0, 1, 2, 3},
+	    {0, 1, 2, 3}};
 
 	std::vector<glm::mat2x2> v2{
-		{
-			{ 0, 1},
-			{ 4, 5}
-		},
-		{
-			{ 0, 1},
-			{ 4, 5}
-		}
-	};
+	    {{0, 1},
+	     {4, 5}},
+	    {{0, 1},
+	     {4, 5}}};
 
-#endif//GLM_HAS_INITIALIZER_LISTS
+#endif  // GLM_HAS_INITIALIZER_LISTS
 
 	return Error;
 }
 
 namespace cast
 {
-	template <typename genType>
-	int entry()
-	{
-		int Error = 0;
+template <typename genType>
+int entry()
+{
+	int Error = 0;
 
-		genType A(1.0f);
-		glm::mat2 B(A);
-		glm::mat2 Identity(1.0f);
+	genType A(1.0f);
+	glm::mat2 B(A);
+	glm::mat2 Identity(1.0f);
 
-		for(glm::length_t i = 0, length = B.length(); i < length; ++i)
-			Error += glm::all(glm::equal(B[i], Identity[i])) ? 0 : 1;
+	for (glm::length_t i = 0, length = B.length(); i < length; ++i)
+		Error += glm::all(glm::equal(B[i], Identity[i])) ? 0 : 1;
 
-		return Error;
-	}
+	return Error;
+}
 
-	int test()
-	{
-		int Error = 0;
-		
-		Error += entry<glm::mat2x2>();
-		Error += entry<glm::mat2x3>();
-		Error += entry<glm::mat2x4>();
-		Error += entry<glm::mat3x2>();
-		Error += entry<glm::mat3x3>();
-		Error += entry<glm::mat3x4>();
-		Error += entry<glm::mat4x2>();
-		Error += entry<glm::mat4x3>();
-		Error += entry<glm::mat4x4>();
+int test()
+{
+	int Error = 0;
 
-		return Error;
-	}
-}//namespace cast
+	Error += entry<glm::mat2x2>();
+	Error += entry<glm::mat2x3>();
+	Error += entry<glm::mat2x4>();
+	Error += entry<glm::mat3x2>();
+	Error += entry<glm::mat3x3>();
+	Error += entry<glm::mat3x4>();
+	Error += entry<glm::mat4x2>();
+	Error += entry<glm::mat4x3>();
+	Error += entry<glm::mat4x4>();
+
+	return Error;
+}
+}  // namespace cast
 
 int main()
 {
 	int Error(0);
 
 #ifdef GLM_META_PROG_HELPERS
-		assert(glm::mat2::rows == glm::mat2::row_type::components);
-		assert(glm::mat2::cols == glm::mat2::col_type::components);
+	assert(glm::mat2::rows == glm::mat2::row_type::components);
+	assert(glm::mat2::cols == glm::mat2::col_type::components);
 #endif
 
 	Error += cast::test();

@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -29,9 +29,8 @@
 /// @author Christophe Riccio
 ///////////////////////////////////////////////////////////////////////////////////
 
+#include <cstdio>
 #include <glm/gtc/epsilon.hpp>
-#include <glm/matrix.hpp>
-#include <glm/vector_relational.hpp>
 #include <glm/mat2x2.hpp>
 #include <glm/mat2x3.hpp>
 #include <glm/mat2x4.hpp>
@@ -41,10 +40,11 @@
 #include <glm/mat4x2.hpp>
 #include <glm/mat4x3.hpp>
 #include <glm/mat4x4.hpp>
-#include <cstdio>
+#include <glm/matrix.hpp>
+#include <glm/vector_relational.hpp>
 #include <vector>
 
-void print(glm::dmat3 const & Mat0)
+void print(glm::dmat3 const& Mat0)
 {
 	printf("mat3(\n");
 	printf("\tvec3(%2.3f, %2.3f, %2.3f)\n", Mat0[0][0], Mat0[0][1], Mat0[0][2]);
@@ -55,9 +55,9 @@ void print(glm::dmat3 const & Mat0)
 int test_mat3x3()
 {
 	glm::dmat3 Mat0(
-		glm::dvec3(0.6f, 0.2f, 0.3f), 
-		glm::dvec3(0.2f, 0.7f, 0.5f), 
-		glm::dvec3(0.3f, 0.5f, 0.7f));
+	    glm::dvec3(0.6f, 0.2f, 0.3f),
+	    glm::dvec3(0.2f, 0.7f, 0.5f),
+	    glm::dvec3(0.3f, 0.5f, 0.7f));
 	glm::dmat3 Inv0 = glm::inverse(Mat0);
 	glm::dmat3 Res0 = Mat0 * Inv0;
 
@@ -93,9 +93,9 @@ int test_inverse()
 
 	{
 		glm::mat3 const Matrix(
-			glm::vec3(0.6f, 0.2f, 0.3f), 
-			glm::vec3(0.2f, 0.7f, 0.5f), 
-			glm::vec3(0.3f, 0.5f, 0.7f));
+		    glm::vec3(0.6f, 0.2f, 0.3f),
+		    glm::vec3(0.2f, 0.7f, 0.5f),
+		    glm::vec3(0.3f, 0.5f, 0.7f));
 		glm::mat3 const Inverse = glm::inverse(Matrix);
 		glm::mat3 const Identity = Matrix * Inverse;
 
@@ -106,9 +106,9 @@ int test_inverse()
 
 	{
 		glm::mat3 const Matrix(
-			glm::vec3(0.6f, 0.2f, 0.3f), 
-			glm::vec3(0.2f, 0.7f, 0.5f), 
-			glm::vec3(0.3f, 0.5f, 0.7f));
+		    glm::vec3(0.6f, 0.2f, 0.3f),
+		    glm::vec3(0.2f, 0.7f, 0.5f),
+		    glm::vec3(0.3f, 0.5f, 0.7f));
 		glm::mat3 const Identity = Matrix / Matrix;
 
 		Error += glm::all(glm::epsilonEqual(Identity[0], glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.01f))) ? 0 : 1;
@@ -123,90 +123,84 @@ int test_ctr()
 {
 	int Error(0);
 
-#if(GLM_HAS_INITIALIZER_LISTS)
+#if (GLM_HAS_INITIALIZER_LISTS)
 	glm::mat3x3 m0(
-		glm::vec3(0, 1, 2),
-		glm::vec3(3, 4, 5),
-		glm::vec3(6, 7, 8));
-	
+	    glm::vec3(0, 1, 2),
+	    glm::vec3(3, 4, 5),
+	    glm::vec3(6, 7, 8));
+
 	glm::mat3x3 m1{0, 1, 2, 3, 4, 5, 6, 7, 8};
-	
+
 	glm::mat3x3 m2{
-		{0, 1, 2},
-		{3, 4, 5},
-		{6, 7, 8}};
-	
-	for(glm::length_t i = 0; i < m0.length(); ++i)
+	    {0, 1, 2},
+	    {3, 4, 5},
+	    {6, 7, 8}};
+
+	for (glm::length_t i = 0; i < m0.length(); ++i)
 		Error += glm::all(glm::equal(m0[i], m2[i])) ? 0 : 1;
-	
-	for(glm::length_t i = 0; i < m1.length(); ++i)
+
+	for (glm::length_t i = 0; i < m1.length(); ++i)
 		Error += glm::all(glm::equal(m1[i], m2[i])) ? 0 : 1;
-	
+
 	std::vector<glm::mat3x3> v1{
-		{0, 1, 2, 3, 4, 5, 6, 7, 8},
-		{0, 1, 2, 3, 4, 5, 6, 7, 8}
-	};
-	
+	    {0, 1, 2, 3, 4, 5, 6, 7, 8},
+	    {0, 1, 2, 3, 4, 5, 6, 7, 8}};
+
 	std::vector<glm::mat3x3> v2{
-		{
-			{ 0, 1, 2},
-			{ 3, 4, 5},
-			{ 6, 7, 8}
-		},
-		{
-			{ 0, 1, 2},
-			{ 3, 4, 5},
-			{ 6, 7, 8}
-		}
-	};
-	
-#endif//GLM_HAS_INITIALIZER_LISTS
-	
+	    {{0, 1, 2},
+	     {3, 4, 5},
+	     {6, 7, 8}},
+	    {{0, 1, 2},
+	     {3, 4, 5},
+	     {6, 7, 8}}};
+
+#endif  // GLM_HAS_INITIALIZER_LISTS
+
 	return Error;
 }
 
 namespace cast
 {
-	template <typename genType>
-	int entry()
-	{
-		int Error = 0;
+template <typename genType>
+int entry()
+{
+	int Error = 0;
 
-		genType A(1.0f);
-		glm::mat3x3 B(A);
-		glm::mat3x3 Identity(1.0f);
+	genType A(1.0f);
+	glm::mat3x3 B(A);
+	glm::mat3x3 Identity(1.0f);
 
-		for(glm::length_t i = 0, length = B.length(); i < length; ++i)
-			Error += glm::all(glm::equal(B[i], Identity[i])) ? 0 : 1;
+	for (glm::length_t i = 0, length = B.length(); i < length; ++i)
+		Error += glm::all(glm::equal(B[i], Identity[i])) ? 0 : 1;
 
-		return Error;
-	}
+	return Error;
+}
 
-	int test()
-	{
-		int Error = 0;
-		
-		Error += entry<glm::mat2x2>();
-		Error += entry<glm::mat2x3>();
-		Error += entry<glm::mat2x4>();
-		Error += entry<glm::mat3x2>();
-		Error += entry<glm::mat3x3>();
-		Error += entry<glm::mat3x4>();
-		Error += entry<glm::mat4x2>();
-		Error += entry<glm::mat4x3>();
-		Error += entry<glm::mat4x4>();
+int test()
+{
+	int Error = 0;
 
-		return Error;
-	}
-}//namespace cast
+	Error += entry<glm::mat2x2>();
+	Error += entry<glm::mat2x3>();
+	Error += entry<glm::mat2x4>();
+	Error += entry<glm::mat3x2>();
+	Error += entry<glm::mat3x3>();
+	Error += entry<glm::mat3x4>();
+	Error += entry<glm::mat4x2>();
+	Error += entry<glm::mat4x3>();
+	Error += entry<glm::mat4x4>();
+
+	return Error;
+}
+}  // namespace cast
 
 int main()
 {
 	int Error = 0;
 
 #ifdef GLM_META_PROG_HELPERS
-		assert(glm::mat3::rows == glm::mat3::row_type::components);
-		assert(glm::mat3::cols == glm::mat3::col_type::components);
+	assert(glm::mat3::rows == glm::mat3::row_type::components);
+	assert(glm::mat3::cols == glm::mat3::col_type::components);
 #endif
 
 	Error += cast::test();
@@ -217,4 +211,3 @@ int main()
 
 	return Error;
 }
-

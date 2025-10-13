@@ -1,26 +1,24 @@
-#include <Viewer.hpp>
+#include <FrameRenderable.hpp>
 #include <ShaderProgram.hpp>
-
-#include <lighting/LightedMeshRenderable.hpp>
+#include <Viewer.hpp>
+#include <iostream>
+#include <lighting/DirectionalLightRenderable.hpp>
 #include <lighting/LightedCubeRenderable.hpp>
 #include <lighting/LightedCylinderRenderable.hpp>
-#include <lighting/DirectionalLightRenderable.hpp>
+#include <lighting/LightedMeshRenderable.hpp>
 #include <lighting/PointLightRenderable.hpp>
 #include <lighting/SpotLightRenderable.hpp>
-#include <FrameRenderable.hpp>
 
-#include <iostream>
-
-void initialize_scene(Viewer &viewer)
+void initialize_scene(Viewer& viewer)
 {
 	// Default shader
 	ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-																  "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
+	                                                              "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
 	viewer.addShaderProgram(flatShader);
 
 	// Define a shader that encode an illumination model
 	ShaderProgramPtr phongShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/phongVertex.glsl",
-																   "../../sfmlGraphicsPipeline/shaders/phongFragment.glsl");
+	                                                               "../../sfmlGraphicsPipeline/shaders/phongFragment.glsl");
 	viewer.addShaderProgram(phongShader);
 
 	// Add a 3D frame to the viewer
@@ -84,9 +82,9 @@ void initialize_scene(Viewer &viewer)
 	float s_constant = 1.0, s_linear = 0.0, s_quadratic = 0.0;
 	float s_innerCutOff = std::cos(glm::radians(20.0f)), s_outerCutOff = std::cos(glm::radians(40.0f));
 	SpotLightPtr spotLight = std::make_shared<SpotLight>(s_position, s_spotDirection,
-														 s_ambient, s_diffuse, s_specular,
-														 s_constant, s_linear, s_quadratic,
-														 s_innerCutOff, s_outerCutOff);
+	                                                     s_ambient, s_diffuse, s_specular,
+	                                                     s_constant, s_linear, s_quadratic,
+	                                                     s_innerCutOff, s_outerCutOff);
 	SpotLightRenderablePtr spotLightRenderable = std::make_shared<SpotLightRenderable>(flatShader, spotLight);
 	localTransformation = glm::scale(glm::mat4(1.0), glm::vec3(0.5, 0.5, 0.5));
 	spotLightRenderable->setLocalTransform(localTransformation);

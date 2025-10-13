@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -37,33 +37,33 @@ int test_value_ptr_vec()
 
 	{
 		glm::vec2 v(1.0);
-		float * p = glm::value_ptr(v);
+		float* p = glm::value_ptr(v);
 		Error += p == &v[0] ? 0 : 1;
 	}
 	{
 		glm::vec3 v(1.0);
-		float * p = glm::value_ptr(v);
+		float* p = glm::value_ptr(v);
 		Error += p == &v[0] ? 0 : 1;
 	}
 	{
 		glm::vec4 v(1.0);
-		float * p = glm::value_ptr(v);
+		float* p = glm::value_ptr(v);
 		Error += p == &v[0] ? 0 : 1;
 	}
 
 	{
 		glm::dvec2 v(1.0);
-		double * p = glm::value_ptr(v);
+		double* p = glm::value_ptr(v);
 		Error += p == &v[0] ? 0 : 1;
 	}
 	{
 		glm::dvec3 v(1.0);
-		double * p = glm::value_ptr(v);
+		double* p = glm::value_ptr(v);
 		Error += p == &v[0] ? 0 : 1;
 	}
 	{
 		glm::dvec4 v(1.0);
-		double * p = glm::value_ptr(v);
+		double* p = glm::value_ptr(v);
 		Error += p == &v[0] ? 0 : 1;
 	}
 
@@ -76,33 +76,33 @@ int test_value_ptr_vec_const()
 
 	{
 		glm::vec2 const v(1.0);
-		float const * p = glm::value_ptr(v);
+		float const* p = glm::value_ptr(v);
 		Error += p == &v[0] ? 0 : 1;
 	}
 	{
 		glm::vec3 const v(1.0);
-		float const * p = glm::value_ptr(v);
+		float const* p = glm::value_ptr(v);
 		Error += p == &v[0] ? 0 : 1;
 	}
 	{
 		glm::vec4 const v(1.0);
-		float const * p = glm::value_ptr(v);
+		float const* p = glm::value_ptr(v);
 		Error += p == &v[0] ? 0 : 1;
 	}
 
 	{
 		glm::dvec2 const v(1.0);
-		double const * p = glm::value_ptr(v);
+		double const* p = glm::value_ptr(v);
 		Error += p == &v[0] ? 0 : 1;
 	}
 	{
 		glm::dvec3 const v(1.0);
-		double const * p = glm::value_ptr(v);
+		double const* p = glm::value_ptr(v);
 		Error += p == &v[0] ? 0 : 1;
 	}
 	{
 		glm::dvec4 const v(1.0);
-		double const * p = glm::value_ptr(v);
+		double const* p = glm::value_ptr(v);
 		Error += p == &v[0] ? 0 : 1;
 	}
 
@@ -115,47 +115,47 @@ int test_value_ptr_mat()
 
 	{
 		glm::mat2x2 m(1.0);
-		float * p = glm::value_ptr(m);
+		float* p = glm::value_ptr(m);
 		Error += p == &m[0][0] ? 0 : 1;
 	}
 	{
 		glm::mat2x3 m(1.0);
-		float * p = glm::value_ptr(m);
+		float* p = glm::value_ptr(m);
 		Error += p == &m[0][0] ? 0 : 1;
 	}
 	{
 		glm::mat2x4 m(1.0);
-		float * p = glm::value_ptr(m);
+		float* p = glm::value_ptr(m);
 		Error += p == &m[0][0] ? 0 : 1;
 	}
 	{
 		glm::mat3x2 m(1.0);
-		float * p = glm::value_ptr(m);
+		float* p = glm::value_ptr(m);
 		Error += p == &m[0][0] ? 0 : 1;
 	}
 	{
 		glm::mat3x3 m(1.0);
-		float * p = glm::value_ptr(m);
+		float* p = glm::value_ptr(m);
 		Error += p == &m[0][0] ? 0 : 1;
 	}
 	{
 		glm::mat3x4 m(1.0);
-		float * p = glm::value_ptr(m);
+		float* p = glm::value_ptr(m);
 		Error += p == &m[0][0] ? 0 : 1;
 	}
 	{
 		glm::mat4x2 m(1.0);
-		float * p = glm::value_ptr(m);
+		float* p = glm::value_ptr(m);
 		Error += p == &m[0][0] ? 0 : 1;
 	}
 	{
 		glm::mat4x3 m(1.0);
-		float * p = glm::value_ptr(m);
+		float* p = glm::value_ptr(m);
 		Error += p == &m[0][0] ? 0 : 1;
 	}
 	{
 		glm::mat4x4 m(1.0);
-		float * p = glm::value_ptr(m);
+		float* p = glm::value_ptr(m);
 		Error += p == &m[0][0] ? 0 : 1;
 	}
 
@@ -168,47 +168,47 @@ int test_value_ptr_mat_const()
 
 	{
 		glm::mat2x2 const m(1.0);
-		float const * p = glm::value_ptr(m);
+		float const* p = glm::value_ptr(m);
 		Error += p == &m[0][0] ? 0 : 1;
 	}
 	{
 		glm::mat2x3 const m(1.0);
-		float const * p = glm::value_ptr(m);
+		float const* p = glm::value_ptr(m);
 		Error += p == &m[0][0] ? 0 : 1;
 	}
 	{
 		glm::mat2x4 const m(1.0);
-		float const * p = glm::value_ptr(m);
+		float const* p = glm::value_ptr(m);
 		Error += p == &m[0][0] ? 0 : 1;
 	}
 	{
 		glm::mat3x2 const m(1.0);
-		float const * p = glm::value_ptr(m);
+		float const* p = glm::value_ptr(m);
 		Error += p == &m[0][0] ? 0 : 1;
 	}
 	{
 		glm::mat3x3 const m(1.0);
-		float const * p = glm::value_ptr(m);
+		float const* p = glm::value_ptr(m);
 		Error += p == &m[0][0] ? 0 : 1;
 	}
 	{
 		glm::mat3x4 const m(1.0);
-		float const * p = glm::value_ptr(m);
+		float const* p = glm::value_ptr(m);
 		Error += p == &m[0][0] ? 0 : 1;
 	}
 	{
 		glm::mat4x2 const m(1.0);
-		float const * p = glm::value_ptr(m);
+		float const* p = glm::value_ptr(m);
 		Error += p == &m[0][0] ? 0 : 1;
 	}
 	{
 		glm::mat4x3 const m(1.0);
-		float const * p = glm::value_ptr(m);
+		float const* p = glm::value_ptr(m);
 		Error += p == &m[0][0] ? 0 : 1;
 	}
 	{
 		glm::mat4x4 const m(1.0);
-		float const * p = glm::value_ptr(m);
+		float const* p = glm::value_ptr(m);
 		Error += p == &m[0][0] ? 0 : 1;
 	}
 

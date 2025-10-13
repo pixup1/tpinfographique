@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -29,37 +29,37 @@
 /// @author Christophe Riccio
 ///////////////////////////////////////////////////////////////////////////////////
 
+#include <cstdio>
 #include <glm/exponential.hpp>
 #include <glm/gtc/epsilon.hpp>
 #include <glm/gtx/integer.hpp>
-#include <cstdio>
 /*
 int test_floor_log2()
 {
-	int Error = 0;
+    int Error = 0;
 
-	for(std::size_t i = 1; i < 1000000; ++i)
-	{
-		glm::uint A = glm::floor_log2(glm::uint(i));
-		glm::uint B = glm::uint(glm::floor(glm::log2(double(i)))); // Will fail with float, lack of accuracy
+    for(std::size_t i = 1; i < 1000000; ++i)
+    {
+        glm::uint A = glm::floor_log2(glm::uint(i));
+        glm::uint B = glm::uint(glm::floor(glm::log2(double(i)))); // Will fail with float, lack of accuracy
 
-		Error += A == B ? 0 : 1;
-		assert(!Error);
-	}
+        Error += A == B ? 0 : 1;
+        assert(!Error);
+    }
 
-	return Error;
+    return Error;
 }
 */
 int test_log2()
 {
 	int Error = 0;
 
-	for(std::size_t i = 1; i < 24; ++i)
+	for (std::size_t i = 1; i < 24; ++i)
 	{
 		glm::uint A = glm::log2(glm::uint(1 << i));
 		glm::uint B = glm::uint(glm::log2(double(1 << i)));
 
-		//Error += glm::equalEpsilon(double(A), B, 1.0) ? 0 : 1;
+		// Error += glm::equalEpsilon(double(A), B, 1.0) ? 0 : 1;
 		Error += glm::abs(double(A) - B) <= 24 ? 0 : 1;
 		assert(!Error);
 
@@ -75,9 +75,9 @@ int test_nlz()
 {
 	int Error = 0;
 
-	for(glm::uint i = 1; i < glm::uint(33); ++i)
+	for (glm::uint i = 1; i < glm::uint(33); ++i)
 		Error += glm::nlz(i) == glm::uint(31u) - glm::findMSB(i) ? 0 : 1;
-		//printf("%d, %d\n", glm::nlz(i), 31u - glm::findMSB(i));
+	// printf("%d, %d\n", glm::nlz(i), 31u - glm::findMSB(i));
 
 	return Error;
 }
@@ -87,9 +87,8 @@ int main()
 	int Error = 0;
 
 	Error += test_nlz();
-//	Error += test_floor_log2();
+	//	Error += test_floor_log2();
 	Error += test_log2();
 
 	return Error;
 }
-

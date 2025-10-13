@@ -1,24 +1,22 @@
-#include <Viewer.hpp>
-#include <ShaderProgram.hpp>
-
-#include <lighting/Material.hpp>
-#include <texturing/EnvMapMeshRenderable.hpp>
-#include <texturing/CubeMapRenderable.hpp>
 #include <FrameRenderable.hpp>
+#include <ShaderProgram.hpp>
 #include <Utils.hpp>
-
+#include <Viewer.hpp>
 #include <iostream>
+#include <lighting/Material.hpp>
+#include <texturing/CubeMapRenderable.hpp>
+#include <texturing/EnvMapMeshRenderable.hpp>
 
-void initialize_scene(Viewer &viewer)
+void initialize_scene(Viewer& viewer)
 {
 	// Position the camera
 	viewer.getCamera().setViewMatrix(glm::lookAt(glm::vec3(1, 2, 2), glm::vec3(1, 1, 1), glm::vec3(0, 1, 0)));
 	ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-																  "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
+	                                                              "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
 	ShaderProgramPtr cubeMapShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/cubeMapVertex.glsl",
-																	 "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
+	                                                                 "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
 	ShaderProgramPtr envmapShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/envmapVertex.glsl",
-																	"../../sfmlGraphicsPipeline/shaders/envmapFragment.glsl");
+	                                                                "../../sfmlGraphicsPipeline/shaders/envmapFragment.glsl");
 	viewer.addShaderProgram(flatShader);
 	viewer.addShaderProgram(cubeMapShader);
 	viewer.addShaderProgram(envmapShader);
@@ -38,12 +36,12 @@ void initialize_scene(Viewer &viewer)
 	auto mat = std::make_shared<Material>(glm::vec3(0), glm::vec3(1), glm::vec3(1), 100.0f);
 
 	auto envmapBunny = std::make_shared<EnvMapMeshRenderable>(
-		envmapShader,
-		bunny_obj_path,
-		mat,
-		bunny_texture_path,
-		diffuse_skybox_dir,
-		specular_skybox_dir);
+	    envmapShader,
+	    bunny_obj_path,
+	    mat,
+	    bunny_texture_path,
+	    diffuse_skybox_dir,
+	    specular_skybox_dir);
 
 	envmapBunny->setGlobalTransform(getTranslationMatrix(1));
 	envmapBunny->addGlobalTransformKeyframe(getTranslationMatrix(1) * getRotationMatrix(0 * 2 * M_PI, 0, 1, 0), 0);

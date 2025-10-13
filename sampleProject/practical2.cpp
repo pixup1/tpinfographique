@@ -1,24 +1,23 @@
-#include <Viewer.hpp>
-#include <ShaderProgram.hpp>
 #include <CylinderMeshRenderable.hpp>
-#include <MeshRenderable.hpp>
 #include <FrameRenderable.hpp>
 #include <MeshRenderable.hpp>
+#include <ShaderProgram.hpp>
+#include <Viewer.hpp>
 
-void initialize_scene(Viewer &viewer)
+void initialize_scene(Viewer& viewer)
 {
 	// Create a shader program
 	ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>(
-		"../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-		"../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
+	    "../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
+	    "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
 
 	// Add the shader program to the viewer
 	viewer.addShaderProgram(flatShader);
 
 	// Create a cylinder
-	bool indexed = false;		 // indexed version already implemented
-	unsigned int slices = 20u;	 // number of slices
-	bool vertex_normals = false; // use vertex normals ? else triangle normals
+	bool indexed = false;         // indexed version already implemented
+	unsigned int slices = 20u;    // number of slices
+	bool vertex_normals = false;  // use vertex normals ? else triangle normals
 	// See CylinderMeshRenderable.cpp
 	CylinderMeshRenderablePtr cylinder = std::make_shared<CylinderMeshRenderable>(flatShader, indexed, slices, vertex_normals);
 

@@ -1,16 +1,15 @@
-#include <ShaderProgram.hpp>
-#include <Viewer.hpp>
-
 #include <CylinderMeshRenderable.hpp>
 #include <FrameRenderable.hpp>
 #include <GeometricTransformation.hpp>
-#include <iostream>
+#include <ShaderProgram.hpp>
+#include <Viewer.hpp>
 #include <iomanip>
+#include <iostream>
 
-void movingTree(Viewer &viewer);
-void movingCylinder(Viewer &viewer);
+void movingTree(Viewer& viewer);
+void movingCylinder(Viewer& viewer);
 
-void initialize_scene(Viewer &viewer)
+void initialize_scene(Viewer& viewer)
 {
 	movingCylinder(viewer);
 	// movingTree(viewer);
@@ -33,11 +32,11 @@ int main()
 	return EXIT_SUCCESS;
 }
 
-void movingCylinder(Viewer &viewer)
+void movingCylinder(Viewer& viewer)
 {
 	// Add shader
 	ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-																  "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
+	                                                              "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
 	viewer.addShaderProgram(flatShader);
 
 	// Frame
@@ -59,11 +58,11 @@ void movingCylinder(Viewer &viewer)
 	viewer.startAnimation();
 }
 
-void movingTree(Viewer &viewer)
+void movingTree(Viewer& viewer)
 {
 	// Add shader
 	ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-																  "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
+	                                                              "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
 	viewer.addShaderProgram(flatShader);
 
 	// Frame

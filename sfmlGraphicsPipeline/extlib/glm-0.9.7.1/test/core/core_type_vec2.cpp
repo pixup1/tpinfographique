@@ -30,14 +30,14 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 #if !(GLM_COMPILER & GLM_COMPILER_GCC)
-#	define GLM_META_PROG_HELPERS
+#define GLM_META_PROG_HELPERS
 #endif
 #define GLM_SWIZZLE
-#include <glm/vector_relational.hpp>
 #include <glm/vec2.hpp>
+#include <glm/vector_relational.hpp>
 #include <vector>
 #if GLM_HAS_TRIVIAL_QUERIES
-#	include <type_traits>
+#include <type_traits>
 #endif
 
 int test_vec2_operators()
@@ -61,7 +61,7 @@ int test_vec2_operators()
 
 	{
 		glm::vec2 A(1.0f);
-		glm::vec2 B(2.0f,-1.0f);
+		glm::vec2 B(2.0f, -1.0f);
 		glm::vec2 C = A + B;
 		A += B;
 		Error += A.x == 3.0f && A.y == 0.0f ? 0 : 1;
@@ -78,7 +78,7 @@ int test_vec2_operators()
 
 	{
 		glm::vec2 A(1.0f);
-		glm::vec2 B(2.0f,-1.0f);
+		glm::vec2 B(2.0f, -1.0f);
 		glm::vec2 C = A - B;
 		A -= B;
 		Error += A.x == -1.0f && A.y == 2.0f ? 0 : 1;
@@ -235,32 +235,32 @@ int test_vec2_ctor()
 		Error += A == B ? 0 : 1;
 	}
 
-#	if GLM_HAS_TRIVIAL_QUERIES
+#if GLM_HAS_TRIVIAL_QUERIES
 	//	Error += std::is_trivially_default_constructible<glm::vec2>::value ? 0 : 1;
 	//	Error += std::is_trivially_copy_assignable<glm::vec2>::value ? 0 : 1;
-		Error += std::is_trivially_copyable<glm::vec2>::value ? 0 : 1;
-		Error += std::is_trivially_copyable<glm::dvec2>::value ? 0 : 1;
-		Error += std::is_trivially_copyable<glm::ivec2>::value ? 0 : 1;
-		Error += std::is_trivially_copyable<glm::uvec2>::value ? 0 : 1;
+	Error += std::is_trivially_copyable<glm::vec2>::value ? 0 : 1;
+	Error += std::is_trivially_copyable<glm::dvec2>::value ? 0 : 1;
+	Error += std::is_trivially_copyable<glm::ivec2>::value ? 0 : 1;
+	Error += std::is_trivially_copyable<glm::uvec2>::value ? 0 : 1;
 
-		Error += std::is_copy_constructible<glm::vec2>::value ? 0 : 1;
-#	endif
+	Error += std::is_copy_constructible<glm::vec2>::value ? 0 : 1;
+#endif
 
 #if GLM_HAS_INITIALIZER_LISTS
 	{
-		glm::vec2 a{ 0, 1 };
+		glm::vec2 a{0, 1};
 		std::vector<glm::vec2> v = {
-			{0, 1},
-			{4, 5},
-			{8, 9}};
+		    {0, 1},
+		    {4, 5},
+		    {8, 9}};
 	}
 
 	{
-		glm::dvec2 a{ 0, 1 };
+		glm::dvec2 a{0, 1};
 		std::vector<glm::dvec2> v = {
-			{0, 1},
-			{4, 5},
-			{8, 9}};
+		    {0, 1},
+		    {4, 5},
+		    {8, 9}};
 	}
 #endif
 
@@ -275,13 +275,13 @@ int test_vec2_ctor()
 		Error += glm::all(glm::equal(A, C)) ? 0 : 1;
 		Error += glm::all(glm::equal(A, D)) ? 0 : 1;
 	}
-#endif// GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE)
+#endif  // GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE)
 
 	{
 		glm::vec2 A = glm::vec2(2.0f);
 		glm::vec2 B = glm::vec2(2.0f, 3.0f);
 		glm::vec2 C = glm::vec2(2.0f, 3.0);
-		//glm::vec2 D = glm::dvec2(2.0); // Build error TODO: What does the specification says?
+		// glm::vec2 D = glm::dvec2(2.0); // Build error TODO: What does the specification says?
 		glm::vec2 E(glm::dvec2(2.0));
 		glm::vec2 F(glm::ivec2(2));
 	}
@@ -338,10 +338,10 @@ int main()
 	glm::vec2 v;
 	assert(v.length() == 2);
 
-#	ifdef GLM_META_PROG_HELPERS
-		assert(glm::vec2::components == glm::vec2().length());
-		assert(glm::vec2::components == 2);
-#	endif
+#ifdef GLM_META_PROG_HELPERS
+	assert(glm::vec2::components == glm::vec2().length());
+	assert(glm::vec2::components == 2);
+#endif
 
 	Error += test_vec2_size();
 	Error += test_vec2_ctor();

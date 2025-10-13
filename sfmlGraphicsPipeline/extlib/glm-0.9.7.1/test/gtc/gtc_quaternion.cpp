@@ -30,8 +30,8 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 #define GLM_META_PROG_HELPERS
-#include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/epsilon.hpp>
+#include <glm/gtc/quaternion.hpp>
 #include <glm/vector_relational.hpp>
 #include <vector>
 
@@ -164,9 +164,9 @@ int test_quat_slerp()
 {
 	int Error(0);
 
-	float const Epsilon = 0.0001f;//glm::epsilon<float>();
+	float const Epsilon = 0.0001f;  // glm::epsilon<float>();
 
-	float sqrt2 = sqrt(2.0f)/2.0f;
+	float sqrt2 = sqrt(2.0f) / 2.0f;
 	glm::quat id;
 	glm::quat Y90rot(sqrt2, 0.0f, sqrt2, 0.0f);
 	glm::quat Y180rot(0.0f, 0.0f, 1.0f, 0.0f);
@@ -192,7 +192,7 @@ int test_quat_slerp()
 	// Testing against full circle around the sphere instead of shortest path
 	// Must be 45° rotation on Y
 	// certainly not a 135° rotation
-	glm::quat Y45rot3 = glm::slerp(id , -Y90rot, 0.5f);
+	glm::quat Y45rot3 = glm::slerp(id, -Y90rot, 0.5f);
 	float Y45angle3 = glm::angle(Y45rot3);
 	Error += glm::epsilonEqual(Y45angle3, glm::pi<float>() * 0.25f, Epsilon) ? 0 : 1;
 	Error += glm::all(glm::epsilonEqual(Ym45rot2, Y45rot3, Epsilon)) ? 0 : 1;
@@ -211,7 +211,7 @@ int test_quat_slerp()
 	// Testing 180° rotation
 	// Must be 90° rotation on almost any axis that is on the XZ plane
 	glm::quat XZ90rot = glm::slerp(id, -Y90rot, 0.5f);
-	float XZ90angle = glm::angle(XZ90rot); // Must be PI/4 = 0.78;
+	float XZ90angle = glm::angle(XZ90rot);  // Must be PI/4 = 0.78;
 	Error += glm::epsilonEqual(XZ90angle, glm::pi<float>() * 0.25f, Epsilon) ? 0 : 1;
 
 	// Testing almost equal quaternions (this test should pass through the linear interpolation)
@@ -243,7 +243,7 @@ int test_quat_mul()
 	glm::quat temp5 = glm::normalize(temp1 * temp2);
 	glm::vec3 temp6 = temp5 * glm::vec3(0.0, 1.0, 0.0) * glm::inverse(temp5);
 
-#	ifndef GLM_FORCE_NO_CTOR_INIT
+#ifndef GLM_FORCE_NO_CTOR_INIT
 	{
 		glm::quat temp7;
 
@@ -252,7 +252,7 @@ int test_quat_mul()
 
 		Error += temp7 != glm::quat();
 	}
-#	endif
+#endif
 
 	return Error;
 }
@@ -298,27 +298,27 @@ int test_quat_ctr()
 {
 	int Error(0);
 
-#	if GLM_HAS_TRIVIAL_QUERIES
+#if GLM_HAS_TRIVIAL_QUERIES
 	//	Error += std::is_trivially_default_constructible<glm::quat>::value ? 0 : 1;
 	//	Error += std::is_trivially_default_constructible<glm::dquat>::value ? 0 : 1;
 	//	Error += std::is_trivially_copy_assignable<glm::quat>::value ? 0 : 1;
 	//	Error += std::is_trivially_copy_assignable<glm::dquat>::value ? 0 : 1;
-		Error += std::is_trivially_copyable<glm::quat>::value ? 0 : 1;
-		Error += std::is_trivially_copyable<glm::dquat>::value ? 0 : 1;
+	Error += std::is_trivially_copyable<glm::quat>::value ? 0 : 1;
+	Error += std::is_trivially_copyable<glm::dquat>::value ? 0 : 1;
 
-		Error += std::is_copy_constructible<glm::quat>::value ? 0 : 1;
-		Error += std::is_copy_constructible<glm::dquat>::value ? 0 : 1;
-#	endif
+	Error += std::is_copy_constructible<glm::quat>::value ? 0 : 1;
+	Error += std::is_copy_constructible<glm::dquat>::value ? 0 : 1;
+#endif
 
-#	if GLM_HAS_INITIALIZER_LISTS
+#if GLM_HAS_INITIALIZER_LISTS
 	{
 		glm::quat A{0, 1, 2, 3};
 
 		std::vector<glm::quat> B{
-			{0, 1, 2, 3},
-			{0, 1, 2, 3}};
+		    {0, 1, 2, 3},
+		    {0, 1, 2, 3}};
 	}
-#	endif//GLM_HAS_INITIALIZER_LISTS
+#endif  // GLM_HAS_INITIALIZER_LISTS
 
 	return Error;
 }
@@ -328,8 +328,8 @@ int main()
 	int Error(0);
 
 #ifdef GLM_META_PROG_HELPERS
-		assert(glm::quat::components == 4);
-		assert(glm::quat::components == glm::quat().length());
+	assert(glm::quat::components == 4);
+	assert(glm::quat::components == glm::quat().length());
 #endif
 
 	Error += test_quat_ctr();

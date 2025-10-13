@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -30,51 +30,51 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 #if !(GLM_COMPILER & GLM_COMPILER_GCC)
-#	define GLM_META_PROG_HELPERS
+#define GLM_META_PROG_HELPERS
 #endif
 #define GLM_SWIZZLE
-#include <glm/vector_relational.hpp>
+#include <cstdio>
 #include <glm/geometric.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
-#include <cstdio>
+#include <glm/vector_relational.hpp>
 #include <vector>
 
 int test_vec3_ctor()
 {
 	int Error = 0;
 
-#	if GLM_HAS_TRIVIAL_QUERIES
+#if GLM_HAS_TRIVIAL_QUERIES
 	//	Error += std::is_trivially_default_constructible<glm::vec3>::value ? 0 : 1;
 	//	Error += std::is_trivially_copy_assignable<glm::vec3>::value ? 0 : 1;
-		Error += std::is_trivially_copyable<glm::vec3>::value ? 0 : 1;
-		Error += std::is_trivially_copyable<glm::dvec3>::value ? 0 : 1;
-		Error += std::is_trivially_copyable<glm::ivec3>::value ? 0 : 1;
-		Error += std::is_trivially_copyable<glm::uvec3>::value ? 0 : 1;
+	Error += std::is_trivially_copyable<glm::vec3>::value ? 0 : 1;
+	Error += std::is_trivially_copyable<glm::dvec3>::value ? 0 : 1;
+	Error += std::is_trivially_copyable<glm::ivec3>::value ? 0 : 1;
+	Error += std::is_trivially_copyable<glm::uvec3>::value ? 0 : 1;
 
-		Error += std::is_copy_constructible<glm::vec3>::value ? 0 : 1;
-#	endif
+	Error += std::is_copy_constructible<glm::vec3>::value ? 0 : 1;
+#endif
 
 #if (GLM_HAS_INITIALIZER_LISTS)
 	{
-		glm::vec3 a{ 0, 1, 2 };
+		glm::vec3 a{0, 1, 2};
 		std::vector<glm::vec3> v = {
-			{0, 1, 2},
-			{4, 5, 6},
-			{8, 9, 0}};
+		    {0, 1, 2},
+		    {4, 5, 6},
+		    {8, 9, 0}};
 	}
 
 	{
-		glm::dvec3 a{ 0, 1, 2 };
+		glm::dvec3 a{0, 1, 2};
 		std::vector<glm::dvec3> v = {
-			{0, 1, 2},
-			{4, 5, 6},
-			{8, 9, 0}};
+		    {0, 1, 2},
+		    {4, 5, 6},
+		    {8, 9, 0}};
 	}
 #endif
 
-#if(GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE))
+#if (GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE))
 	{
 		glm::vec3 A = glm::vec3(1.0f, 2.0f, 3.0f);
 		glm::vec3 B = A.xyz;
@@ -93,15 +93,15 @@ int test_vec3_ctor()
 		Error += glm::all(glm::equal(A, G)) ? 0 : 1;
 		Error += glm::all(glm::equal(A, H)) ? 0 : 1;
 	}
-#endif//(GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE))
+#endif  //(GLM_HAS_ANONYMOUS_UNION && defined(GLM_SWIZZLE))
 
 	{
 		glm::vec3 A(1);
 		glm::vec3 B(1, 1, 1);
-		
+
 		Error += A == B ? 0 : 1;
 	}
-	
+
 	{
 		std::vector<glm::vec3> Tests;
 		Tests.push_back(glm::vec3(glm::vec2(1, 2), 3));
@@ -109,17 +109,17 @@ int test_vec3_ctor()
 		Tests.push_back(glm::vec3(1, 2, 3));
 		Tests.push_back(glm::vec3(glm::vec4(1, 2, 3, 4)));
 
-		for(std::size_t i = 0; i < Tests.size(); ++i)
+		for (std::size_t i = 0; i < Tests.size(); ++i)
 			Error += Tests[i] == glm::vec3(1, 2, 3) ? 0 : 1;
 	}
-		
+
 	return Error;
 }
 
 int test_vec3_operators()
 {
 	int Error = 0;
-	
+
 	{
 		glm::vec3 A(1.0f);
 		glm::vec3 B(1.0f);
@@ -255,7 +255,7 @@ int test_vec3_operators()
 int test_vec3_size()
 {
 	int Error = 0;
-	
+
 	Error += sizeof(glm::vec3) == sizeof(glm::lowp_vec3) ? 0 : 1;
 	Error += sizeof(glm::vec3) == sizeof(glm::mediump_vec3) ? 0 : 1;
 	Error += sizeof(glm::vec3) == sizeof(glm::highp_vec3) ? 0 : 1;
@@ -277,58 +277,91 @@ int test_vec3_swizzle3_2()
 	glm::vec3 v(1, 2, 3);
 	glm::vec2 u;
 
-#	if(GLM_LANG & GLM_LANG_CXXMS_FLAG)
-		// Can not assign a vec3 swizzle to a vec2
-		//u = v.xyz;    //Illegal
-		//u = v.rgb;    //Illegal
-		//u = v.stp;    //Illegal
+#if (GLM_LANG & GLM_LANG_CXXMS_FLAG)
+	// Can not assign a vec3 swizzle to a vec2
+	// u = v.xyz;    //Illegal
+	// u = v.rgb;    //Illegal
+	// u = v.stp;    //Illegal
 
-		u = v.xx;       Error += (u.x == 1.0f && u.y == 1.0f) ? 0 : 1;
-		u = v.xy;       Error += (u.x == 1.0f && u.y == 2.0f) ? 0 : 1;
-		u = v.xz;       Error += (u.x == 1.0f && u.y == 3.0f) ? 0 : 1;
-		u = v.yx;       Error += (u.x == 2.0f && u.y == 1.0f) ? 0 : 1;
-		u = v.yy;       Error += (u.x == 2.0f && u.y == 2.0f) ? 0 : 1;
-		u = v.yz;       Error += (u.x == 2.0f && u.y == 3.0f) ? 0 : 1;
-		u = v.zx;       Error += (u.x == 3.0f && u.y == 1.0f) ? 0 : 1;
-		u = v.zy;       Error += (u.x == 3.0f && u.y == 2.0f) ? 0 : 1;
-		u = v.zz;       Error += (u.x == 3.0f && u.y == 3.0f) ? 0 : 1;
+	u = v.xx;
+	Error += (u.x == 1.0f && u.y == 1.0f) ? 0 : 1;
+	u = v.xy;
+	Error += (u.x == 1.0f && u.y == 2.0f) ? 0 : 1;
+	u = v.xz;
+	Error += (u.x == 1.0f && u.y == 3.0f) ? 0 : 1;
+	u = v.yx;
+	Error += (u.x == 2.0f && u.y == 1.0f) ? 0 : 1;
+	u = v.yy;
+	Error += (u.x == 2.0f && u.y == 2.0f) ? 0 : 1;
+	u = v.yz;
+	Error += (u.x == 2.0f && u.y == 3.0f) ? 0 : 1;
+	u = v.zx;
+	Error += (u.x == 3.0f && u.y == 1.0f) ? 0 : 1;
+	u = v.zy;
+	Error += (u.x == 3.0f && u.y == 2.0f) ? 0 : 1;
+	u = v.zz;
+	Error += (u.x == 3.0f && u.y == 3.0f) ? 0 : 1;
 
-		u = v.rr;       Error += (u.r == 1.0f && u.g == 1.0f) ? 0 : 1;
-		u = v.rg;       Error += (u.r == 1.0f && u.g == 2.0f) ? 0 : 1;
-		u = v.rb;       Error += (u.r == 1.0f && u.g == 3.0f) ? 0 : 1;
-		u = v.gr;       Error += (u.r == 2.0f && u.g == 1.0f) ? 0 : 1;
-		u = v.gg;       Error += (u.r == 2.0f && u.g == 2.0f) ? 0 : 1;
-		u = v.gb;       Error += (u.r == 2.0f && u.g == 3.0f) ? 0 : 1;
-		u = v.br;       Error += (u.r == 3.0f && u.g == 1.0f) ? 0 : 1;
-		u = v.bg;       Error += (u.r == 3.0f && u.g == 2.0f) ? 0 : 1;
-		u = v.bb;       Error += (u.r == 3.0f && u.g == 3.0f) ? 0 : 1;
+	u = v.rr;
+	Error += (u.r == 1.0f && u.g == 1.0f) ? 0 : 1;
+	u = v.rg;
+	Error += (u.r == 1.0f && u.g == 2.0f) ? 0 : 1;
+	u = v.rb;
+	Error += (u.r == 1.0f && u.g == 3.0f) ? 0 : 1;
+	u = v.gr;
+	Error += (u.r == 2.0f && u.g == 1.0f) ? 0 : 1;
+	u = v.gg;
+	Error += (u.r == 2.0f && u.g == 2.0f) ? 0 : 1;
+	u = v.gb;
+	Error += (u.r == 2.0f && u.g == 3.0f) ? 0 : 1;
+	u = v.br;
+	Error += (u.r == 3.0f && u.g == 1.0f) ? 0 : 1;
+	u = v.bg;
+	Error += (u.r == 3.0f && u.g == 2.0f) ? 0 : 1;
+	u = v.bb;
+	Error += (u.r == 3.0f && u.g == 3.0f) ? 0 : 1;
 
-		u = v.ss;       Error += (u.s == 1.0f && u.t == 1.0f) ? 0 : 1;
-		u = v.st;       Error += (u.s == 1.0f && u.t == 2.0f) ? 0 : 1;
-		u = v.sp;       Error += (u.s == 1.0f && u.t == 3.0f) ? 0 : 1;
-		u = v.ts;       Error += (u.s == 2.0f && u.t == 1.0f) ? 0 : 1;
-		u = v.tt;       Error += (u.s == 2.0f && u.t == 2.0f) ? 0 : 1;
-		u = v.tp;       Error += (u.s == 2.0f && u.t == 3.0f) ? 0 : 1;
-		u = v.ps;       Error += (u.s == 3.0f && u.t == 1.0f) ? 0 : 1;
-		u = v.pt;       Error += (u.s == 3.0f && u.t == 2.0f) ? 0 : 1;
-		u = v.pp;       Error += (u.s == 3.0f && u.t == 3.0f) ? 0 : 1;
-		// Mixed member aliases are not valid
-		//u = v.rx;     //Illegal
-		//u = v.sy;     //Illegal
+	u = v.ss;
+	Error += (u.s == 1.0f && u.t == 1.0f) ? 0 : 1;
+	u = v.st;
+	Error += (u.s == 1.0f && u.t == 2.0f) ? 0 : 1;
+	u = v.sp;
+	Error += (u.s == 1.0f && u.t == 3.0f) ? 0 : 1;
+	u = v.ts;
+	Error += (u.s == 2.0f && u.t == 1.0f) ? 0 : 1;
+	u = v.tt;
+	Error += (u.s == 2.0f && u.t == 2.0f) ? 0 : 1;
+	u = v.tp;
+	Error += (u.s == 2.0f && u.t == 3.0f) ? 0 : 1;
+	u = v.ps;
+	Error += (u.s == 3.0f && u.t == 1.0f) ? 0 : 1;
+	u = v.pt;
+	Error += (u.s == 3.0f && u.t == 2.0f) ? 0 : 1;
+	u = v.pp;
+	Error += (u.s == 3.0f && u.t == 3.0f) ? 0 : 1;
+	// Mixed member aliases are not valid
+	// u = v.rx;     //Illegal
+	// u = v.sy;     //Illegal
 
-		u = glm::vec2(1, 2);
-		v = glm::vec3(1, 2, 3);
-		//v.xx = u;     //Illegal
-		v.xy = u;       Error += (v.x == 1.0f && v.y == 2.0f && v.z == 3.0f) ? 0 : 1;
-		v.xz = u;       Error += (v.x == 1.0f && v.y == 2.0f && v.z == 2.0f) ? 0 : 1;
-		v.yx = u;       Error += (v.x == 2.0f && v.y == 1.0f && v.z == 2.0f) ? 0 : 1;
-		//v.yy = u;     //Illegal
-		v.yz = u;       Error += (v.x == 2.0f && v.y == 1.0f && v.z == 2.0f) ? 0 : 1;
-		v.zx = u;       Error += (v.x == 2.0f && v.y == 1.0f && v.z == 1.0f) ? 0 : 1;
-		v.zy = u;       Error += (v.x == 2.0f && v.y == 2.0f && v.z == 1.0f) ? 0 : 1;
-		//v.zz = u;     //Illegal
+	u = glm::vec2(1, 2);
+	v = glm::vec3(1, 2, 3);
+	// v.xx = u;     //Illegal
+	v.xy = u;
+	Error += (v.x == 1.0f && v.y == 2.0f && v.z == 3.0f) ? 0 : 1;
+	v.xz = u;
+	Error += (v.x == 1.0f && v.y == 2.0f && v.z == 2.0f) ? 0 : 1;
+	v.yx = u;
+	Error += (v.x == 2.0f && v.y == 1.0f && v.z == 2.0f) ? 0 : 1;
+	// v.yy = u;     //Illegal
+	v.yz = u;
+	Error += (v.x == 2.0f && v.y == 1.0f && v.z == 2.0f) ? 0 : 1;
+	v.zx = u;
+	Error += (v.x == 2.0f && v.y == 1.0f && v.z == 1.0f) ? 0 : 1;
+	v.zy = u;
+	Error += (v.x == 2.0f && v.y == 2.0f && v.z == 1.0f) ? 0 : 1;
+	// v.zz = u;     //Illegal
 
-#	endif//GLM_LANG
+#endif  // GLM_LANG
 
 	return Error;
 }
@@ -340,21 +373,31 @@ int test_vec3_swizzle3_3()
 	glm::vec3 v(1, 2, 3);
 	glm::vec3 u;
 
-#	if(GLM_LANG & GLM_LANG_CXXMS_FLAG)
-		u = v;          Error += (u.x == 1.0f && u.y == 2.0f && u.z == 3.0f) ? 0 : 1;
+#if (GLM_LANG & GLM_LANG_CXXMS_FLAG)
+	u = v;
+	Error += (u.x == 1.0f && u.y == 2.0f && u.z == 3.0f) ? 0 : 1;
 
-		u = v.xyz;      Error += (u.x == 1.0f && u.y == 2.0f && u.z == 3.0f) ? 0 : 1;
-		u = v.zyx;      Error += (u.x == 3.0f && u.y == 2.0f && u.z == 1.0f) ? 0 : 1;
-		u.zyx = v;      Error += (u.x == 3.0f && u.y == 2.0f && u.z == 1.0f) ? 0 : 1;
+	u = v.xyz;
+	Error += (u.x == 1.0f && u.y == 2.0f && u.z == 3.0f) ? 0 : 1;
+	u = v.zyx;
+	Error += (u.x == 3.0f && u.y == 2.0f && u.z == 1.0f) ? 0 : 1;
+	u.zyx = v;
+	Error += (u.x == 3.0f && u.y == 2.0f && u.z == 1.0f) ? 0 : 1;
 
-		u = v.rgb;      Error += (u.x == 1.0f && u.y == 2.0f && u.z == 3.0f) ? 0 : 1;
-		u = v.bgr;      Error += (u.x == 3.0f && u.y == 2.0f && u.z == 1.0f) ? 0 : 1;
-		u.bgr = v;      Error += (u.x == 3.0f && u.y == 2.0f && u.z == 1.0f) ? 0 : 1;
+	u = v.rgb;
+	Error += (u.x == 1.0f && u.y == 2.0f && u.z == 3.0f) ? 0 : 1;
+	u = v.bgr;
+	Error += (u.x == 3.0f && u.y == 2.0f && u.z == 1.0f) ? 0 : 1;
+	u.bgr = v;
+	Error += (u.x == 3.0f && u.y == 2.0f && u.z == 1.0f) ? 0 : 1;
 
-		u = v.stp;      Error += (u.x == 1.0f && u.y == 2.0f && u.z == 3.0f) ? 0 : 1;
-		u = v.pts;      Error += (u.x == 3.0f && u.y == 2.0f && u.z == 1.0f) ? 0 : 1;
-		u.pts = v;      Error += (u.x == 3.0f && u.y == 2.0f && u.z == 1.0f) ? 0 : 1;
-#	endif//GLM_LANG
+	u = v.stp;
+	Error += (u.x == 1.0f && u.y == 2.0f && u.z == 3.0f) ? 0 : 1;
+	u = v.pts;
+	Error += (u.x == 3.0f && u.y == 2.0f && u.z == 1.0f) ? 0 : 1;
+	u.pts = v;
+	Error += (u.x == 3.0f && u.y == 2.0f && u.z == 1.0f) ? 0 : 1;
+#endif  // GLM_LANG
 
 	return Error;
 }
@@ -368,33 +411,49 @@ int test_vec3_swizzle_operators()
 	u = glm::vec3(1, 2, 3);
 	v = glm::vec3(10, 20, 30);
 
-#	if(GLM_LANG & GLM_LANG_CXXMS_FLAG)
-		// Swizzle, swizzle binary operators
-		q = u.xyz + v.xyz;          Error += (q == (u + v)) ? 0 : 1;
-		q = (u.zyx + v.zyx).zyx;    Error += (q == (u + v)) ? 0 : 1;
-		q = (u.xyz - v.xyz);        Error += (q == (u - v)) ? 0 : 1;
-		q = (u.xyz * v.xyz);        Error += (q == (u * v)) ? 0 : 1;
-		q = (u.xxx * v.xxx);        Error += (q == glm::vec3(u.x * v.x)) ? 0 : 1;
-		q = (u.xyz / v.xyz);        Error += (q == (u / v)) ? 0 : 1;
+#if (GLM_LANG & GLM_LANG_CXXMS_FLAG)
+	// Swizzle, swizzle binary operators
+	q = u.xyz + v.xyz;
+	Error += (q == (u + v)) ? 0 : 1;
+	q = (u.zyx + v.zyx).zyx;
+	Error += (q == (u + v)) ? 0 : 1;
+	q = (u.xyz - v.xyz);
+	Error += (q == (u - v)) ? 0 : 1;
+	q = (u.xyz * v.xyz);
+	Error += (q == (u * v)) ? 0 : 1;
+	q = (u.xxx * v.xxx);
+	Error += (q == glm::vec3(u.x * v.x)) ? 0 : 1;
+	q = (u.xyz / v.xyz);
+	Error += (q == (u / v)) ? 0 : 1;
 
-		// vec, swizzle binary operators
-		q = u + v.xyz;              Error += (q == (u + v)) ? 0 : 1;
-		q = (u - v.xyz);            Error += (q == (u - v)) ? 0 : 1;
-		q = (u * v.xyz);            Error += (q == (u * v)) ? 0 : 1;
-		q = (u * v.xxx);            Error += (q == v.x * u) ? 0 : 1;
-		q = (u / v.xyz);            Error += (q == (u / v)) ? 0 : 1;
+	// vec, swizzle binary operators
+	q = u + v.xyz;
+	Error += (q == (u + v)) ? 0 : 1;
+	q = (u - v.xyz);
+	Error += (q == (u - v)) ? 0 : 1;
+	q = (u * v.xyz);
+	Error += (q == (u * v)) ? 0 : 1;
+	q = (u * v.xxx);
+	Error += (q == v.x * u) ? 0 : 1;
+	q = (u / v.xyz);
+	Error += (q == (u / v)) ? 0 : 1;
 
-		// swizzle,vec binary operators
-		q = u.xyz + v;              Error += (q == (u + v)) ? 0 : 1;
-		q = (u.xyz - v);            Error += (q == (u - v)) ? 0 : 1;
-		q = (u.xyz * v);            Error += (q == (u * v)) ? 0 : 1;
-		q = (u.xxx * v);            Error += (q == u.x * v) ? 0 : 1;
-		q = (u.xyz / v);            Error += (q == (u / v)) ? 0 : 1;
-#	endif//GLM_LANG
+	// swizzle,vec binary operators
+	q = u.xyz + v;
+	Error += (q == (u + v)) ? 0 : 1;
+	q = (u.xyz - v);
+	Error += (q == (u - v)) ? 0 : 1;
+	q = (u.xyz * v);
+	Error += (q == (u * v)) ? 0 : 1;
+	q = (u.xxx * v);
+	Error += (q == u.x * v) ? 0 : 1;
+	q = (u.xyz / v);
+	Error += (q == (u / v)) ? 0 : 1;
+#endif  // GLM_LANG
 
 	// Compile errors
-	//q = (u.yz * v.xyz);
-	//q = (u * v.xy);
+	// q = (u.yz * v.xyz);
+	// q = (u * v.xy);
 
 	return Error;
 }
@@ -404,7 +463,7 @@ int test_vec3_swizzle_functions()
 	int Error = 0;
 
 	// NOTE: template functions cannot pick up the implicit conversion from
-	// a swizzle to the unswizzled type, therefore the operator() must be 
+	// a swizzle to the unswizzled type, therefore the operator() must be
 	// used.  E.g.:
 	//
 	// glm::dot(u.xy, v.xy);        <--- Compile error
@@ -415,27 +474,38 @@ int test_vec3_swizzle_functions()
 	// vec2
 	glm::vec2 a(1, 2);
 	glm::vec2 b(10, 20);
-	r = glm::dot(a, b);                 Error += (int(r) == 50) ? 0 : 1;
-	r = glm::dot(glm::vec2(a.xy()), glm::vec2(b.xy()));       Error += (int(r) == 50) ? 0 : 1;
-	r = glm::dot(glm::vec2(a.xy()), glm::vec2(b.yy()));       Error += (int(r) == 60) ? 0 : 1;
+	r = glm::dot(a, b);
+	Error += (int(r) == 50) ? 0 : 1;
+	r = glm::dot(glm::vec2(a.xy()), glm::vec2(b.xy()));
+	Error += (int(r) == 50) ? 0 : 1;
+	r = glm::dot(glm::vec2(a.xy()), glm::vec2(b.yy()));
+	Error += (int(r) == 60) ? 0 : 1;
 
 	// vec3
 	glm::vec3 q, u, v;
 	u = glm::vec3(1, 2, 3);
 	v = glm::vec3(10, 20, 30);
-	r = glm::dot(u, v);                 Error += (int(r) == 140) ? 0 : 1;
-	r = glm::dot(u.xyz(), v.zyz());     Error += (int(r) == 160) ? 0 : 1;
-	r = glm::dot(u, v.zyx());           Error += (int(r) == 100) ? 0 : 1;
-	r = glm::dot(u.xyz(), v);           Error += (int(r) == 140) ? 0 : 1;
-	r = glm::dot(u.xy(), v.xy());       Error += (int(r) == 50) ? 0 : 1;
+	r = glm::dot(u, v);
+	Error += (int(r) == 140) ? 0 : 1;
+	r = glm::dot(u.xyz(), v.zyz());
+	Error += (int(r) == 160) ? 0 : 1;
+	r = glm::dot(u, v.zyx());
+	Error += (int(r) == 100) ? 0 : 1;
+	r = glm::dot(u.xyz(), v);
+	Error += (int(r) == 140) ? 0 : 1;
+	r = glm::dot(u.xy(), v.xy());
+	Error += (int(r) == 50) ? 0 : 1;
 
 	// vec4
 	glm::vec4 s, t;
 	s = glm::vec4(1, 2, 3, 4);
 	t = glm::vec4(10, 20, 30, 40);
-	r = glm::dot(s, t);                 Error += (int(r) == 300) ? 0 : 1;
-	r = glm::dot(s.xyzw(), t.xyzw());   Error += (int(r) == 300) ? 0 : 1;
-	r = glm::dot(s.xyz(), t.xyz());     Error += (int(r) == 140) ? 0 : 1;
+	r = glm::dot(s, t);
+	Error += (int(r) == 300) ? 0 : 1;
+	r = glm::dot(s.xyzw(), t.xyzw());
+	Error += (int(r) == 300) ? 0 : 1;
+	r = glm::dot(s.xyz(), t.xyz());
+	Error += (int(r) == 140) ? 0 : 1;
 
 	return Error;
 }
@@ -446,7 +516,7 @@ int test_vec3_swizzle_partial()
 
 	glm::vec3 A(1, 2, 3);
 
-#	if(GLM_LANG & GLM_LANG_CXXMS_FLAG)
+#if (GLM_LANG & GLM_LANG_CXXMS_FLAG)
 	{
 		glm::vec3 B(A.xy, 3.0f);
 		Error += A == B ? 0 : 1;
@@ -461,7 +531,7 @@ int test_vec3_swizzle_partial()
 		glm::vec3 B(A.xyz);
 		Error += A == B ? 0 : 1;
 	}
-#	endif//GLM_LANG
+#endif  // GLM_LANG
 
 	return Error;
 }
@@ -500,10 +570,10 @@ int main()
 	glm::vec3 v;
 	assert(v.length() == 3);
 
-#	ifdef GLM_META_PROG_HELPERS
-		assert(glm::vec3::components == glm::vec3().length());
-		assert(glm::vec3::components == 3);
-#	endif
+#ifdef GLM_META_PROG_HELPERS
+	assert(glm::vec3::components == glm::vec3().length());
+	assert(glm::vec3::components == 3);
+#endif
 
 	Error += test_vec3_ctor();
 	Error += test_vec3_operators();

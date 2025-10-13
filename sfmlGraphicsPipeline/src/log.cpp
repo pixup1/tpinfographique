@@ -8,5 +8,4 @@ const std::string severity_names[6] = {
     "[ info  ]",
     "[warning]",
     "[ error ]",
-    "[ fatal ]"
-};
+    "[ fatal ]"};

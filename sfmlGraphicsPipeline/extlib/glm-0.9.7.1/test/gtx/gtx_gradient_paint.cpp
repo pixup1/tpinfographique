@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -34,10 +34,10 @@
 int test_radialGradient()
 {
 	int Error = 0;
-	
+
 	float Gradient = glm::radialGradient(glm::vec2(0), 1.0f, glm::vec2(1), glm::vec2(0.5));
 	Error += Gradient != 0.0f ? 0 : 1;
-	
+
 	return Error;
 }
 
@@ -55,10 +55,8 @@ int main()
 {
 	int Error = 0;
 
-    Error += test_radialGradient();
-    Error += test_linearGradient();
-    
+	Error += test_radialGradient();
+	Error += test_linearGradient();
+
 	return Error;
 }
-
-

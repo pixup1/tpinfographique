@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -29,25 +29,25 @@
 /// @author Christophe Riccio
 ///////////////////////////////////////////////////////////////////////////////////
 
+#include <cstdio>
+#include <ctime>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/random.hpp>
-#include <glm/gtx/simd_vec4.hpp>
 #include <glm/gtx/simd_mat4.hpp>
-#include <cstdio>
-#include <ctime>
+#include <glm/gtx/simd_vec4.hpp>
 #include <vector>
 
-#if(GLM_ARCH != GLM_ARCH_PURE)
+#if (GLM_ARCH != GLM_ARCH_PURE)
 
-std::vector<float> test_detA(std::vector<glm::mat4> const & Data)
+std::vector<float> test_detA(std::vector<glm::mat4> const& Data)
 {
 	std::vector<float> Test(Data.size());
 
 	std::clock_t TimeStart = clock();
 
-	for(std::size_t i = 0; i < Test.size() - 1; ++i)
+	for (std::size_t i = 0; i < Test.size() - 1; ++i)
 		Test[i] = glm::determinant(Data[i]);
 
 	std::clock_t TimeEnd = clock();
@@ -56,18 +56,18 @@ std::vector<float> test_detA(std::vector<glm::mat4> const & Data)
 	return Test;
 }
 
-std::vector<float> test_detB(std::vector<glm::mat4> const & Data)
+std::vector<float> test_detB(std::vector<glm::mat4> const& Data)
 {
 	std::vector<float> Test(Data.size());
 
 	std::clock_t TimeStart = clock();
 
-	for(std::size_t i = 0; i < Test.size() - 1; ++i)
+	for (std::size_t i = 0; i < Test.size() - 1; ++i)
 	{
 		_mm_prefetch((char*)&Data[i + 1], _MM_HINT_T0);
 		glm::simdMat4 m(Data[i]);
-		glm::simdVec4 d(glm::detail::sse_slow_det_ps((__m128 const * const)&m)); 
-		glm::vec4 v;//(d);
+		glm::simdVec4 d(glm::detail::sse_slow_det_ps((__m128 const* const)&m));
+		glm::vec4 v;  //(d);
 		Test[i] = v.x;
 	}
 
@@ -77,18 +77,18 @@ std::vector<float> test_detB(std::vector<glm::mat4> const & Data)
 	return Test;
 }
 
-std::vector<float> test_detC(std::vector<glm::mat4> const & Data)
+std::vector<float> test_detC(std::vector<glm::mat4> const& Data)
 {
 	std::vector<float> Test(Data.size());
 
 	std::clock_t TimeStart = clock();
 
-	for(std::size_t i = 0; i < Test.size() - 1; ++i)
+	for (std::size_t i = 0; i < Test.size() - 1; ++i)
 	{
 		_mm_prefetch((char*)&Data[i + 1], _MM_HINT_T0);
 		glm::simdMat4 m(Data[i]);
-		glm::simdVec4 d(glm::detail::sse_det_ps((__m128 const * const)&m));
-		glm::vec4 v;//(d);
+		glm::simdVec4 d(glm::detail::sse_det_ps((__m128 const* const)&m));
+		glm::vec4 v;  //(d);
 		Test[i] = v.x;
 	}
 
@@ -98,18 +98,18 @@ std::vector<float> test_detC(std::vector<glm::mat4> const & Data)
 	return Test;
 }
 
-std::vector<float> test_detD(std::vector<glm::mat4> const & Data)
+std::vector<float> test_detD(std::vector<glm::mat4> const& Data)
 {
 	std::vector<float> Test(Data.size());
 
 	std::clock_t TimeStart = clock();
 
-	for(std::size_t i = 0; i < Test.size() - 1; ++i)
+	for (std::size_t i = 0; i < Test.size() - 1; ++i)
 	{
 		_mm_prefetch((char*)&Data[i + 1], _MM_HINT_T0);
 		glm::simdMat4 m(Data[i]);
-		glm::simdVec4 d(glm::detail::sse_detd_ps((__m128 const * const)&m));
-		glm::vec4 v;//(d); 
+		glm::simdVec4 d(glm::detail::sse_detd_ps((__m128 const* const)&m));
+		glm::vec4 v;  //(d);
 		Test[i] = v.x;
 	}
 
@@ -119,14 +119,14 @@ std::vector<float> test_detD(std::vector<glm::mat4> const & Data)
 	return Test;
 }
 
-void test_invA(std::vector<glm::mat4> const & Data, std::vector<glm::mat4> & Out)
+void test_invA(std::vector<glm::mat4> const& Data, std::vector<glm::mat4>& Out)
 {
-	//std::vector<float> Test(Data.size());
+	// std::vector<float> Test(Data.size());
 	Out.resize(Data.size());
 
 	std::clock_t TimeStart = clock();
 
-	for(std::size_t i = 0; i < Out.size() - 1; ++i)
+	for (std::size_t i = 0; i < Out.size() - 1; ++i)
 	{
 		Out[i] = glm::inverse(Data[i]);
 	}
@@ -135,19 +135,19 @@ void test_invA(std::vector<glm::mat4> const & Data, std::vector<glm::mat4> & Out
 	printf("Inv A: %ld\n", TimeEnd - TimeStart);
 }
 
-void test_invC(std::vector<glm::mat4> const & Data, std::vector<glm::mat4> & Out)
+void test_invC(std::vector<glm::mat4> const& Data, std::vector<glm::mat4>& Out)
 {
-	//std::vector<float> Test(Data.size());
+	// std::vector<float> Test(Data.size());
 	Out.resize(Data.size());
 
 	std::clock_t TimeStart = clock();
 
-	for(std::size_t i = 0; i < Out.size() - 1; ++i)
+	for (std::size_t i = 0; i < Out.size() - 1; ++i)
 	{
 		_mm_prefetch((char*)&Data[i + 1], _MM_HINT_T0);
 		glm::simdMat4 m(Data[i]);
 		glm::simdMat4 o;
-		glm::detail::sse_inverse_fast_ps((__m128 const * const)&m, (__m128 *)&o);
+		glm::detail::sse_inverse_fast_ps((__m128 const* const)&m, (__m128*)&o);
 		Out[i] = *(glm::mat4*)&o;
 	}
 
@@ -155,19 +155,19 @@ void test_invC(std::vector<glm::mat4> const & Data, std::vector<glm::mat4> & Out
 	printf("Inv C: %ld\n", TimeEnd - TimeStart);
 }
 
-void test_invD(std::vector<glm::mat4> const & Data, std::vector<glm::mat4> & Out)
+void test_invD(std::vector<glm::mat4> const& Data, std::vector<glm::mat4>& Out)
 {
-	//std::vector<float> Test(Data.size());
+	// std::vector<float> Test(Data.size());
 	Out.resize(Data.size());
 
 	std::clock_t TimeStart = clock();
 
-	for(std::size_t i = 0; i < Out.size() - 1; ++i)
+	for (std::size_t i = 0; i < Out.size() - 1; ++i)
 	{
 		_mm_prefetch((char*)&Data[i + 1], _MM_HINT_T0);
 		glm::simdMat4 m(Data[i]);
 		glm::simdMat4 o;
-		glm::detail::sse_inverse_ps((__m128 const * const)&m, (__m128 *)&o);
+		glm::detail::sse_inverse_ps((__m128 const* const)&m, (__m128*)&o);
 		Out[i] = *(glm::mat4*)&o;
 	}
 
@@ -175,14 +175,14 @@ void test_invD(std::vector<glm::mat4> const & Data, std::vector<glm::mat4> & Out
 	printf("Inv D: %ld\n", TimeEnd - TimeStart);
 }
 
-void test_mulA(std::vector<glm::mat4> const & Data, std::vector<glm::mat4> & Out)
+void test_mulA(std::vector<glm::mat4> const& Data, std::vector<glm::mat4>& Out)
 {
-	//std::vector<float> Test(Data.size());
+	// std::vector<float> Test(Data.size());
 	Out.resize(Data.size());
 
 	std::clock_t TimeStart = clock();
 
-	for(std::size_t i = 0; i < Out.size() - 1; ++i)
+	for (std::size_t i = 0; i < Out.size() - 1; ++i)
 	{
 		Out[i] = Data[i] * Data[i];
 	}
@@ -191,19 +191,19 @@ void test_mulA(std::vector<glm::mat4> const & Data, std::vector<glm::mat4> & Out
 	printf("Mul A: %ld\n", TimeEnd - TimeStart);
 }
 
-void test_mulD(std::vector<glm::mat4> const & Data, std::vector<glm::mat4> & Out)
+void test_mulD(std::vector<glm::mat4> const& Data, std::vector<glm::mat4>& Out)
 {
-	//std::vector<float> Test(Data.size());
+	// std::vector<float> Test(Data.size());
 	Out.resize(Data.size());
 
 	std::clock_t TimeStart = clock();
 
-	for(std::size_t i = 0; i < Out.size() - 1; ++i)
+	for (std::size_t i = 0; i < Out.size() - 1; ++i)
 	{
 		_mm_prefetch((char*)&Data[i + 1], _MM_HINT_T0);
 		glm::simdMat4 m(Data[i]);
 		glm::simdMat4 o;
-		glm::detail::sse_mul_ps((__m128 const * const)&m, (__m128 const * const)&m, (__m128*)&o);
+		glm::detail::sse_mul_ps((__m128 const* const)&m, (__m128 const* const)&m, (__m128*)&o);
 		Out[i] = *(glm::mat4*)&o;
 	}
 
@@ -222,7 +222,7 @@ int test_compute_gtx()
 
 	std::clock_t TimeStart = clock();
 
-	for(std::size_t k = 0; k < Output.size(); ++k)
+	for (std::size_t k = 0; k < Output.size(); ++k)
 	{
 		float i = float(k) / 1000.f + 0.001f;
 		glm::vec3 A = glm::normalize(glm::vec3(i));
@@ -257,21 +257,21 @@ int main()
 	int Error = 0;
 
 #ifdef GLM_META_PROG_HELPERS
-		assert(glm::simdMat4::rows == glm::simdMat4::row_type::components);
-		assert(glm::simdMat4::cols == glm::simdMat4::col_type::components);
+	assert(glm::simdMat4::rows == glm::simdMat4::row_type::components);
+	assert(glm::simdMat4::cols == glm::simdMat4::col_type::components);
 
-		assert(glm::simdMat4::components == glm::simdMat4::pure_type::components);
-		assert(glm::simdMat4::rows == glm::simdMat4::pure_row_type::components);
-		assert(glm::simdMat4::cols == glm::simdMat4::pure_col_type::components);
+	assert(glm::simdMat4::components == glm::simdMat4::pure_type::components);
+	assert(glm::simdMat4::rows == glm::simdMat4::pure_row_type::components);
+	assert(glm::simdMat4::cols == glm::simdMat4::pure_col_type::components);
 #endif
 
 	std::vector<glm::mat4> Data(64 * 64 * 1);
-	for(std::size_t i = 0; i < Data.size(); ++i)
+	for (std::size_t i = 0; i < Data.size(); ++i)
 		Data[i] = glm::mat4(
-			glm::vec4(glm::linearRand(glm::vec4(-2.0f), glm::vec4(2.0f))),
-			glm::vec4(glm::linearRand(glm::vec4(-2.0f), glm::vec4(2.0f))),
-			glm::vec4(glm::linearRand(glm::vec4(-2.0f), glm::vec4(2.0f))),
-			glm::vec4(glm::linearRand(glm::vec4(-2.0f), glm::vec4(2.0f))));
+		    glm::vec4(glm::linearRand(glm::vec4(-2.0f), glm::vec4(2.0f))),
+		    glm::vec4(glm::linearRand(glm::vec4(-2.0f), glm::vec4(2.0f))),
+		    glm::vec4(glm::linearRand(glm::vec4(-2.0f), glm::vec4(2.0f))),
+		    glm::vec4(glm::linearRand(glm::vec4(-2.0f), glm::vec4(2.0f))));
 
 	{
 		std::vector<glm::mat4> TestInvA;
@@ -301,8 +301,8 @@ int main()
 		std::vector<float> TestDetD = test_detD(Data);
 		std::vector<float> TestDetC = test_detC(Data);
 
-		for(std::size_t i = 0; i < TestDetA.size(); ++i)
-			if(TestDetA[i] != TestDetB[i] && TestDetC[i] != TestDetB[i] && TestDetC[i] != TestDetD[i])
+		for (std::size_t i = 0; i < TestDetA.size(); ++i)
+			if (TestDetA[i] != TestDetB[i] && TestDetC[i] != TestDetB[i] && TestDetC[i] != TestDetD[i])
 				return 1;
 	}
 
@@ -313,10 +313,10 @@ int main()
 
 	Error += test_compute_glm();
 	Error += test_compute_gtx();
-	
+
 	float Det = glm::determinant(glm::simdMat4(1.0));
 	Error += Det == 1.0f ? 0 : 1;
-	
+
 	glm::simdMat4 D = glm::matrixCompMult(glm::simdMat4(1.0), glm::simdMat4(1.0));
 
 	return Error;
@@ -331,4 +331,4 @@ int main()
 	return Error;
 }
 
-#endif//(GLM_ARCH != GLM_ARCH_PURE)
+#endif  //(GLM_ARCH != GLM_ARCH_PURE)

@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -29,10 +29,10 @@
 /// @author Christophe Riccio
 ///////////////////////////////////////////////////////////////////////////////////
 
-#include <glm/gtc/random.hpp>
 #include <glm/gtc/epsilon.hpp>
-#if(GLM_LANG & GLM_LANG_CXX0X_FLAG)
-#	include <array>
+#include <glm/gtc/random.hpp>
+#if (GLM_LANG & GLM_LANG_CXX0X_FLAG)
+#include <array>
 #endif
 
 int test_linearRand()
@@ -46,15 +46,15 @@ int test_linearRand()
 		glm::u8vec2 AMin(std::numeric_limits<glm::u8>::max());
 		glm::u8vec2 AMax(std::numeric_limits<glm::u8>::min());
 		{
-			for(std::size_t i = 0; i < 100000; ++i)
+			for (std::size_t i = 0; i < 100000; ++i)
 			{
 				glm::u8vec2 A = glm::linearRand(glm::u8vec2(Min), glm::u8vec2(Max));
 				AMin = glm::min(AMin, A);
 				AMax = glm::max(AMax, A);
 
-				if(!glm::all(glm::lessThanEqual(A, glm::u8vec2(Max))))
+				if (!glm::all(glm::lessThanEqual(A, glm::u8vec2(Max))))
 					++Error;
-				if(!glm::all(glm::greaterThanEqual(A, glm::u8vec2(Min))))
+				if (!glm::all(glm::greaterThanEqual(A, glm::u8vec2(Min))))
 					++Error;
 				assert(!Error);
 			}
@@ -67,15 +67,15 @@ int test_linearRand()
 		glm::u16vec2 BMin(std::numeric_limits<glm::u16>::max());
 		glm::u16vec2 BMax(std::numeric_limits<glm::u16>::min());
 		{
-			for(std::size_t i = 0; i < 100000; ++i)
+			for (std::size_t i = 0; i < 100000; ++i)
 			{
 				glm::u16vec2 B = glm::linearRand(glm::u16vec2(Min), glm::u16vec2(Max));
 				BMin = glm::min(BMin, B);
 				BMax = glm::max(BMax, B);
 
-				if(!glm::all(glm::lessThanEqual(B, glm::u16vec2(Max))))
+				if (!glm::all(glm::lessThanEqual(B, glm::u16vec2(Max))))
 					++Error;
-				if(!glm::all(glm::greaterThanEqual(B, glm::u16vec2(Min))))
+				if (!glm::all(glm::greaterThanEqual(B, glm::u16vec2(Min))))
 					++Error;
 				assert(!Error);
 			}
@@ -88,15 +88,15 @@ int test_linearRand()
 		glm::u32vec2 CMin(std::numeric_limits<glm::u32>::max());
 		glm::u32vec2 CMax(std::numeric_limits<glm::u32>::min());
 		{
-			for(std::size_t i = 0; i < 100000; ++i)
+			for (std::size_t i = 0; i < 100000; ++i)
 			{
 				glm::u32vec2 C = glm::linearRand(glm::u32vec2(Min), glm::u32vec2(Max));
 				CMin = glm::min(CMin, C);
 				CMax = glm::max(CMax, C);
 
-				if(!glm::all(glm::lessThanEqual(C, glm::u32vec2(Max))))
+				if (!glm::all(glm::lessThanEqual(C, glm::u32vec2(Max))))
 					++Error;
-				if(!glm::all(glm::greaterThanEqual(C, glm::u32vec2(Min))))
+				if (!glm::all(glm::greaterThanEqual(C, glm::u32vec2(Min))))
 					++Error;
 				assert(!Error);
 			}
@@ -109,15 +109,15 @@ int test_linearRand()
 		glm::u64vec2 DMin(std::numeric_limits<glm::u64>::max());
 		glm::u64vec2 DMax(std::numeric_limits<glm::u64>::min());
 		{
-			for(std::size_t i = 0; i < 100000; ++i)
+			for (std::size_t i = 0; i < 100000; ++i)
 			{
 				glm::u64vec2 D = glm::linearRand(glm::u64vec2(Min), glm::u64vec2(Max));
 				DMin = glm::min(DMin, D);
 				DMax = glm::max(DMax, D);
 
-				if(!glm::all(glm::lessThanEqual(D, glm::u64vec2(Max))))
+				if (!glm::all(glm::lessThanEqual(D, glm::u64vec2(Max))))
 					++Error;
-				if(!glm::all(glm::greaterThanEqual(D, glm::u64vec2(Min))))
+				if (!glm::all(glm::greaterThanEqual(D, glm::u64vec2(Min))))
 					++Error;
 				assert(!Error);
 			}
@@ -132,15 +132,15 @@ int test_linearRand()
 		glm::i8vec2 AMin(std::numeric_limits<glm::i8>::max());
 		glm::i8vec2 AMax(std::numeric_limits<glm::i8>::min());
 		{
-			for(std::size_t i = 0; i < 100000; ++i)
+			for (std::size_t i = 0; i < 100000; ++i)
 			{
 				glm::i8vec2 A = glm::linearRand(glm::i8vec2(Min), glm::i8vec2(Max));
 				AMin = glm::min(AMin, A);
 				AMax = glm::max(AMax, A);
 
-				if(!glm::all(glm::lessThanEqual(A, glm::i8vec2(Max))))
+				if (!glm::all(glm::lessThanEqual(A, glm::i8vec2(Max))))
 					++Error;
-				if(!glm::all(glm::greaterThanEqual(A, glm::i8vec2(Min))))
+				if (!glm::all(glm::greaterThanEqual(A, glm::i8vec2(Min))))
 					++Error;
 				assert(!Error);
 			}
@@ -153,15 +153,15 @@ int test_linearRand()
 		glm::i16vec2 BMin(std::numeric_limits<glm::i16>::max());
 		glm::i16vec2 BMax(std::numeric_limits<glm::i16>::min());
 		{
-			for(std::size_t i = 0; i < 100000; ++i)
+			for (std::size_t i = 0; i < 100000; ++i)
 			{
 				glm::i16vec2 B = glm::linearRand(glm::i16vec2(Min), glm::i16vec2(Max));
 				BMin = glm::min(BMin, B);
 				BMax = glm::max(BMax, B);
 
-				if(!glm::all(glm::lessThanEqual(B, glm::i16vec2(Max))))
+				if (!glm::all(glm::lessThanEqual(B, glm::i16vec2(Max))))
 					++Error;
-				if(!glm::all(glm::greaterThanEqual(B, glm::i16vec2(Min))))
+				if (!glm::all(glm::greaterThanEqual(B, glm::i16vec2(Min))))
 					++Error;
 				assert(!Error);
 			}
@@ -174,15 +174,15 @@ int test_linearRand()
 		glm::i32vec2 CMin(std::numeric_limits<glm::i32>::max());
 		glm::i32vec2 CMax(std::numeric_limits<glm::i32>::min());
 		{
-			for(std::size_t i = 0; i < 100000; ++i)
+			for (std::size_t i = 0; i < 100000; ++i)
 			{
 				glm::i32vec2 C = glm::linearRand(glm::i32vec2(Min), glm::i32vec2(Max));
 				CMin = glm::min(CMin, C);
 				CMax = glm::max(CMax, C);
 
-				if(!glm::all(glm::lessThanEqual(C, glm::i32vec2(Max))))
+				if (!glm::all(glm::lessThanEqual(C, glm::i32vec2(Max))))
 					++Error;
-				if(!glm::all(glm::greaterThanEqual(C, glm::i32vec2(Min))))
+				if (!glm::all(glm::greaterThanEqual(C, glm::i32vec2(Min))))
 					++Error;
 				assert(!Error);
 			}
@@ -195,15 +195,15 @@ int test_linearRand()
 		glm::i64vec2 DMin(std::numeric_limits<glm::i64>::max());
 		glm::i64vec2 DMax(std::numeric_limits<glm::i64>::min());
 		{
-			for(std::size_t i = 0; i < 100000; ++i)
+			for (std::size_t i = 0; i < 100000; ++i)
 			{
 				glm::i64vec2 D = glm::linearRand(glm::i64vec2(Min), glm::i64vec2(Max));
 				DMin = glm::min(DMin, D);
 				DMax = glm::max(DMax, D);
 
-				if(!glm::all(glm::lessThanEqual(D, glm::i64vec2(Max))))
+				if (!glm::all(glm::lessThanEqual(D, glm::i64vec2(Max))))
 					++Error;
-				if(!glm::all(glm::greaterThanEqual(D, glm::i64vec2(Min))))
+				if (!glm::all(glm::greaterThanEqual(D, glm::i64vec2(Min))))
 					++Error;
 				assert(!Error);
 			}
@@ -214,18 +214,18 @@ int test_linearRand()
 		}
 	}
 
-	for(std::size_t i = 0; i < 100000; ++i)
+	for (std::size_t i = 0; i < 100000; ++i)
 	{
 		glm::f32vec2 const A(glm::linearRand(glm::f32vec2(static_cast<float>(Min)), glm::f32vec2(static_cast<float>(Max))));
-		if(!glm::all(glm::lessThanEqual(A, glm::f32vec2(static_cast<float>(Max)))))
+		if (!glm::all(glm::lessThanEqual(A, glm::f32vec2(static_cast<float>(Max)))))
 			++Error;
-		if(!glm::all(glm::greaterThanEqual(A, glm::f32vec2(static_cast<float>(Min)))))
+		if (!glm::all(glm::greaterThanEqual(A, glm::f32vec2(static_cast<float>(Min)))))
 			++Error;
 
 		glm::f64vec2 const B(glm::linearRand(glm::f64vec2(Min), glm::f64vec2(Max)));
-		if(!glm::all(glm::lessThanEqual(B, glm::f64vec2(Max))))
+		if (!glm::all(glm::lessThanEqual(B, glm::f64vec2(Max))))
 			++Error;
-		if(!glm::all(glm::greaterThanEqual(B, glm::f64vec2(Min))))
+		if (!glm::all(glm::greaterThanEqual(B, glm::f64vec2(Min))))
 			++Error;
 		assert(!Error);
 	}
@@ -233,7 +233,7 @@ int test_linearRand()
 	{
 		float ResultFloat = 0.0f;
 		double ResultDouble = 0.0f;
-		for(std::size_t i = 0; i < 100000; ++i)
+		for (std::size_t i = 0; i < 100000; ++i)
 		{
 			ResultFloat += glm::linearRand(-1.0f, 1.0f);
 			ResultDouble += glm::linearRand(-1.0, 1.0);
@@ -257,7 +257,7 @@ int test_circularRand()
 		double ResultDouble = 0.0f;
 		double Radius = 2.0f;
 
-		for(std::size_t i = 0; i < Max; ++i)
+		for (std::size_t i = 0; i < Max; ++i)
 		{
 			ResultFloat += glm::length(glm::circularRand(1.0f));
 			ResultDouble += glm::length(glm::circularRand(Radius));
@@ -284,7 +284,7 @@ int test_sphericalRand()
 		double ResultDoubleB = 0.0f;
 		double ResultDoubleC = 0.0f;
 
-		for(std::size_t i = 0; i < Max; ++i)
+		for (std::size_t i = 0; i < Max; ++i)
 		{
 			ResultFloatA += glm::length(glm::sphericalRand(1.0f));
 			ResultDoubleA += glm::length(glm::sphericalRand(1.0));
@@ -314,7 +314,7 @@ int test_diskRand()
 		float ResultFloat = 0.0f;
 		double ResultDouble = 0.0f;
 
-		for(std::size_t i = 0; i < 100000; ++i)
+		for (std::size_t i = 0; i < 100000; ++i)
 		{
 			ResultFloat += glm::length(glm::diskRand(2.0f));
 			ResultDouble += glm::length(glm::diskRand(2.0));
@@ -336,7 +336,7 @@ int test_ballRand()
 		float ResultFloat = 0.0f;
 		double ResultDouble = 0.0f;
 
-		for(std::size_t i = 0; i < 100000; ++i)
+		for (std::size_t i = 0; i < 100000; ++i)
 		{
 			ResultFloat += glm::length(glm::ballRand(2.0f));
 			ResultDouble += glm::length(glm::ballRand(2.0));
@@ -353,40 +353,40 @@ int test_ballRand()
 #if(GLM_LANG & GLM_LANG_CXX0X_FLAG)
 int test_grid()
 {
-	int Error = 0;
+    int Error = 0;
 
-	typedef std::array<int, 8> colors;
-	typedef std::array<int, 8 * 8> grid;
+    typedef std::array<int, 8> colors;
+    typedef std::array<int, 8 * 8> grid;
 
-	grid Grid;
-	colors Colors;
+    grid Grid;
+    colors Colors;
 
-	grid GridBest;
-	colors ColorsBest;
+    grid GridBest;
+    colors ColorsBest;
 
-	while(true)
-	{
-		for(std::size_t i = 0; i < Grid.size(); ++i)
-			Grid[i] = int(glm::linearRand(0.0, 8.0 * 8.0 * 8.0 - 1.0) / 64.0);
+    while(true)
+    {
+        for(std::size_t i = 0; i < Grid.size(); ++i)
+            Grid[i] = int(glm::linearRand(0.0, 8.0 * 8.0 * 8.0 - 1.0) / 64.0);
 
-		for(std::size_t i = 0; i < Grid.size(); ++i)
-			++Colors[Grid[i]];
+        for(std::size_t i = 0; i < Grid.size(); ++i)
+            ++Colors[Grid[i]];
 
-		bool Exit = true;
-		for(std::size_t i = 0; i < Colors.size(); ++i)
-		{
-			if(Colors[i] == 8)
-				continue;
+        bool Exit = true;
+        for(std::size_t i = 0; i < Colors.size(); ++i)
+        {
+            if(Colors[i] == 8)
+                continue;
 
-			Exit = false;
-			break;
-		}
+            Exit = false;
+            break;
+        }
 
-		if(Exit == true)
-			break;
-	}
+        if(Exit == true)
+            break;
+    }
 
-	return Error;
+    return Error;
 }
 #endif
 */
@@ -399,10 +399,10 @@ int main()
 	Error += test_sphericalRand();
 	Error += test_diskRand();
 	Error += test_ballRand();
-/*
-#if(GLM_LANG & GLM_LANG_CXX0X_FLAG)
-	Error += test_grid();
-#endif
-*/
+	/*
+	#if(GLM_LANG & GLM_LANG_CXX0X_FLAG)
+	    Error += test_grid();
+	#endif
+	*/
 	return Error;
 }

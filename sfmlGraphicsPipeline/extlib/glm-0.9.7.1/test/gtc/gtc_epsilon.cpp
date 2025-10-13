@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -29,8 +29,8 @@
 /// @author Christophe Riccio
 ///////////////////////////////////////////////////////////////////////////////////
 
-#include <glm/gtc/epsilon.hpp>
 #include <glm/gtc/constants.hpp>
+#include <glm/gtc/epsilon.hpp>
 #include <glm/vector_relational.hpp>
 
 int test_defined()
@@ -42,7 +42,7 @@ int test_defined()
 	glm::epsilonNotEqual(glm::vec2(), glm::vec2(), glm::vec2());
 	glm::epsilonNotEqual(glm::vec3(), glm::vec3(), glm::vec3());
 	glm::epsilonNotEqual(glm::vec4(), glm::vec4(), glm::vec4());
-	
+
 	glm::epsilonEqual(glm::vec2(), glm::vec2(), 0.0f);
 	glm::epsilonEqual(glm::vec3(), glm::vec3(), 0.0f);
 	glm::epsilonEqual(glm::vec4(), glm::vec4(), 0.0f);
@@ -60,7 +60,7 @@ template <typename T>
 int test_equal()
 {
 	int Error(0);
-	
+
 	{
 		T A = glm::epsilon<T>();
 		T B = glm::epsilon<T>();
@@ -104,5 +104,3 @@ int main()
 
 	return Error;
 }
-
-

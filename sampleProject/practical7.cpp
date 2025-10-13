@@ -1,26 +1,24 @@
-#include <Viewer.hpp>
+#include <FrameRenderable.hpp>
 #include <ShaderProgram.hpp>
-
-#include <texturing/TexturedPlaneRenderable.hpp>
+#include <Viewer.hpp>
+#include <iostream>
+#include <lighting/DirectionalLightRenderable.hpp>
+#include <texturing/BillBoardPlaneRenderable.hpp>
+#include <texturing/CubeMapRenderable.hpp>
+#include <texturing/MipMapCubeRenderable.hpp>
+#include <texturing/MultiTexturedCubeRenderable.hpp>
 #include <texturing/TexturedCubeRenderable.hpp>
 #include <texturing/TexturedMeshRenderable.hpp>
-#include <texturing/MultiTexturedCubeRenderable.hpp>
-#include <texturing/MipMapCubeRenderable.hpp>
-#include <texturing/BillBoardPlaneRenderable.hpp>
-#include <lighting/DirectionalLightRenderable.hpp>
+#include <texturing/TexturedPlaneRenderable.hpp>
 #include <texturing/TexturedTriangleRenderable.hpp>
-#include <texturing/CubeMapRenderable.hpp>
-#include <FrameRenderable.hpp>
 
-#include <iostream>
-
-void initialize_scene(Viewer &viewer)
+void initialize_scene(Viewer& viewer)
 {
 	// Position the camera
 
 	// Default shader
 	ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-																  "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
+	                                                              "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
 	viewer.addShaderProgram(flatShader);
 
 	// Add a 3D frame to the viewer
@@ -30,10 +28,10 @@ void initialize_scene(Viewer &viewer)
 	// Textured shader
 	//     ShaderProgramPtr texShader = std::make_shared<ShaderProgram>("../shaders/textureVertex.glsl","../shaders/textureFragment.glsl");
 	ShaderProgramPtr texShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/simpleTextureVertex.glsl",
-																 "../../sfmlGraphicsPipeline/shaders/simpleTextureFragment.glsl");
+	                                                             "../../sfmlGraphicsPipeline/shaders/simpleTextureFragment.glsl");
 	viewer.addShaderProgram(texShader);
 
-	{ // Exercice 1 : Textured bunny
+	{  // Exercice 1 : Textured bunny
 		viewer.getCamera().setViewMatrix(glm::lookAt(glm::vec3(0, 0, 2), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
 		std::string bunny_mesh_path = "./../../sfmlGraphicsPipeline/meshes/bunny.obj";
 		std::string bunny_texture_path = "./../../sfmlGraphicsPipeline/textures/bunny_texture.png";
@@ -41,7 +39,7 @@ void initialize_scene(Viewer &viewer)
 		viewer.addRenderable(bunny);
 	}
 
-	{	// Exercice 2 & 3 : wrapping & filtering options
+	{   // Exercice 2 & 3 : wrapping & filtering options
 		/*
 		viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(0, 0, 8 ), glm::vec3(0, 0, 0), glm::vec3( 0, 1, 0 ) ) );
 		std::string filename = "./../../sfmlGraphicsPipeline/textures/grass_texture.png";
@@ -51,15 +49,15 @@ void initialize_scene(Viewer &viewer)
 		*/
 	}
 
-	{	// Exercice 4 : multi-resolution (mipmapping)
+	{   // Exercice 4 : multi-resolution (mipmapping)
 		/*
 		viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(1, 1, 2 ), glm::vec3(1, 0, 0), glm::vec3( 0, 1, 0 ) ) );
 		std::vector<std::string> mipmaps_filenames = {
-			"./../../sfmlGraphicsPipeline/textures/mipmap1.png",
-			"./../../sfmlGraphicsPipeline/textures/mipmap2.png",
-			"./../../sfmlGraphicsPipeline/textures/mipmap3.png",
-			"./../../sfmlGraphicsPipeline/textures/mipmap4.png",
-			"./../../sfmlGraphicsPipeline/textures/mipmap5.png",
+		    "./../../sfmlGraphicsPipeline/textures/mipmap1.png",
+		    "./../../sfmlGraphicsPipeline/textures/mipmap2.png",
+		    "./../../sfmlGraphicsPipeline/textures/mipmap3.png",
+		    "./../../sfmlGraphicsPipeline/textures/mipmap4.png",
+		    "./../../sfmlGraphicsPipeline/textures/mipmap5.png",
 		};
 		auto mmcube = std::make_shared<MipMapCubeRenderable>(texShader, mipmaps_filenames);
 		viewer.addRenderable(mmcube);
@@ -68,16 +66,16 @@ void initialize_scene(Viewer &viewer)
 		mmcube->setGlobalTransform(getTranslationMatrix(2,0,0));
 		*/
 	}
-	{ // Exercice 5 : multi-texturing
+	{  // Exercice 5 : multi-texturing
 
 		/*
 		viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(1, 1, 2 ), glm::vec3(1, 0, 0), glm::vec3( 0, 1, 0 ) ) );
 		ShaderProgramPtr multiTexShader = std::make_shared<ShaderProgram>(
-			"../../sfmlGraphicsPipeline/shaders/multiTextureVertex.glsl",
-			"../../sfmlGraphicsPipeline/shaders/multiTextureFragment.glsl");
+		    "../../sfmlGraphicsPipeline/shaders/multiTextureVertex.glsl",
+		    "../../sfmlGraphicsPipeline/shaders/multiTextureFragment.glsl");
 		ShaderProgramPtr multiTexNormalShader = std::make_shared<ShaderProgram>(
-			"../../sfmlGraphicsPipeline/shaders/multiTextureVertex.glsl",
-			"../../sfmlGraphicsPipeline/shaders/multiTextureNormalFragment.glsl");
+		    "../../sfmlGraphicsPipeline/shaders/multiTextureVertex.glsl",
+		    "../../sfmlGraphicsPipeline/shaders/multiTextureNormalFragment.glsl");
 		viewer.addShaderProgram( multiTexShader );
 		viewer.addShaderProgram( multiTexNormalShader );
 
@@ -92,11 +90,11 @@ void initialize_scene(Viewer &viewer)
 		mtcube2->setGlobalTransform(getTranslationMatrix(2,0,0));
 		*/
 	}
-	{	// Exercice 6 : cubemap
+	{   // Exercice 6 : cubemap
 		/*
 		viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(1, 1, 1 ), glm::vec3(0, 0, 0), glm::vec3( 0, 1, 0 ) ) );
 		ShaderProgramPtr cubeMapShader = std::make_shared<ShaderProgram>(  "../../sfmlGraphicsPipeline/shaders/cubeMapVertex.glsl",
-																	"../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
+		                                                            "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
 		viewer.addShaderProgram(cubeMapShader);
 
 		std::string cubemap_dir = "../../sfmlGraphicsPipeline/textures/skybox";

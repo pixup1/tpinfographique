@@ -1,20 +1,18 @@
-#include <Viewer.hpp>
-#include <ShaderProgram.hpp>
-
-#include <texturing/TexturedMeshRenderable.hpp>
 #include <FrameRenderable.hpp>
+#include <ShaderProgram.hpp>
 #include <Utils.hpp>
-
+#include <Viewer.hpp>
 #include <iostream>
+#include <texturing/TexturedMeshRenderable.hpp>
 
-void initialize_scene(Viewer &viewer)
+void initialize_scene(Viewer& viewer)
 {
 	// Position the camera
 	viewer.getCamera().setViewMatrix(glm::lookAt(glm::vec3(1, 2, 2), glm::vec3(1, 1, 1), glm::vec3(0, 1, 0)));
 	ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-																  "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
+	                                                              "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
 	ShaderProgramPtr nonRigidShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/nonRigidVertex.glsl",
-																	  "../../sfmlGraphicsPipeline/shaders/nonRigidFragment.glsl");
+	                                                                  "../../sfmlGraphicsPipeline/shaders/nonRigidFragment.glsl");
 	viewer.addShaderProgram(flatShader);
 	viewer.addShaderProgram(nonRigidShader);
 

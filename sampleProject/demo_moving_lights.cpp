@@ -1,29 +1,27 @@
-#include <Viewer.hpp>
-#include <ShaderProgram.hpp>
-
-#include <lighting/Material.hpp>
-#include <lighting/LightedMeshRenderable.hpp>
-#include <lighting/DirectionalLightRenderable.hpp>
-#include <lighting/SpotLightRenderable.hpp>
-#include <lighting/LightedCubeRenderable.hpp>
-#include <lighting/PointLightRenderable.hpp>
-#include <texturing/CubeMapRenderable.hpp>
 #include <FrameRenderable.hpp>
 #include <GeometricTransformation.hpp>
+#include <ShaderProgram.hpp>
 #include <Utils.hpp>
-
+#include <Viewer.hpp>
 #include <iostream>
+#include <lighting/DirectionalLightRenderable.hpp>
+#include <lighting/LightedCubeRenderable.hpp>
+#include <lighting/LightedMeshRenderable.hpp>
+#include <lighting/Material.hpp>
+#include <lighting/PointLightRenderable.hpp>
+#include <lighting/SpotLightRenderable.hpp>
+#include <texturing/CubeMapRenderable.hpp>
 
-void initialize_scene(Viewer &viewer)
+void initialize_scene(Viewer& viewer)
 {
 	// Position the camera
 	viewer.getCamera().setViewMatrix(glm::lookAt(glm::vec3(5, 5, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
 	ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-																  "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
+	                                                              "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
 	ShaderProgramPtr cubeMapShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/cubeMapVertex.glsl",
-																	 "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
+	                                                                 "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
 	ShaderProgramPtr phongShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/phongVertex.glsl",
-																   "../../sfmlGraphicsPipeline/shaders/phongFragment.glsl");
+	                                                               "../../sfmlGraphicsPipeline/shaders/phongFragment.glsl");
 	viewer.addShaderProgram(flatShader);
 	viewer.addShaderProgram(cubeMapShader);
 	viewer.addShaderProgram(phongShader);
@@ -50,7 +48,7 @@ void initialize_scene(Viewer &viewer)
 	viewer.addRenderable(lighted_bunny);
 
 	glm::vec3 red(0.9, 0.3, 0.4), green(0.3, 0.9, 0.4), blue(0.4, 0.3, 0.9);
-	{ // Moving PointLight
+	{  // Moving PointLight
 		auto point_light = std::make_shared<PointLight>(glm::vec3(3, 5, 3), glm::vec3(0), red, glm::vec3(0), 1, 0, 0);
 		viewer.addPointLight(point_light);
 
@@ -65,7 +63,7 @@ void initialize_scene(Viewer &viewer)
 		viewer.addRenderable(point_light_renderable);
 	}
 
-	{ // Moving DirectionalLight
+	{  // Moving DirectionalLight
 		auto dir_light = std::make_shared<DirectionalLight>(glm::vec3(1, 0, 0), glm::vec3(0), green, glm::vec3(0));
 		viewer.addDirectionalLight(dir_light);
 
@@ -81,7 +79,7 @@ void initialize_scene(Viewer &viewer)
 		viewer.addRenderable(dir_light_renderable);
 	}
 
-	{ // Moving SpotLight
+	{  // Moving SpotLight
 		auto spot_light = std::make_shared<SpotLight>(glm::vec3(3, 5, 3), glm::vec3(-1, -1, -1), glm::vec3(0), blue, glm::vec3(0), 1, 0, 0, 0.98, 0.92);
 		viewer.addSpotLight(spot_light);
 

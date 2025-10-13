@@ -15,7 +15,7 @@ int test_make_pointer_vec()
 	int Error = 0;
 
 	glm::func();
-	//func();
+	// func();
 
 	return Error;
 }

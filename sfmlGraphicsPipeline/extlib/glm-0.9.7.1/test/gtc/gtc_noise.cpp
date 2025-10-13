@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -29,9 +29,9 @@
 /// @author Christophe Riccio
 ///////////////////////////////////////////////////////////////////////////////////
 
-#include <glm/gtc/noise.hpp>
 #include <gli/gli.hpp>
 #include <gli/gtx/loader.hpp>
+#include <glm/gtc/noise.hpp>
 
 int test_simplex()
 {
@@ -39,14 +39,14 @@ int test_simplex()
 
 	{
 		std::vector<glm::byte> ImageData(Size * Size * 3);
-		
-		for(std::size_t y = 0; y < Size; ++y)
-		for(std::size_t x = 0; x < Size; ++x)
-		{
-			ImageData[(x + y * Size) * 3 + 0] = glm::byte(glm::simplex(glm::vec2(x / 64.f, y / 64.f)) * 128.f + 127.f);
-			ImageData[(x + y * Size) * 3 + 1] = ImageData[(x + y * Size) * 3 + 0];
-			ImageData[(x + y * Size) * 3 + 2] = ImageData[(x + y * Size) * 3 + 0];
-		}
+
+		for (std::size_t y = 0; y < Size; ++y)
+			for (std::size_t x = 0; x < Size; ++x)
+			{
+				ImageData[(x + y * Size) * 3 + 0] = glm::byte(glm::simplex(glm::vec2(x / 64.f, y / 64.f)) * 128.f + 127.f);
+				ImageData[(x + y * Size) * 3 + 1] = ImageData[(x + y * Size) * 3 + 0];
+				ImageData[(x + y * Size) * 3 + 2] = ImageData[(x + y * Size) * 3 + 0];
+			}
 
 		gli::texture2D Texture(1);
 		Texture[0] = gli::image2D(glm::uvec2(Size), gli::RGB8U);
@@ -56,31 +56,31 @@ int test_simplex()
 
 	{
 		std::vector<glm::byte> ImageData(Size * Size * 3);
-		
-		for(std::size_t y = 0; y < Size; ++y)
-		for(std::size_t x = 0; x < Size; ++x)
-		{
-			ImageData[(x + y * Size) * 3 + 0] = glm::byte(glm::simplex(glm::vec3(x / 64.f, y / 64.f, 0.5f)) * 128.f + 127.f);
-			ImageData[(x + y * Size) * 3 + 1] = ImageData[(x + y * Size) * 3 + 0];
-			ImageData[(x + y * Size) * 3 + 2] = ImageData[(x + y * Size) * 3 + 0];
-		}
+
+		for (std::size_t y = 0; y < Size; ++y)
+			for (std::size_t x = 0; x < Size; ++x)
+			{
+				ImageData[(x + y * Size) * 3 + 0] = glm::byte(glm::simplex(glm::vec3(x / 64.f, y / 64.f, 0.5f)) * 128.f + 127.f);
+				ImageData[(x + y * Size) * 3 + 1] = ImageData[(x + y * Size) * 3 + 0];
+				ImageData[(x + y * Size) * 3 + 2] = ImageData[(x + y * Size) * 3 + 0];
+			}
 
 		gli::texture2D Texture(1);
 		Texture[0] = gli::image2D(glm::uvec2(Size), gli::RGB8U);
 		memcpy(Texture[0].data(), &ImageData[0], ImageData.size());
 		gli::saveDDS9(Texture, "texture_simplex3d_256.dds");
 	}
-	
+
 	{
 		std::vector<glm::byte> ImageData(Size * Size * 3);
-		
-		for(std::size_t y = 0; y < Size; ++y)
-		for(std::size_t x = 0; x < Size; ++x)
-		{
-			ImageData[(x + y * Size) * 3 + 0] = glm::byte(glm::simplex(glm::vec4(x / 64.f, y / 64.f, 0.5f, 0.5f)) * 128.f + 127.f);
-			ImageData[(x + y * Size) * 3 + 1] = ImageData[(x + y * Size) * 3 + 0];
-			ImageData[(x + y * Size) * 3 + 2] = ImageData[(x + y * Size) * 3 + 0];
-		}
+
+		for (std::size_t y = 0; y < Size; ++y)
+			for (std::size_t x = 0; x < Size; ++x)
+			{
+				ImageData[(x + y * Size) * 3 + 0] = glm::byte(glm::simplex(glm::vec4(x / 64.f, y / 64.f, 0.5f, 0.5f)) * 128.f + 127.f);
+				ImageData[(x + y * Size) * 3 + 1] = ImageData[(x + y * Size) * 3 + 0];
+				ImageData[(x + y * Size) * 3 + 2] = ImageData[(x + y * Size) * 3 + 0];
+			}
 
 		gli::texture2D Texture(1);
 		Texture[0] = gli::image2D(glm::uvec2(Size), gli::RGB8U);
@@ -97,14 +97,14 @@ int test_perlin()
 
 	{
 		std::vector<glm::byte> ImageData(Size * Size * 3);
-		
-		for(std::size_t y = 0; y < Size; ++y)
-		for(std::size_t x = 0; x < Size; ++x)
-		{
-			ImageData[(x + y * Size) * 3 + 0] = glm::byte(glm::perlin(glm::vec2(x / 64.f, y / 64.f)) * 128.f + 127.f);
-			ImageData[(x + y * Size) * 3 + 1] = ImageData[(x + y * Size) * 3 + 0];
-			ImageData[(x + y * Size) * 3 + 2] = ImageData[(x + y * Size) * 3 + 0];
-		}
+
+		for (std::size_t y = 0; y < Size; ++y)
+			for (std::size_t x = 0; x < Size; ++x)
+			{
+				ImageData[(x + y * Size) * 3 + 0] = glm::byte(glm::perlin(glm::vec2(x / 64.f, y / 64.f)) * 128.f + 127.f);
+				ImageData[(x + y * Size) * 3 + 1] = ImageData[(x + y * Size) * 3 + 0];
+				ImageData[(x + y * Size) * 3 + 2] = ImageData[(x + y * Size) * 3 + 0];
+			}
 
 		gli::texture2D Texture(1);
 		Texture[0] = gli::image2D(glm::uvec2(Size), gli::RGB8U);
@@ -114,31 +114,31 @@ int test_perlin()
 
 	{
 		std::vector<glm::byte> ImageData(Size * Size * 3);
-		
-		for(std::size_t y = 0; y < Size; ++y)
-		for(std::size_t x = 0; x < Size; ++x)
-		{
-			ImageData[(x + y * Size) * 3 + 0] = glm::byte(glm::perlin(glm::vec3(x / 64.f, y / 64.f, 0.5f)) * 128.f + 127.f);
-			ImageData[(x + y * Size) * 3 + 1] = ImageData[(x + y * Size) * 3 + 0];
-			ImageData[(x + y * Size) * 3 + 2] = ImageData[(x + y * Size) * 3 + 0];
-		}
+
+		for (std::size_t y = 0; y < Size; ++y)
+			for (std::size_t x = 0; x < Size; ++x)
+			{
+				ImageData[(x + y * Size) * 3 + 0] = glm::byte(glm::perlin(glm::vec3(x / 64.f, y / 64.f, 0.5f)) * 128.f + 127.f);
+				ImageData[(x + y * Size) * 3 + 1] = ImageData[(x + y * Size) * 3 + 0];
+				ImageData[(x + y * Size) * 3 + 2] = ImageData[(x + y * Size) * 3 + 0];
+			}
 
 		gli::texture2D Texture(1);
 		Texture[0] = gli::image2D(glm::uvec2(Size), gli::RGB8U);
 		memcpy(Texture[0].data(), &ImageData[0], ImageData.size());
 		gli::saveDDS9(Texture, "texture_perlin3d_256.dds");
 	}
-	
+
 	{
 		std::vector<glm::byte> ImageData(Size * Size * 3);
-		
-		for(std::size_t y = 0; y < Size; ++y)
-		for(std::size_t x = 0; x < Size; ++x)
-		{
-			ImageData[(x + y * Size) * 3 + 0] = glm::byte(glm::perlin(glm::vec4(x / 64.f, y / 64.f, 0.5f, 0.5f)) * 128.f + 127.f);
-			ImageData[(x + y * Size) * 3 + 1] = ImageData[(x + y * Size) * 3 + 0];
-			ImageData[(x + y * Size) * 3 + 2] = ImageData[(x + y * Size) * 3 + 0];
-		}
+
+		for (std::size_t y = 0; y < Size; ++y)
+			for (std::size_t x = 0; x < Size; ++x)
+			{
+				ImageData[(x + y * Size) * 3 + 0] = glm::byte(glm::perlin(glm::vec4(x / 64.f, y / 64.f, 0.5f, 0.5f)) * 128.f + 127.f);
+				ImageData[(x + y * Size) * 3 + 1] = ImageData[(x + y * Size) * 3 + 0];
+				ImageData[(x + y * Size) * 3 + 2] = ImageData[(x + y * Size) * 3 + 0];
+			}
 
 		gli::texture2D Texture(1);
 		Texture[0] = gli::image2D(glm::uvec2(Size), gli::RGB8U);
@@ -155,14 +155,14 @@ int test_perlin_pedioric()
 
 	{
 		std::vector<glm::byte> ImageData(Size * Size * 3);
-		
-		for(std::size_t y = 0; y < Size; ++y)
-		for(std::size_t x = 0; x < Size; ++x)
-		{
-			ImageData[(x + y * Size) * 3 + 0] = glm::byte(glm::perlin(glm::vec2(x / 64.f, y / 64.f), glm::vec2(2.0f)) * 128.f + 127.f);
-			ImageData[(x + y * Size) * 3 + 1] = ImageData[(x + y * Size) * 3 + 0];
-			ImageData[(x + y * Size) * 3 + 2] = ImageData[(x + y * Size) * 3 + 0];
-		}
+
+		for (std::size_t y = 0; y < Size; ++y)
+			for (std::size_t x = 0; x < Size; ++x)
+			{
+				ImageData[(x + y * Size) * 3 + 0] = glm::byte(glm::perlin(glm::vec2(x / 64.f, y / 64.f), glm::vec2(2.0f)) * 128.f + 127.f);
+				ImageData[(x + y * Size) * 3 + 1] = ImageData[(x + y * Size) * 3 + 0];
+				ImageData[(x + y * Size) * 3 + 2] = ImageData[(x + y * Size) * 3 + 0];
+			}
 
 		gli::texture2D Texture(1);
 		Texture[0] = gli::image2D(glm::uvec2(Size), gli::RGB8U);
@@ -172,31 +172,31 @@ int test_perlin_pedioric()
 
 	{
 		std::vector<glm::byte> ImageData(Size * Size * 3);
-		
-		for(std::size_t y = 0; y < Size; ++y)
-		for(std::size_t x = 0; x < Size; ++x)
-		{
-			ImageData[(x + y * Size) * 3 + 0] = glm::byte(glm::perlin(glm::vec3(x / 64.f, y / 64.f, 0.5f), glm::vec3(2.0f)) * 128.f + 127.f);
-			ImageData[(x + y * Size) * 3 + 1] = ImageData[(x + y * Size) * 3 + 0];
-			ImageData[(x + y * Size) * 3 + 2] = ImageData[(x + y * Size) * 3 + 0];
-		}
+
+		for (std::size_t y = 0; y < Size; ++y)
+			for (std::size_t x = 0; x < Size; ++x)
+			{
+				ImageData[(x + y * Size) * 3 + 0] = glm::byte(glm::perlin(glm::vec3(x / 64.f, y / 64.f, 0.5f), glm::vec3(2.0f)) * 128.f + 127.f);
+				ImageData[(x + y * Size) * 3 + 1] = ImageData[(x + y * Size) * 3 + 0];
+				ImageData[(x + y * Size) * 3 + 2] = ImageData[(x + y * Size) * 3 + 0];
+			}
 
 		gli::texture2D Texture(1);
 		Texture[0] = gli::image2D(glm::uvec2(Size), gli::RGB8U);
 		memcpy(Texture[0].data(), &ImageData[0], ImageData.size());
 		gli::saveDDS9(Texture, "texture_perlin_pedioric_3d_256.dds");
 	}
-	
+
 	{
 		std::vector<glm::byte> ImageData(Size * Size * 3);
-		
-		for(std::size_t y = 0; y < Size; ++y)
-		for(std::size_t x = 0; x < Size; ++x)
-		{
-			ImageData[(x + y * Size) * 3 + 0] = glm::byte(glm::perlin(glm::vec4(x / 64.f, y / 64.f, 0.5f, 0.5f), glm::vec4(2.0f)) * 128.f + 127.f);
-			ImageData[(x + y * Size) * 3 + 1] = ImageData[(x + y * Size) * 3 + 0];
-			ImageData[(x + y * Size) * 3 + 2] = ImageData[(x + y * Size) * 3 + 0];
-		}
+
+		for (std::size_t y = 0; y < Size; ++y)
+			for (std::size_t x = 0; x < Size; ++x)
+			{
+				ImageData[(x + y * Size) * 3 + 0] = glm::byte(glm::perlin(glm::vec4(x / 64.f, y / 64.f, 0.5f, 0.5f), glm::vec4(2.0f)) * 128.f + 127.f);
+				ImageData[(x + y * Size) * 3 + 1] = ImageData[(x + y * Size) * 3 + 0];
+				ImageData[(x + y * Size) * 3 + 2] = ImageData[(x + y * Size) * 3 + 0];
+			}
 
 		gli::texture2D Texture(1);
 		Texture[0] = gli::image2D(glm::uvec2(Size), gli::RGB8U);

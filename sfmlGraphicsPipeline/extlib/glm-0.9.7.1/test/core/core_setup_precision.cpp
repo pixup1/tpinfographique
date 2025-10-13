@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -31,8 +31,8 @@
 
 #define GLM_FORCE_INLINE
 #define GLM_PRECISION_HIGHP_FLOAT
-#include <glm/glm.hpp>
 #include <glm/ext.hpp>
+#include <glm/glm.hpp>
 
 static int test_mat()
 {
@@ -69,11 +69,11 @@ static int test_vec()
 static int test_dvec()
 {
 	int Error = 0;
-	
+
 	Error += sizeof(glm::dvec2) == sizeof(glm::highp_dvec2) ? 0 : 1;
 	Error += sizeof(glm::dvec3) == sizeof(glm::highp_dvec3) ? 0 : 1;
 	Error += sizeof(glm::dvec4) == sizeof(glm::highp_dvec4) ? 0 : 1;
-	
+
 	return Error;
 }
 
@@ -84,6 +84,6 @@ int main()
 	Error += test_mat();
 	Error += test_vec();
 	Error += test_dvec();
-	
+
 	return Error;
 }

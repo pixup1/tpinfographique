@@ -1,34 +1,29 @@
+#include <FrameRenderable.hpp>
+#include <QuadMeshRenderable.hpp>
 #include <ShaderProgram.hpp>
 #include <Viewer.hpp>
-
-#include <ShaderProgram.hpp>
-
-#include <QuadMeshRenderable.hpp>
-#include <FrameRenderable.hpp>
-
-#include <dynamics/DynamicSystemRenderable.hpp>
-#include <dynamics/DampingForceField.hpp>
 #include <dynamics/ConstantForceField.hpp>
-#include <dynamics/SpringForceField.hpp>
-#include <dynamics/EulerExplicitSolver.hpp>
-
-#include <dynamics/ParticleRenderable.hpp>
-#include <dynamics/ParticleListRenderable.hpp>
 #include <dynamics/ConstantForceFieldRenderable.hpp>
+#include <dynamics/ControlledForceFieldRenderable.hpp>
+#include <dynamics/DampingForceField.hpp>
+#include <dynamics/DynamicSystemRenderable.hpp>
+#include <dynamics/EulerExplicitSolver.hpp>
+#include <dynamics/ParticleListRenderable.hpp>
+#include <dynamics/ParticleRenderable.hpp>
+#include <dynamics/SpringForceField.hpp>
 #include <dynamics/SpringForceFieldRenderable.hpp>
 #include <dynamics/SpringListRenderable.hpp>
-#include <dynamics/ControlledForceFieldRenderable.hpp>
 
-void particles(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable);
-void springs(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable);
-void playPool(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable);
-void collisions(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable);
+void particles(Viewer& viewer, DynamicSystemPtr& system, DynamicSystemRenderablePtr& systemRenderable);
+void springs(Viewer& viewer, DynamicSystemPtr& system, DynamicSystemRenderablePtr& systemRenderable);
+void playPool(Viewer& viewer, DynamicSystemPtr& system, DynamicSystemRenderablePtr& systemRenderable);
+void collisions(Viewer& viewer, DynamicSystemPtr& system, DynamicSystemRenderablePtr& systemRenderable);
 
-void initialize_scene(Viewer &viewer)
+void initialize_scene(Viewer& viewer)
 {
 	// Set up a shader and add a 3D frame.
 	ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-																  "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
+	                                                              "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
 	viewer.addShaderProgram(flatShader);
 	FrameRenderablePtr frame = std::make_shared<FrameRenderable>(flatShader);
 	viewer.addRenderable(frame);
@@ -75,11 +70,11 @@ int main()
 	return EXIT_SUCCESS;
 }
 
-void particles(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable)
+void particles(Viewer& viewer, DynamicSystemPtr& system, DynamicSystemRenderablePtr& systemRenderable)
 {
 	// Initialize a shader for the following renderables
 	ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-																  "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
+	                                                              "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
 	viewer.addShaderProgram(flatShader);
 
 	// We diminish the time step to be able to see what happens before particles go too far
@@ -122,13 +117,13 @@ void particles(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderable
 	}
 }
 
-void springs(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable)
+void springs(Viewer& viewer, DynamicSystemPtr& system, DynamicSystemRenderablePtr& systemRenderable)
 {
 	// Initialize a shader for the following renderables
 	ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-																  "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
+	                                                              "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
 	ShaderProgramPtr instancedShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/instancedVertex.glsl",
-																	   "../../sfmlGraphicsPipeline/shaders/instancedFragment.glsl");
+	                                                                   "../../sfmlGraphicsPipeline/shaders/instancedFragment.glsl");
 	viewer.addShaderProgram(flatShader);
 	viewer.addShaderProgram(instancedShader);
 
@@ -219,11 +214,11 @@ void springs(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePt
 	HierarchicalRenderable::addChild(systemRenderable, gravityRenderable);
 }
 
-void collisions(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable)
+void collisions(Viewer& viewer, DynamicSystemPtr& system, DynamicSystemRenderablePtr& systemRenderable)
 {
 	// Initialize a shader for the following renderables
 	ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-																  "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
+	                                                              "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
 	viewer.addShaderProgram(flatShader);
 
 	// Activate collision detection
@@ -247,7 +242,6 @@ void collisions(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderabl
 	float pm, pr;
 	// Particle vs Plane collision
 	{
-
 		// Initialize a particle with position, velocity, mass and radius and add it to the system
 		px = glm::vec3(0.0, 1.0, 0.0);
 		pv = glm::vec3(0.0, 0.0, 0.0);
@@ -295,12 +289,12 @@ void collisions(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderabl
 	system->addForceField(gravityForceField);
 }
 
-void playPool(Viewer &viewer, DynamicSystemPtr &system, DynamicSystemRenderablePtr &systemRenderable)
+void playPool(Viewer& viewer, DynamicSystemPtr& system, DynamicSystemRenderablePtr& systemRenderable)
 {
 	viewer.getCamera().setBehavior(Camera::CAMERA_BEHAVIOR::ARCBALL_BEHAVIOR);
 	// Initialize a shader for the following renderables
 	ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-																  "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
+	                                                              "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
 	viewer.addShaderProgram(flatShader);
 
 	// Initialize two particles with position, velocity, mass and radius and add it to the system

@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -30,46 +30,46 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 #include <glm/gtc/color_space.hpp>
-#include <glm/gtc/epsilon.hpp>
 #include <glm/gtc/constants.hpp>
+#include <glm/gtc/epsilon.hpp>
 
 namespace srgb
 {
-	int test()
+int test()
+{
+	int Error(0);
+
+	glm::vec3 const ColorSourceRGB(1.0, 0.5, 0.0);
+
 	{
-		int Error(0);
-
-		glm::vec3 const ColorSourceRGB(1.0, 0.5, 0.0);
-
-		{
-			glm::vec3 const ColorSRGB = glm::convertLinearToSRGB(ColorSourceRGB);
-			glm::vec3 const ColorRGB = glm::convertSRGBToLinear(ColorSRGB);
-			Error += glm::all(glm::epsilonEqual(ColorSourceRGB, ColorRGB, 0.00001f)) ? 0 : 1;
-		}
-
-		{
-			glm::vec3 const ColorSRGB = glm::convertLinearToSRGB(ColorSourceRGB, 2.8f);
-			glm::vec3 const ColorRGB = glm::convertSRGBToLinear(ColorSRGB, 2.8f);
-			Error += glm::all(glm::epsilonEqual(ColorSourceRGB, ColorRGB, 0.00001f)) ? 0 : 1;
-		}
-
-		glm::vec4 const ColorSourceRGBA(1.0, 0.5, 0.0, 1.0);
-
-		{
-			glm::vec4 const ColorSRGB = glm::convertLinearToSRGB(ColorSourceRGBA);
-			glm::vec4 const ColorRGB = glm::convertSRGBToLinear(ColorSRGB);
-			Error += glm::all(glm::epsilonEqual(ColorSourceRGBA, ColorRGB, 0.00001f)) ? 0 : 1;
-		}
-
-		{
-			glm::vec4 const ColorSRGB = glm::convertLinearToSRGB(ColorSourceRGBA, 2.8f);
-			glm::vec4 const ColorRGB = glm::convertSRGBToLinear(ColorSRGB, 2.8f);
-			Error += glm::all(glm::epsilonEqual(ColorSourceRGBA, ColorRGB, 0.00001f)) ? 0 : 1;
-		}
-
-		return Error;
+		glm::vec3 const ColorSRGB = glm::convertLinearToSRGB(ColorSourceRGB);
+		glm::vec3 const ColorRGB = glm::convertSRGBToLinear(ColorSRGB);
+		Error += glm::all(glm::epsilonEqual(ColorSourceRGB, ColorRGB, 0.00001f)) ? 0 : 1;
 	}
-}//namespace srgb
+
+	{
+		glm::vec3 const ColorSRGB = glm::convertLinearToSRGB(ColorSourceRGB, 2.8f);
+		glm::vec3 const ColorRGB = glm::convertSRGBToLinear(ColorSRGB, 2.8f);
+		Error += glm::all(glm::epsilonEqual(ColorSourceRGB, ColorRGB, 0.00001f)) ? 0 : 1;
+	}
+
+	glm::vec4 const ColorSourceRGBA(1.0, 0.5, 0.0, 1.0);
+
+	{
+		glm::vec4 const ColorSRGB = glm::convertLinearToSRGB(ColorSourceRGBA);
+		glm::vec4 const ColorRGB = glm::convertSRGBToLinear(ColorSRGB);
+		Error += glm::all(glm::epsilonEqual(ColorSourceRGBA, ColorRGB, 0.00001f)) ? 0 : 1;
+	}
+
+	{
+		glm::vec4 const ColorSRGB = glm::convertLinearToSRGB(ColorSourceRGBA, 2.8f);
+		glm::vec4 const ColorRGB = glm::convertSRGBToLinear(ColorSRGB, 2.8f);
+		Error += glm::all(glm::epsilonEqual(ColorSourceRGBA, ColorRGB, 0.00001f)) ? 0 : 1;
+	}
+
+	return Error;
+}
+}  // namespace srgb
 
 int main()
 {

@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -57,7 +57,7 @@ int test_ulp_float_step()
 
 	float A = 1.0f;
 
-	for(int i = 10; i < 1000; i *= 10)
+	for (int i = 10; i < 1000; i *= 10)
 	{
 		float B = glm::next_float(A, i);
 		Error += A != B ? 0 : 1;
@@ -98,7 +98,7 @@ int test_ulp_double_step()
 
 	double A = 1.0;
 
-	for(int i = 10; i < 1000; i *= 10)
+	for (int i = 10; i < 1000; i *= 10)
 	{
 		double B = glm::next_float(A, i);
 		Error += A != B ? 0 : 1;
@@ -123,5 +123,3 @@ int main()
 	Error += test_ulp_double_step();
 	return Error;
 }
-
-

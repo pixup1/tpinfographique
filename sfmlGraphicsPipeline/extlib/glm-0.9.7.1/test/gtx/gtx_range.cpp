@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -42,10 +42,16 @@ int testVec()
 	glm::vec3 v(1, 2, 3);
 
 	int count = 0;
-	for(float x : v){ count++; }
+	for (float x : v)
+	{
+		count++;
+	}
 	Error += count == 3 ? 0 : 1;
 
-	for(float& x : v){ x = 0; }
+	for (float& x : v)
+	{
+		x = 0;
+	}
 	Error += glm::all(glm::equal(v, glm::vec3(0, 0, 0))) ? 0 : 1;
 	return Error;
 }
@@ -56,12 +62,18 @@ int testMat()
 	glm::mat4x3 m(1);
 
 	int count = 0;
-	for(float x : m){ count++; }
+	for (float x : m)
+	{
+		count++;
+	}
 	Error += count == 12 ? 0 : 1;
 
-	for(float& x : m){ x = 0; }
+	for (float& x : m)
+	{
+		x = 0;
+	}
 	glm::vec4 v(1, 1, 1, 1);
-	Error += glm::all(glm::equal(m*v, glm::vec3(0, 0, 0))) ? 0 : 1;
+	Error += glm::all(glm::equal(m * v, glm::vec3(0, 0, 0))) ? 0 : 1;
 	return Error;
 }
 
@@ -80,4 +92,4 @@ int main()
 	return 0;
 }
 
-#endif//GLM_HAS_RANGE_FOR
+#endif  // GLM_HAS_RANGE_FOR

@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -44,7 +44,7 @@ int test_rotate()
 	glm::vec3 F = glm::rotateY(glm::vec3(1, 0, 0), glm::pi<float>() * 0.5f);
 	glm::vec4 G = glm::rotateY(glm::vec4(1, 0, 0, 1), glm::pi<float>() * 0.5f);
 	glm::vec3 H = glm::rotateZ(glm::vec3(1, 0, 0), glm::pi<float>() * 0.5f);
-	glm::vec4 I = glm::rotateZ(glm::vec4(1, 0, 0,1 ), glm::pi<float>() * 0.5f);
+	glm::vec4 I = glm::rotateZ(glm::vec4(1, 0, 0, 1), glm::pi<float>() * 0.5f);
 	glm::mat4 O = glm::orientation(glm::normalize(glm::vec3(1)), glm::vec3(0, 0, 1));
 
 	return Error;
@@ -70,13 +70,12 @@ int test_rotateY()
 	return Error;
 }
 
-
 int test_rotateZ()
 {
 	int Error = 0;
 
 	glm::vec3 H = glm::rotateZ(glm::vec3(1, 0, 0), glm::pi<float>() * 0.5f);
-	glm::vec4 I = glm::rotateZ(glm::vec4(1, 0, 0,1 ), glm::pi<float>() * 0.5f);
+	glm::vec4 I = glm::rotateZ(glm::vec4(1, 0, 0, 1), glm::pi<float>() * 0.5f);
 
 	return Error;
 }
@@ -102,5 +101,3 @@ int main()
 
 	return Error;
 }
-
-

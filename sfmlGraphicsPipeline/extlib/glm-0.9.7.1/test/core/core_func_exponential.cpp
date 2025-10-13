@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -119,7 +119,7 @@ int test_inversesqrt()
 	glm::uint ulp(0);
 	float diff(0.0f);
 
-	for(float f = 0.001f; f < 10.f; f *= 1.001f)
+	for (float f = 0.001f; f < 10.f; f *= 1.001f)
 	{
 		glm::lowp_fvec1 u(f);
 		glm::lowp_fvec1 lowp_v = glm::inversesqrt(u);
@@ -146,4 +146,3 @@ int main()
 
 	return Error;
 }
-

@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -29,10 +29,10 @@
 /// @author Christophe Riccio
 ///////////////////////////////////////////////////////////////////////////////////
 
+#include <glm/gtx/vector_query.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
-#include <glm/gtx/vector_query.hpp>
 
 int test_areCollinear()
 {
@@ -59,7 +59,7 @@ int test_areCollinear()
 int test_areOrthogonal()
 {
 	int Error(0);
-	
+
 	bool TestA = glm::areOrthogonal(glm::vec2(1, 0), glm::vec2(0, 1), 0.00001f);
 	Error += TestA ? 0 : 1;
 
@@ -69,7 +69,7 @@ int test_areOrthogonal()
 int test_isNormalized()
 {
 	int Error(0);
-	
+
 	bool TestA = glm::isNormalized(glm::vec4(1, 0, 0, 0), 0.00001f);
 	Error += TestA ? 0 : 1;
 
@@ -79,7 +79,7 @@ int test_isNormalized()
 int test_isNull()
 {
 	int Error(0);
-	
+
 	bool TestA = glm::isNull(glm::vec4(0), 0.00001f);
 	Error += TestA ? 0 : 1;
 
@@ -108,5 +108,3 @@ int main()
 
 	return Error;
 }
-
-

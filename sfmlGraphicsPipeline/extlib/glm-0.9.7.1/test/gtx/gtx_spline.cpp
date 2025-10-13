@@ -8,14 +8,14 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// Restrictions:
 ///		By making use of the Software for military purposes, you choose to make
 ///		a Bunny unhappy.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -29,94 +29,94 @@
 /// @author Christophe Riccio
 ///////////////////////////////////////////////////////////////////////////////////
 
+#include <glm/gtx/spline.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
-#include <glm/gtx/spline.hpp>
 
 namespace catmullRom
 {
-	int test()
-	{
-		int Error(0);
+int test()
+{
+	int Error(0);
 
-		glm::vec2 Result2 = glm::catmullRom(
-			glm::vec2(0.0f, 0.0f),
-			glm::vec2(1.0f, 0.0f),
-			glm::vec2(1.0f, 1.0f),
-			glm::vec2(0.0f, 1.0f), 0.5f);
+	glm::vec2 Result2 = glm::catmullRom(
+	    glm::vec2(0.0f, 0.0f),
+	    glm::vec2(1.0f, 0.0f),
+	    glm::vec2(1.0f, 1.0f),
+	    glm::vec2(0.0f, 1.0f), 0.5f);
 
-		glm::vec3 Result3 = glm::catmullRom(
-			glm::vec3(0.0f, 0.0f, 0.0f), 
-			glm::vec3(1.0f, 0.0f, 0.0f), 
-			glm::vec3(1.0f, 1.0f, 0.0f), 
-			glm::vec3(0.0f, 1.0f, 0.0f), 0.5f);
+	glm::vec3 Result3 = glm::catmullRom(
+	    glm::vec3(0.0f, 0.0f, 0.0f),
+	    glm::vec3(1.0f, 0.0f, 0.0f),
+	    glm::vec3(1.0f, 1.0f, 0.0f),
+	    glm::vec3(0.0f, 1.0f, 0.0f), 0.5f);
 
-		glm::vec4 Result4 = glm::catmullRom(
-			glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 
-			glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), 
-			glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), 
-			glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), 0.5f);
+	glm::vec4 Result4 = glm::catmullRom(
+	    glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+	    glm::vec4(1.0f, 0.0f, 0.0f, 1.0f),
+	    glm::vec4(1.0f, 1.0f, 0.0f, 1.0f),
+	    glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), 0.5f);
 
-		return Error;
-	}
-}//catmullRom
+	return Error;
+}
+}  // namespace catmullRom
 
 namespace hermite
 {
-	int test()
-	{
-		int Error(0);
+int test()
+{
+	int Error(0);
 
-		glm::vec2 Result2 = glm::hermite(
-			glm::vec2(0.0f, 0.0f),
-			glm::vec2(1.0f, 0.0f),
-			glm::vec2(1.0f, 1.0f),
-			glm::vec2(0.0f, 1.0f), 0.5f);
+	glm::vec2 Result2 = glm::hermite(
+	    glm::vec2(0.0f, 0.0f),
+	    glm::vec2(1.0f, 0.0f),
+	    glm::vec2(1.0f, 1.0f),
+	    glm::vec2(0.0f, 1.0f), 0.5f);
 
-		glm::vec3 Result3 = glm::hermite(
-			glm::vec3(0.0f, 0.0f, 0.0f), 
-			glm::vec3(1.0f, 0.0f, 0.0f), 
-			glm::vec3(1.0f, 1.0f, 0.0f), 
-			glm::vec3(0.0f, 1.0f, 0.0f), 0.5f);
+	glm::vec3 Result3 = glm::hermite(
+	    glm::vec3(0.0f, 0.0f, 0.0f),
+	    glm::vec3(1.0f, 0.0f, 0.0f),
+	    glm::vec3(1.0f, 1.0f, 0.0f),
+	    glm::vec3(0.0f, 1.0f, 0.0f), 0.5f);
 
-		glm::vec4 Result4 = glm::hermite(
-			glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 
-			glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), 
-			glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), 
-			glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), 0.5f);
+	glm::vec4 Result4 = glm::hermite(
+	    glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+	    glm::vec4(1.0f, 0.0f, 0.0f, 1.0f),
+	    glm::vec4(1.0f, 1.0f, 0.0f, 1.0f),
+	    glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), 0.5f);
 
-		return Error;
-	}
-}//catmullRom
+	return Error;
+}
+}  // namespace hermite
 
 namespace cubic
 {
-	int test()
-	{
-		int Error(0);
+int test()
+{
+	int Error(0);
 
-		glm::vec2 Result2 = glm::cubic(
-			glm::vec2(0.0f, 0.0f),
-			glm::vec2(1.0f, 0.0f),
-			glm::vec2(1.0f, 1.0f),
-			glm::vec2(0.0f, 1.0f), 0.5f);
+	glm::vec2 Result2 = glm::cubic(
+	    glm::vec2(0.0f, 0.0f),
+	    glm::vec2(1.0f, 0.0f),
+	    glm::vec2(1.0f, 1.0f),
+	    glm::vec2(0.0f, 1.0f), 0.5f);
 
-		glm::vec3 Result3 = glm::cubic(
-			glm::vec3(0.0f, 0.0f, 0.0f), 
-			glm::vec3(1.0f, 0.0f, 0.0f), 
-			glm::vec3(1.0f, 1.0f, 0.0f), 
-			glm::vec3(0.0f, 1.0f, 0.0f), 0.5f);
+	glm::vec3 Result3 = glm::cubic(
+	    glm::vec3(0.0f, 0.0f, 0.0f),
+	    glm::vec3(1.0f, 0.0f, 0.0f),
+	    glm::vec3(1.0f, 1.0f, 0.0f),
+	    glm::vec3(0.0f, 1.0f, 0.0f), 0.5f);
 
-		glm::vec4 Result = glm::cubic(
-			glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 
-			glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), 
-			glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), 
-			glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), 0.5f);
+	glm::vec4 Result = glm::cubic(
+	    glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+	    glm::vec4(1.0f, 0.0f, 0.0f, 1.0f),
+	    glm::vec4(1.0f, 1.0f, 0.0f, 1.0f),
+	    glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), 0.5f);
 
-		return Error;
-	}
-}//catmullRom
+	return Error;
+}
+}  // namespace cubic
 
 int main()
 {

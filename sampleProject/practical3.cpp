@@ -1,16 +1,16 @@
-#include <Viewer.hpp>
-#include <ShaderProgram.hpp>
+#include <CylinderMeshRenderable.hpp>
 #include <FrameRenderable.hpp>
 #include <HierarchicalRenderable.hpp>
-#include <CylinderMeshRenderable.hpp>
 #include <MeshRenderable.hpp>
+#include <ShaderProgram.hpp>
 #include <SphereMeshRenderable.hpp>
+#include <Viewer.hpp>
 
-void initialize_scene(Viewer &viewer)
+void initialize_scene(Viewer& viewer)
 {
 	ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>(
-		"../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-		"../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
+	    "../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
+	    "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
 
 	viewer.addShaderProgram(flatShader);
 

@@ -8,8 +8,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <glm/glm.hpp>
-#include <glm/gtx/random.hpp>
 #include <glm/gtx/epsilon.hpp>
+#include <glm/gtx/random.hpp>
 #include <iostream>
 
 int test_signedRand1()
@@ -19,7 +19,7 @@ int test_signedRand1()
 	{
 		float ResultFloat = 0.0f;
 		double ResultDouble = 0.0f;
-		for(std::size_t i = 0; i < 100000; ++i)
+		for (std::size_t i = 0; i < 100000; ++i)
 		{
 			ResultFloat += glm::signedRand1<float>();
 			ResultDouble += glm::signedRand1<double>();
@@ -40,7 +40,7 @@ int test_normalizedRand2()
 		std::size_t Max = 100000;
 		float ResultFloat = 0.0f;
 		double ResultDouble = 0.0f;
-		for(std::size_t i = 0; i < Max; ++i)
+		for (std::size_t i = 0; i < Max; ++i)
 		{
 			ResultFloat += glm::length(glm::normalizedRand2<float>());
 			ResultDouble += glm::length(glm::normalizedRand2<double>());
@@ -66,7 +66,7 @@ int test_normalizedRand3()
 		double ResultDoubleA = 0.0f;
 		double ResultDoubleB = 0.0f;
 		double ResultDoubleC = 0.0f;
-		for(std::size_t i = 0; i < Max; ++i)
+		for (std::size_t i = 0; i < Max; ++i)
 		{
 			ResultFloatA += glm::length(glm::normalizedRand3<float>());
 			ResultDoubleA += glm::length(glm::normalizedRand3<double>());

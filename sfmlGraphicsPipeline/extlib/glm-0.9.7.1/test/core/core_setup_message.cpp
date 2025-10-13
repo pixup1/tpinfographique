@@ -8,16 +8,16 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #define GLM_MESSAGES
-#include <glm/vec3.hpp>
 #include <cstdio>
+#include <glm/vec3.hpp>
 
 int test_compiler()
 {
 	int Error(0);
-	
-	if(GLM_COMPILER & GLM_COMPILER_VC)
+
+	if (GLM_COMPILER & GLM_COMPILER_VC)
 	{
-		switch(GLM_COMPILER)
+		switch (GLM_COMPILER)
 		{
 		case GLM_COMPILER_VC2010:
 			std::printf("GLM_COMPILER_VC2010\n");
@@ -37,9 +37,9 @@ int test_compiler()
 			break;
 		}
 	}
-	else if(GLM_COMPILER & GLM_COMPILER_GCC)
+	else if (GLM_COMPILER & GLM_COMPILER_GCC)
 	{
-		switch(GLM_COMPILER)
+		switch (GLM_COMPILER)
 		{
 		case GLM_COMPILER_GCC44:
 			std::printf("GLM_COMPILER_GCC44\n");
@@ -77,13 +77,13 @@ int test_compiler()
 			break;
 		}
 	}
-	else if(GLM_COMPILER & GLM_COMPILER_CUDA)
+	else if (GLM_COMPILER & GLM_COMPILER_CUDA)
 	{
 		std::printf("GLM_COMPILER_CUDA\n");
 	}
-	else if(GLM_COMPILER & GLM_COMPILER_APPLE_CLANG)
+	else if (GLM_COMPILER & GLM_COMPILER_APPLE_CLANG)
 	{
-		switch(GLM_COMPILER)
+		switch (GLM_COMPILER)
 		{
 		case GLM_COMPILER_APPLE_CLANG40:
 			std::printf("GLM_COMPILER_APPLE_CLANG40\n");
@@ -101,19 +101,19 @@ int test_compiler()
 			std::printf("GLM_COMPILER_APPLE_CLANG51\n");
 			break;
 		case GLM_COMPILER_APPLE_CLANG60:
-			std::printf("GLM_COMPILER_APPLE_CLANG60\n");	
+			std::printf("GLM_COMPILER_APPLE_CLANG60\n");
 			break;
 		case GLM_COMPILER_APPLE_CLANG61:
-			std::printf("GLM_COMPILER_APPLE_CLANG61\n");	
+			std::printf("GLM_COMPILER_APPLE_CLANG61\n");
 			break;
 		default:
 			std::printf("Apple Clang version not detected\n");
 			break;
 		}
 	}
-	else if(GLM_COMPILER & GLM_COMPILER_LLVM)
+	else if (GLM_COMPILER & GLM_COMPILER_LLVM)
 	{
-		switch(GLM_COMPILER)
+		switch (GLM_COMPILER)
 		{
 		case GLM_COMPILER_LLVM32:
 			std::printf("GLM_COMPILER_LLVM32\n");
@@ -144,9 +144,9 @@ int test_compiler()
 			break;
 		}
 	}
-	else if(GLM_COMPILER & GLM_COMPILER_INTEL)
+	else if (GLM_COMPILER & GLM_COMPILER_INTEL)
 	{
-		switch(GLM_COMPILER)
+		switch (GLM_COMPILER)
 		{
 		case GLM_COMPILER_INTEL12:
 			std::printf("GLM_COMPILER_INTEL12\n");
@@ -177,21 +177,21 @@ int test_compiler()
 		std::printf("Undetected compiler\n");
 		Error += 1;
 	}
-	
+
 	return Error;
 }
 
 int test_model()
 {
 	int Error = 0;
-	
+
 	Error += ((sizeof(void*) == 4) && (GLM_MODEL == GLM_MODEL_32)) || ((sizeof(void*) == 8) && (GLM_MODEL == GLM_MODEL_64)) ? 0 : 1;
-	
-	if(GLM_MODEL == GLM_MODEL_32)
+
+	if (GLM_MODEL == GLM_MODEL_32)
 		std::printf("GLM_MODEL_32\n");
-	else if(GLM_MODEL == GLM_MODEL_64)
+	else if (GLM_MODEL == GLM_MODEL_64)
 		std::printf("GLM_MODEL_64\n");
-	
+
 	return Error;
 }
 
@@ -201,19 +201,19 @@ int test_instruction_set()
 
 	std::printf("GLM_ARCH: ");
 
-	if(GLM_ARCH == GLM_ARCH_PURE)
+	if (GLM_ARCH == GLM_ARCH_PURE)
 		std::printf("GLM_ARCH_PURE ");
-	if(GLM_ARCH & GLM_ARCH_ARM)
+	if (GLM_ARCH & GLM_ARCH_ARM)
 		std::printf("GLM_ARCH_ARM ");
-	if(GLM_ARCH & GLM_ARCH_AVX2)
+	if (GLM_ARCH & GLM_ARCH_AVX2)
 		std::printf("GLM_ARCH_AVX2 ");
-	if(GLM_ARCH & GLM_ARCH_AVX)
+	if (GLM_ARCH & GLM_ARCH_AVX)
 		std::printf("GLM_ARCH_AVX ");
-	if(GLM_ARCH & GLM_ARCH_AVX)
+	if (GLM_ARCH & GLM_ARCH_AVX)
 		std::printf("GLM_ARCH_SSE4 ");
-	if(GLM_ARCH & GLM_ARCH_SSE3)
+	if (GLM_ARCH & GLM_ARCH_SSE3)
 		std::printf("GLM_ARCH_SSE3 ");
-	if(GLM_ARCH & GLM_ARCH_SSE2)
+	if (GLM_ARCH & GLM_ARCH_SSE2)
 		std::printf("GLM_ARCH_SSE2 ");
 
 	std::printf("\n");
@@ -224,7 +224,7 @@ int test_instruction_set()
 int test_cpp_version()
 {
 	std::printf("__cplusplus: %ld\n", __cplusplus);
-	
+
 	return 0;
 }
 
@@ -241,24 +241,21 @@ int test_operators()
 template <typename T>
 struct vec
 {
-
 };
 
 template <template <typename> class C, typename T>
 struct Class
 {
-
 };
 
 template <typename T>
 struct Class<vec, T>
 {
-
 };
 
 int main()
 {
-	//Class<vec, float> C;
+	// Class<vec, float> C;
 
 	int Error = 0;
 
@@ -267,6 +264,6 @@ int main()
 	Error += test_model();
 	Error += test_instruction_set();
 	Error += test_operators();
-	
+
 	return Error;
 }

@@ -61,7 +61,6 @@
 //     GLint vLoc = m_shaderProgram->getAttributeLocation("vPosition");
 //     GLint cLoc = m_shaderProgram->getAttributeLocation("vColor");
 
-
 //     //Change width of line primitive to 3 pixels
 //     glcheck(glLineWidth(3.0f));
 
@@ -112,41 +111,43 @@
 //     std::cout<<"FrameRenderable"<<std::endl;
 // }
 #include "../include/FrameRenderable.hpp"
-#include "../include/gl_helper.hpp"
-#include <glm/gtc/type_ptr.hpp>
+
 #include <GL/glew.h>
+
+#include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
+#include "../include/gl_helper.hpp"
 
 FrameRenderable::FrameRenderable(ShaderProgramPtr shaderProgram)
-: MeshRenderable(shaderProgram, false)
+    : MeshRenderable(shaderProgram, false)
 {
-    m_mode = GL_LINES;
+	m_mode = GL_LINES;
 
-    m_positions.push_back( glm::vec3(0,0,0) );
-    m_positions.push_back( glm::vec3(1,0,0) );
-    m_positions.push_back( glm::vec3(0,0,0) );
-    m_positions.push_back( glm::vec3(0,1,0) );
-    m_positions.push_back( glm::vec3(0,0,0) );
-    m_positions.push_back( glm::vec3(0,0,1) );
+	m_positions.push_back(glm::vec3(0, 0, 0));
+	m_positions.push_back(glm::vec3(1, 0, 0));
+	m_positions.push_back(glm::vec3(0, 0, 0));
+	m_positions.push_back(glm::vec3(0, 1, 0));
+	m_positions.push_back(glm::vec3(0, 0, 0));
+	m_positions.push_back(glm::vec3(0, 0, 1));
 
-    m_colors.push_back( glm::vec4(1,0,0,1) );
-    m_colors.push_back( glm::vec4(1,0,0,1) );
-    m_colors.push_back( glm::vec4(0,1,0,1) );
-    m_colors.push_back( glm::vec4(0,1,0,1) );
-    m_colors.push_back( glm::vec4(0,0,1,1) );
-    m_colors.push_back( glm::vec4(0,0,1,1) );
+	m_colors.push_back(glm::vec4(1, 0, 0, 1));
+	m_colors.push_back(glm::vec4(1, 0, 0, 1));
+	m_colors.push_back(glm::vec4(0, 1, 0, 1));
+	m_colors.push_back(glm::vec4(0, 1, 0, 1));
+	m_colors.push_back(glm::vec4(0, 0, 1, 1));
+	m_colors.push_back(glm::vec4(0, 0, 1, 1));
 
-    m_normals.resize(m_positions.size(), glm::vec3(0,0,0));
+	m_normals.resize(m_positions.size(), glm::vec3(0, 0, 0));
 
-    update_all_buffers();
+	update_all_buffers();
 }
 
 void FrameRenderable::do_draw()
 {
-    glcheck(glLineWidth(3.0f));
-    MeshRenderable::do_draw();
-    glcheck(glLineWidth(1.0f));
+	glcheck(glLineWidth(3.0f));
+	MeshRenderable::do_draw();
+	glcheck(glLineWidth(1.0f));
 }
 
-FrameRenderable::~FrameRenderable(){}
+FrameRenderable::~FrameRenderable() {}

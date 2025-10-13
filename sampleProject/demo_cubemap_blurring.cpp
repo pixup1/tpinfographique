@@ -1,5 +1,6 @@
-#include <texturing/CubeMapUtils.hpp>
 #include <GL/glew.h>
+
+#include <texturing/CubeMapUtils.hpp>
 
 /**
  * When using environment lighting, blurring the environnment texture/cubemap
