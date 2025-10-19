@@ -235,4 +235,4 @@ On obtient le rendu suivant :
 
 = Conclusion
 
-Ce premier TP nous a permis de mettre en place et d’approprier la chaîne de rendu OpenGL/SFML du projet. Nous avons progressivement construit une scène 3D en ajoutant des éléments clés du pipeline graphique : création de shaders personnalisés, gestion d’attributs (positions, couleurs) et utilisation de l'indexation. Le passage d’un triangle à un cube non indexé puis indexé a clarifié l’intérêt de la factorisation des sommets et des indices. Enfin, l’application de transformations (translation, rotation, mise à l’échelle) a illustré la composition des matrices modèle et leur effet visuel.
+Ce premier TP nous a permis de mettre en place et de faire nos premiers pas avec la pipeline OpenGL. Même si nous n'avons pas démarré le projet de zéro, nous avons vu les aspects essentiels du rendu 3D : la modélisation de formes primitives, l'indexation, les shaders, les attibuts (position, couleur) et les transformations d'objets 3D. Ces différentes étapes de la pipeline nous serviront par la suite pour réaliser notre projet.
