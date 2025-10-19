@@ -88,7 +88,7 @@ de `sfmlGraphicsPipeline/src/CubeRenderable.cpp` pour ajouter les trois points d
 
 Dans cet exercice, on cherche à ajouter un attribut de couleur au vertex shader. Pour cela, on modifie le fichier `sfmlGraphicsPipeline/shaders/flatVertex.glsl` :
 
-```cpp
+```glsl
 #version 400
 
 uniform mat4 projMat, viewMat, modelMat;
