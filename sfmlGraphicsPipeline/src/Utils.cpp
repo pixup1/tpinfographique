@@ -299,36 +299,40 @@ void getUnitCylinder(vector<glm::vec3>& positions, vector<glm::vec3>& normals, s
 
 	float previous_angle = (slices - 1) * angle_step;
 	float angle = 0;
-	float previous_sin;  // = ???
-	float previous_cos;  // = ???
-	float sin;           // = ???
-	float cos;           // = ???
+	float previous_cos;
+	float previous_sin;
+	float cos = std::cos(angle);
+	float sin = std::sin(angle);
 
 	for (size_t i = 0; i < slices; ++i)
 	{
 		size_t voffset = 12 * i;  // 4 x 3 = 12 vertices per slice
 		previous_angle = angle;
 		angle += angle_step;
+		previous_cos = cos;
+		previous_sin = sin;
+		cos = std::cos(angle);
+		sin = std::sin(angle);
 
 		// Positions
 
 		// top triangle
 		positions[voffset + 0] = glm::vec3(0.0, 0.0, 1.0);
-		positions[voffset + 1] = glm::vec3(std::cos(angle), std::sin(angle), 1.0);
-		positions[voffset + 2] = glm::vec3(std::cos(previous_angle), std::sin(previous_angle), 1.0);
+		positions[voffset + 1] = glm::vec3(cos, sin, 1.0);
+		positions[voffset + 2] = glm::vec3(previous_cos, previous_sin, 1.0);
 
 		// side triangles
-		positions[voffset + 3] = glm::vec3(std::cos(angle), std::sin(angle), 1.0);
-		positions[voffset + 4] = glm::vec3(std::cos(previous_angle), std::sin(previous_angle), 1.0);
-		positions[voffset + 5] = glm::vec3(std::cos(previous_angle), std::sin(previous_angle), 0.0);
-		positions[voffset + 6] = glm::vec3(std::cos(previous_angle), std::sin(previous_angle), 0.0);
-		positions[voffset + 7] = glm::vec3(std::cos(angle), std::sin(angle), 0.0);
-		positions[voffset + 8] = glm::vec3(std::cos(angle), std::sin(angle), 1.0);
+		positions[voffset + 3] = glm::vec3(cos, sin, 1.0);
+		positions[voffset + 4] = glm::vec3(previous_cos, previous_sin, 1.0);
+		positions[voffset + 5] = glm::vec3(previous_cos, previous_sin, 0.0);
+		positions[voffset + 6] = glm::vec3(previous_cos, previous_sin, 0.0);
+		positions[voffset + 7] = glm::vec3(cos, sin, 0.0);
+		positions[voffset + 8] = glm::vec3(cos, sin, 1.0);
 
 		// bottom triangle
 		positions[voffset + 9] = glm::vec3(0.0, 0.0, 0.0);
-		positions[voffset + 10] = glm::vec3(std::cos(angle), std::sin(angle), 0.0);
-		positions[voffset + 11] = glm::vec3(std::cos(previous_angle), std::sin(previous_angle), 0.0);
+		positions[voffset + 10] = glm::vec3(cos, sin, 0.0);
+		positions[voffset + 11] = glm::vec3(previous_cos, previous_sin, 0.0);
 
 		// Normals
 
