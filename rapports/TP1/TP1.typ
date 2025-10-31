@@ -34,7 +34,7 @@ Et quelques autres changements de syntaxe que vous pouvez retrouver dans ce comm
 
 Après avoir apporté ces modifications, nous pouvons lancer l'exécutable `practical1` et obtenir une fenêtre vide :
 
-#figure(image("images/Tuto2.png", width: 60%), caption: "Fenêtre vide")
+#figure(image("images/TP1/Tuto2.png", width: 60%), caption: "Fenêtre vide")
 
 == Tutoriel 3
 
@@ -54,7 +54,7 @@ viewer.addRenderable(frame);
 
 Et voici le résultat :
 
-#figure(image("images/Tuto3.png", width: 60%), caption: "Lignes")
+#figure(image("images/TP1/Tuto3.png", width: 60%), caption: "Lignes")
 
 == Tutoriel 4
 
@@ -82,7 +82,7 @@ m_positions.push_back( glm::vec3 (0 ,1 ,0) );
 
 de `sfmlGraphicsPipeline/src/CubeRenderable.cpp` pour ajouter les trois points du triangle. On obtient bien un triangle :
 
-#figure(image("images/Tuto4.png", width: 60%), caption: "Triangle")
+#figure(image("images/TP1/Tuto4.png", width: 60%), caption: "Triangle")
 
 = Exercice 1
 
@@ -135,7 +135,7 @@ glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, 0, (void *)0);
 
 On obtient le rendu suivant :
 
-#figure(image("images/Ex1.png", width: 60%), caption: "Triangle coloré")
+#figure(image("images/TP1/Ex1.png", width: 60%), caption: "Triangle coloré")
 
 = Exercice 2
 
@@ -156,7 +156,7 @@ m_colors.push_back(glm::vec4(1, 0, 0, 1));
 
 On obtient le rendu suivant :
 
-#figure(image("images/Ex2.png", width: 60%), caption: "Cube sans indexation")
+#figure(image("images/TP1/Ex2.png", width: 60%), caption: "Cube sans indexation")
 
 = Exercice 3
 
@@ -199,7 +199,7 @@ void IndexedCubeRenderable::do_draw()
 
 On obtient le rendu suivant :
 
-#figure(image("images/Ex3.png", width: 60%), caption: "Cube avec indexation")
+#figure(image("images/TP1/Ex3.png", width: 60%), caption: "Cube avec indexation")
 
 = Exercice 4
 
@@ -231,7 +231,7 @@ cube->setModelMatrix(cubeModel);
 
 On obtient le rendu suivant :
 
-#figure(image("images/Ex4.png", width: 60%), caption: "Cubes transformés")
+#figure(image("images/TP1/Ex4.png", width: 60%), caption: "Cubes transformés")
 
 = Conclusion
 
