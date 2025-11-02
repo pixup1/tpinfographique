@@ -181,7 +181,7 @@ void main()
 
 Cela nous donne le résultat suivant :
 
-#figure(image("images/TP2/Ex2.png", width: 60%), caption: "Cylindre avec normales")
+#figure(image("images/TP2/Ex2.png", width: 60%), caption: "Cylindre avec normales dans le vertex shader")
 
 = Exercice 3
 
@@ -217,11 +217,31 @@ surfel_color = vec4(cNormal, w);
 
 On obtient ainsi des couleurs uniforme sur les deux objets :
 
-#figure(image("images/TP2/Ex3.png", width: 60%), caption: "Cylindre avec normales")
+#figure(image("images/TP2/Ex3.png", width: 60%), caption: "Chat sur un arbre à chat avec normales dans le vertex shader")
 
 
 = Exercice 4
 
+Cet exercice consiste à commencer la modélisation 3D pour notre projet. Pour cela, nous modéliserons les différents éléments dans Blender. Nous pourrons plus tard les importer dans notre projet au format Wavefront (`.obj`) comme vu plus haut.
 
+Notre scénario (nouvellement écrit) mettant en scène une tortue de mer ainsi qu'une plage, nous commencerons par modéliser cela.
+
+== Tortue
+
+Pour modéliser la tortue, nous utiliserons le workflow dit "subsurf" (Subdivision Surface), qui permet de subdiviser des formes basiques composées de quadrilatères pour obtenir un résultat plus détaillé et organique.
+
+#figure(image("images/TP2/Ex4-1.png"), caption: "Notre modèle de tortue dans Blender (mesh après subdivision)")
+
+Pour ce qui est des textures, nous verrons ça plus tard.
+
+== Plage
+
+Pour ce qui est de la plage, on peut modéliser le terrain en sculptant un plan subdivisé. Pour l'océan, un modificateur "Océan" existe dans Blender, ce qui permet de générer des vagues automatiquement. Enfin, pour les palmiers, on utilise une texture de feuille trouvée sur internet. Nous verrons comment appliquer des textures dans notre projet à l'occasion du TP7, à priori.
+
+#figure(image("images/TP2/Ex4-2.png"), caption: "Modélisation de la tortue dans Blender (mesh après subdivision)")
+
+Tout comme la tortue, ce modèle n'est évidemment pas terminé. On envisage notamment de rajouter du corail et des rochers sous l'océan afin de détailler le fond marin, puisqu'une partie de notre scénario s'y déroule.
 
 = Conclusion
+
+Dans ce TP, nous avons vu comment utiliser la modélisation paramétrique pour créer des primitives comme un cylindre, puis comment utiliser un logiciel comme Blender pour modéliser des objets plus complexes (modélisation descriptive). Nous avons également vu comment différents logiciels peuvent se transmettre des modèles 3D via des formats standards comme le Wavefront. Nous sommes donc prêts à continuer la modélisation complète de notre scène pour le projet.
