@@ -238,7 +238,7 @@ Pour ce qui est des textures, nous verrons ça plus tard.
 
 Pour ce qui est de la plage, on peut modéliser le terrain en sculptant un plan subdivisé. Pour l'océan, un modificateur "Océan" existe dans Blender, ce qui permet de générer des vagues automatiquement. Enfin, pour les palmiers, on utilise une texture de feuille trouvée sur internet. Nous verrons comment appliquer des textures dans notre projet à l'occasion du TP7, à priori.
 
-#figure(image("images/TP2/Ex4-2.png"), caption: "Modélisation de la tortue dans Blender (mesh après subdivision)")
+#figure(image("images/TP2/Ex4-2.png"), caption: "Plage modélisée dans Blender")
 
 Tout comme la tortue, ce modèle n'est évidemment pas terminé. On envisage notamment de rajouter du corail et des rochers sous l'océan afin de détailler le fond marin, puisqu'une partie de notre scénario s'y déroule.
 
