@@ -12,10 +12,11 @@ void creer_branche(int level, HierarchicalRenderablePtr parent, ShaderProgramPtr
 	{
 		return;
 	}
-	for (int i = 0; i < branching_branches; ++i) {
+	for (int i = 0; i < branching_branches; ++i)
+	{
 		// Create child
 		std::shared_ptr<CylinderMeshRenderable> child = std::
-			make_shared<CylinderMeshRenderable>(shaderProgram, false, 20u, false);
+		    make_shared<CylinderMeshRenderable>(shaderProgram, false, 20u, false);
 		// Set global transform
 		glm::mat4 childGlobalTransform;
 		childGlobalTransform *= getTranslationMatrix(0.0, 1.0, 0.0);
@@ -27,7 +28,7 @@ void creer_branche(int level, HierarchicalRenderablePtr parent, ShaderProgramPtr
 		glm::mat4 childLocalTransform;
 		childLocalTransform *= getScaleMatrix(thickness, 1.0, thickness);
 		childLocalTransform *= getRotationMatrix(glm::radians(-90.0f), glm::vec3(1.0, 0.0, 0.0));
-		child -> setLocalTransform(childLocalTransform);
+		child->setLocalTransform(childLocalTransform);
 		// Define parent / children relationships
 		HierarchicalRenderable::addChild(parent, child);
 		// Recursive call
@@ -49,15 +50,15 @@ void initialize_scene(Viewer& viewer)
 
 	// Create renderables
 	std::shared_ptr<CylinderMeshRenderable> root = std ::
-		make_shared<CylinderMeshRenderable>(flatShader, false, 20u, false);
+	    make_shared<CylinderMeshRenderable>(flatShader, false, 20u, false);
 	// For each element of the hierarchy ,
 	// Set local transform and global transform
 	glm::mat4 rootGlobalTransform;
-	root -> setGlobalTransform(rootGlobalTransform);
+	root->setGlobalTransform(rootGlobalTransform);
 	glm::mat4 rootLocalTransform;
 	rootLocalTransform *= getScaleMatrix(0.15, 1.0, 0.15);
 	rootLocalTransform *= getRotationMatrix(glm::radians(-90.0f), glm::vec3(1.0, 0.0, 0.0));
-	root -> setLocalTransform(rootLocalTransform);
+	root->setLocalTransform(rootLocalTransform);
 	// Define parent / children relationships
 	creer_branche(5, root, flatShader, 0.75f, 35.0f, 4, 0.15);
 	// Add the root of the hierarchy to the viewer

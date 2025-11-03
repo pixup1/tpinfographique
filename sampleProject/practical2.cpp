@@ -22,20 +22,20 @@ void initialize_scene(Viewer& viewer)
 	CylinderMeshRenderablePtr cylinder = std::make_shared<CylinderMeshRenderable>(flatShader, indexed, slices, vertex_normals);
 
 	// Add the cylinder to the viewer
-	//viewer.addRenderable(cylinder);
+	// viewer.addRenderable(cylinder);
 
 	// Create suzanne
 	const std::string suzanne_path = "../../sfmlGraphicsPipeline/meshes/suzanne.obj";
 	MeshRenderablePtr suzanne = std::make_shared<MeshRenderable>(flatShader, suzanne_path);
 	suzanne->setModelMatrix(getTranslationMatrix(5, 0, 0));
 	// Add suzanne to the viewer
-	//viewer.addRenderable(suzanne);
+	// viewer.addRenderable(suzanne);
 
 	const std::string cat_path = "../../sfmlGraphicsPipeline/meshes/cat.obj";
 	const std::string pillar_path = "../../sfmlGraphicsPipeline/meshes/pillar.obj";
 	MeshRenderablePtr cat = std::make_shared<MeshRenderable>(flatShader, cat_path);
 	MeshRenderablePtr pillar = std::make_shared<MeshRenderable>(flatShader, pillar_path);
-	cat->setModelMatrix(getTranslationMatrix(0.5,3.2,0));
+	cat->setModelMatrix(getTranslationMatrix(0.5, 3.2, 0));
 	pillar->setModelMatrix(getRotationMatrix(glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0)));
 	viewer.addRenderable(cat);
 	viewer.addRenderable(pillar);
