@@ -337,9 +337,9 @@ void getUnitCylinder(vector<glm::vec3>& positions, vector<glm::vec3>& normals, s
 		// Normals
 
 		// top triangle
-		normals[voffset + 0] = glm::vec3(0.0, 1.0, 0.0);
-		normals[voffset + 1] = glm::vec3(0.0, 1.0, 0.0);
-		normals[voffset + 2] = glm::vec3(0.0, 1.0, 0.0);
+		normals[voffset + 0] = glm::vec3(0.0, 0.0, 1.0);
+		normals[voffset + 1] = glm::vec3(0.0, 0.0, 1.0);
+		normals[voffset + 2] = glm::vec3(0.0, 0.0, 1.0);
 
 		// side triangles
 		if (vertex_normals)
@@ -349,8 +349,8 @@ void getUnitCylinder(vector<glm::vec3>& positions, vector<glm::vec3>& normals, s
 			normals[voffset + 4] = glm::vec3(previous_cos, previous_sin, 0.0);
 			normals[voffset + 5] = glm::vec3(previous_cos, previous_sin, 0.0);
 			normals[voffset + 6] = glm::vec3(previous_cos, previous_sin, 0.0);
-			normals[ voffset +  7 ] = glm::vec3(cos, sin, 1.0);
-			normals[ voffset +  8 ] = glm::vec3(cos, sin, 1.0);
+			normals[voffset + 7] = glm::vec3(cos, sin, 0.0);
+			normals[voffset + 8] = glm::vec3(cos, sin, 0.0);
 		}
 		else
 		{
@@ -358,15 +358,15 @@ void getUnitCylinder(vector<glm::vec3>& positions, vector<glm::vec3>& normals, s
 			glm::vec3 n = glm::normalize(glm::vec3((cos + previous_cos) / 2, (sin + previous_sin) / 2, 0.0));
 			normals[voffset + 3] = n;
 			normals[voffset + 4] = n;
-			normals[ voffset +  5 ] = n;
-			normals[ voffset +  6 ] = n;
-			normals[ voffset +  7 ] = n;
-			normals[ voffset +  8 ] = n;
+			normals[voffset + 5] = n;
+			normals[voffset + 6] = n;
+			normals[voffset + 7] = n;
+			normals[voffset + 8] = n;
 		}
 
-		normals[voffset + 9] = glm::vec3(0.0, -1.0, 0.0);
-		normals[voffset + 10] = glm::vec3(0.0, -1.0, 0.0);
-		normals[voffset + 11] = glm::vec3(0.0, -1.0, 0.0);
+		normals[voffset + 9] = glm::vec3(0.0, 0.0, -1.0);
+		normals[voffset + 10] = glm::vec3(0.0, 0.0, -1.0);
+		normals[voffset + 11] = glm::vec3(0.0, 0.0, -1.0);
 
 		// Texture coordinates (don't modify, might be used later)
 

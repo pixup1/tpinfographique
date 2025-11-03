@@ -44,17 +44,28 @@ void movingCylinder(Viewer& viewer)
 	viewer.addRenderable(frame);
 
 	// Animated cylinder
-	auto cylinder = std::make_shared<CylinderMeshRenderable>(flatShader, false);
+	auto cylinder = std::make_shared<CylinderMeshRenderable>(flatShader, false, 20, false);
 	cylinder->setGlobalTransform(glm::mat4(1.0));
 
-	// TODO: Keyframes on parent transformation
-	// cylinder->addGlobalTransformKeyframe(...);
-	//...
+	cylinder->addGlobalTransformKeyframe(GeometricTransformation(glm::vec3(0.0f, 0.0f, 0.0f),
+	                                                             glm::quat(),
+	                                                             glm::vec3(1.0f, 1.0f, 1.0f)),
+	                                     0.0f);
+	cylinder->addGlobalTransformKeyframe(GeometricTransformation(glm::vec3(0.0f, 0.0f, 0.0f),
+	                                                             glm::angleAxis(1.0f, glm::vec3(0.0f, 1.0f, 0.0f)),
+	                                                             glm::vec3(1.0f, 1.0f, 1.0f)),
+	                                     1.0f);
 
-	// TODO: Keyframes on local transformation
-	// cylinder->addLocalTransformKeyframe(...);
-	//...
+	cylinder->addLocalTransformKeyframe(GeometricTransformation(glm::vec3(0.0f, 0.0f, -5.0f),
+	                                                             glm::quat(),
+	                                                             glm::vec3(1.0f, 1.0f, 1.0f)),
+	                                     0.0f);
+	cylinder->addLocalTransformKeyframe(GeometricTransformation(glm::vec3(0.0f, 0.0f, -5.0f),
+	                                                             glm::angleAxis(2.0f, glm::vec3(0.0f, 0.0f, 1.0f)),
+	                                                             glm::vec3(1.0f, 1.0f, 1.0f)),
+	                                     1.0f);
 
+	viewer.addRenderable(cylinder);
 	viewer.startAnimation();
 }
 

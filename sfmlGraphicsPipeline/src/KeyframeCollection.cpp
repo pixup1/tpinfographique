@@ -1,5 +1,6 @@
 #include "../include/KeyframeCollection.hpp"
 
+#include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/compatibility.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <iostream>
@@ -25,13 +26,14 @@ glm::mat4 KeyframeCollection::interpolateTransformation(float time) const
 
 		glm::vec3 interpTranslation = glm::lerp(result[0].second.getTranslation(), result[1].second.getTranslation(), factor);
 		glm::vec3 interpScale = glm::lerp(result[0].second.getScale(), result[1].second.getScale(), factor);
-		glm::quat interpOrientation = glm::slerp(result[0].second.getOrientation(), result[1].second.getOrientation(), factor);
+		glm::quat interpOrientation = glm::slerp(glm::normalize(result[0].second.getOrientation()), glm::normalize(result[1].second.getOrientation()), factor);
+		glm::mat4 iMatrix(1.0f);
 
-		glm::mat4 iMatrix;
 		iMatrix = glm::translate(iMatrix, interpTranslation);
 		iMatrix *= glm::toMat4(interpOrientation);
 		iMatrix = glm::scale(iMatrix, interpScale);
-		
+		iMatrix = glm::scale(iMatrix, interpScale);
+
 		return iMatrix;
 	}
 	else
