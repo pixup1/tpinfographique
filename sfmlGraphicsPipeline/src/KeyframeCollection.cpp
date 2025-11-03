@@ -1,6 +1,7 @@
 #include "../include/KeyframeCollection.hpp"
 
 #include <glm/gtx/compatibility.hpp>
+#include <glm/gtx/quaternion.hpp>
 #include <iostream>
 
 void KeyframeCollection::add(const GeometricTransformation& transformation, float time)
@@ -10,7 +11,6 @@ void KeyframeCollection::add(const GeometricTransformation& transformation, floa
 
 glm::mat4 KeyframeCollection::interpolateTransformation(float time) const
 {
-	// TODO: Complete the interpolation framework
 	if (!m_keyframes.empty())
 	{
 		// Handle the case where the time parameter is outside the keyframes time scope.
@@ -21,14 +21,18 @@ glm::mat4 KeyframeCollection::interpolateTransformation(float time) const
 		// Get keyframes surrounding the time parameter
 		std::array<Keyframe, 2> result = getBoundingKeyframes(effective_time);
 
-		// TODO: Compute the interpolating factor based on the time parameter and the surrounding keyframes times.
+		float factor = (time - result[0].first) / (result[1].first - result[0].first);
 
-		// TODO: Interpolate each transformation component of the surrounding keyframes: orientation, translation, scale
-		//       Use spherical linear interpolation for the orientation interpolation, glm::slerp(value1, value2, factor);
-		//       Use linear interpolation for the translation and scale, glm::lerp(value1, value2, factor);
+		glm::vec3 interpTranslation = glm::lerp(result[0].second.getTranslation(), result[1].second.getTranslation(), factor);
+		glm::vec3 interpScale = glm::lerp(result[0].second.getScale(), result[1].second.getScale(), factor);
+		glm::quat interpOrientation = glm::slerp(result[0].second.getOrientation(), result[1].second.getOrientation(), factor);
 
-		// Build a matrix transformation from the orientation, translation and scale components
-		return glm::mat4(1.0);
+		glm::mat4 iMatrix;
+		iMatrix = glm::translate(iMatrix, interpTranslation);
+		iMatrix *= glm::toMat4(interpOrientation);
+		iMatrix = glm::scale(iMatrix, interpScale);
+		
+		return iMatrix;
 	}
 	else
 	{
