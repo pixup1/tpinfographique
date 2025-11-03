@@ -25,16 +25,21 @@ void KeyframedHierarchicalRenderable::addGlobalTransformKeyframe(const Geometric
 	m_globalKeyframes.add(transformation, time);
 }
 
+void KeyframedHierarchicalRenderable::addKeyframesFromFile(const std::string &animation_filename, float time_shift, bool local)
+{
+	m_globalKeyframes.addFromFile(animation_filename, time_shift);
+}
+
 void KeyframedHierarchicalRenderable::do_animate(float time)
 {
 	// Assign the interpolated transformations from the keyframes to the local/global transformations.
 	if (!m_localKeyframes.empty())
 	{
-		setLocalTransform(m_localKeyframes.interpolateTransformation(time));
+		setLocalTransform(m_localKeyframes.interpolateTransformation(time, true));
 	}
 	if (!m_globalKeyframes.empty())
 	{
-		setGlobalTransform(m_globalKeyframes.interpolateTransformation(time));
+		setGlobalTransform(m_globalKeyframes.interpolateTransformation(time, true));
 	}
 }
 

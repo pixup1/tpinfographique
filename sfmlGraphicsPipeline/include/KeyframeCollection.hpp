@@ -3,6 +3,7 @@
 
 #include <array>
 #include <map>
+#include <string>
 
 #include "GeometricTransformation.hpp"
 
@@ -27,6 +28,15 @@ class KeyframeCollection
 	void add(const GeometricTransformation& transformation, float time);
 
 	/**
+	 * \brief Add keyframes from a file.
+	 *
+	 * Add all the keyframes contained in a .animation file.
+	 * \param animation_filename Name of the file containing the keyframes.
+	 * \param time_shift The amount of time to shift all the keyframes by.
+	 */
+	void addFromFile(const std::string &animation_filename, float time_shift);
+
+	/**
 	 * \brief Interpolate a transformation at a given time.
 	 *
 	 * This function will interpolate a geometric transformation at a given
@@ -39,9 +49,10 @@ class KeyframeCollection
 	 * matrix is returned.
 	 *
 	 * \param time Interpolation time
+	 * \param smooth Whether to use cubic interpolation (true) or linear interpolation (false)
 	 * \return The interpolated geometric transformation.
 	 */
-	glm::mat4 interpolateTransformation(float time) const;
+	glm::mat4 interpolateTransformation(float time, bool smooth) const;
 
 	/**
 	 * @brief Check if the collection is empty.

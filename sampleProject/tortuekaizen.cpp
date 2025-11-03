@@ -14,29 +14,29 @@ void initialize_scene(Viewer& viewer)
 	// Add the shader program to the viewer
 	viewer.addShaderProgram(flatShader);
 
-	const std::string shell_path = "../ObjFiles/Carapace.obj";
-	const std::string nag_ard_path = "../ObjFiles/Nag-ArD.obj";
-	const std::string nag_arg_path = "../ObjFiles/Nag-ArG.obj";
-	const std::string nag_avd_path = "../ObjFiles/Nag-AvD.obj";
-	const std::string nag_avg_path = "../ObjFiles/Nag-AvG.obj";
-	const std::string tete_path = "../ObjFiles/Tete.obj";
-	MeshRenderablePtr shell = std::make_shared<MeshRenderable>(flatShader, shell_path);
-	MeshRenderablePtr nag_ard = std::make_shared<MeshRenderable>(flatShader, nag_ard_path);
-	MeshRenderablePtr nag_arg = std::make_shared<MeshRenderable>(flatShader, nag_arg_path);
-	MeshRenderablePtr nag_avd = std::make_shared<MeshRenderable>(flatShader, nag_avd_path);
-	MeshRenderablePtr nag_avg = std::make_shared<MeshRenderable>(flatShader, nag_avg_path);
-	MeshRenderablePtr tete = std::make_shared<MeshRenderable>(flatShader, tete_path);
-	HierarchicalRenderable::addChild(shell, nag_ard);
-	HierarchicalRenderable::addChild(shell, nag_arg);
-	HierarchicalRenderable::addChild(shell, nag_avd);
-	HierarchicalRenderable::addChild(shell, nag_avg);
-	HierarchicalRenderable::addChild(shell, tete);
+	const std::string shell_path = "../ObjFiles/Carapace";
+	const std::string nag_ard_path = "../ObjFiles/Nag-ArD";
+	const std::string nag_arg_path = "../ObjFiles/Nag-ArG";
+	const std::string nag_avd_path = "../ObjFiles/Nag-AvD";
+	const std::string nag_avg_path = "../ObjFiles/Nag-AvG";
+	const std::string tete_path = "../ObjFiles/Tete";
+	MeshRenderablePtr shell = std::make_shared<MeshRenderable>(flatShader, shell_path + ".obj");
+	MeshRenderablePtr nag_ard = std::make_shared<MeshRenderable>(flatShader, nag_ard_path + ".obj");
+	MeshRenderablePtr nag_arg = std::make_shared<MeshRenderable>(flatShader, nag_arg_path + ".obj");
+	MeshRenderablePtr nag_avd = std::make_shared<MeshRenderable>(flatShader, nag_avd_path + ".obj");
+	MeshRenderablePtr nag_avg = std::make_shared<MeshRenderable>(flatShader, nag_avg_path + ".obj");
+	MeshRenderablePtr tete = std::make_shared<MeshRenderable>(flatShader, tete_path + ".obj");
+	HierarchicalRenderable::addChild(shell, nag_ard, true);
+	HierarchicalRenderable::addChild(shell, nag_arg, true);
+	HierarchicalRenderable::addChild(shell, nag_avd, true);
+	HierarchicalRenderable::addChild(shell, nag_avg, true);
+	HierarchicalRenderable::addChild(shell, tete, true);
+	nag_ard->addKeyframesFromFile(nag_ard_path + ".animation", 0.0, false);
+	nag_arg->addKeyframesFromFile(nag_arg_path + ".animation", 0.0, false);
+	nag_avd->addKeyframesFromFile(nag_avd_path + ".animation", 0.0, false);
+	nag_avg->addKeyframesFromFile(nag_avg_path + ".animation", 0.0, false);
 	viewer.addRenderable(shell);
-	viewer.addRenderable(nag_ard);
-	viewer.addRenderable(nag_arg);
-	viewer.addRenderable(nag_avd);
-	viewer.addRenderable(nag_avg);
-	viewer.addRenderable(tete);
+	viewer.startAnimation();
 }
 
 int main()

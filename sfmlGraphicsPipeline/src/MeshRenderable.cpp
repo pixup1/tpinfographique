@@ -1,6 +1,10 @@
 #include "../include/MeshRenderable.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
+#include <fstream>
+#include <glm/gtx/matrix_decompose.hpp>
+#include <glm/gtx/euler_angles.hpp>
 
 #include "../include/Utils.hpp"
 #include "../include/gl_helper.hpp"
@@ -17,6 +21,38 @@ MeshRenderable::MeshRenderable(ShaderProgramPtr program,
                                                                    m_indexed(true)
 {
     read_obj(mesh_filename, this->m_positions, this->m_indices, this->m_normals, this->m_tcoords);
+    
+    glm::mat4 transform = glm::mat4(1.0f);
+    std::ifstream fin(mesh_filename.c_str());
+    if (fin)
+    {
+        std::string token;
+        while (fin >> token)
+        {
+            if (token == "TRANSFORM")
+            {
+                float m[16];
+                bool ok = true;
+                for (int i = 0; i < 16; ++i)
+                {
+                    if (!(fin >> m[i]))
+                    {
+                        ok = false;
+                        break;
+                    }
+                }
+                if (ok)
+                {
+                    for (int r = 0; r < 4; ++r)
+                        for (int c = 0; c < 4; ++c)
+                            // break;
+                            transform[c][r] = m[r * 4 + c]; // map row-major to GLM (column-major)
+                }
+                break;
+            }
+        }
+    }
+    this->setGlobalTransform(transform);
     set_random_colors();
     gen_buffers();
 	update_buffers();

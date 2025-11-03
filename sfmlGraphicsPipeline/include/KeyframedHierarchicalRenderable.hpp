@@ -32,7 +32,17 @@ class KeyframedHierarchicalRenderable : public HierarchicalRenderable
 	 */
 	void addGlobalTransformKeyframe(const GeometricTransformation& transformation, float time);
 
-   protected:
+	/**
+	 * \brief Add keyframes from a file.
+	 *
+	 * Add all the keyframes contained in a .animation file.
+	 * \param animation_filename Name of the file containing the keyframes.
+	 * \param time_shift The amount of time to shift all the keyframes by.
+	 * \param local Whether to add the keyframes to the local (true) or global (false) transformation collection.
+	 */
+	void addKeyframesFromFile(const std::string &animation_filename, float time_shift, bool local);
+
+protected:
 	KeyframedHierarchicalRenderable() : HierarchicalRenderable(nullptr)
 	{
 	}

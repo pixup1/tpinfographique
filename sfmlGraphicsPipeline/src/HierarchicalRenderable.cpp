@@ -21,7 +21,14 @@ const glm::mat4& HierarchicalRenderable::getGlobalTransform() const
 
 void HierarchicalRenderable::setGlobalTransform(const glm::mat4& globalTransform)
 {
-	m_globalTransform = globalTransform;
+	if (m_parent && m_subtractParentTransform)
+	{
+		m_globalTransform = glm::inverse(m_parent->computeTotalGlobalTransform()) * globalTransform;
+	}
+	else
+	{
+		m_globalTransform = globalTransform;
+	}
 }
 
 void HierarchicalRenderable::updateModelMatrix()
@@ -95,9 +102,11 @@ void HierarchicalRenderable::afterAnimate(float time)
 		m_children[i]->animate(time);
 }
 
-void HierarchicalRenderable::addChild(HierarchicalRenderablePtr parent, HierarchicalRenderablePtr child)
+void HierarchicalRenderable::addChild(HierarchicalRenderablePtr parent, HierarchicalRenderablePtr child, bool subtractParentTransform)
 {
 	child->m_parent = parent;
+	child->m_subtractParentTransform = subtractParentTransform;
+	child->setGlobalTransform(child->m_globalTransform);
 	parent->m_children.push_back(child);
 }
 
