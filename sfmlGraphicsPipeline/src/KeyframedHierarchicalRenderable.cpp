@@ -35,11 +35,11 @@ void KeyframedHierarchicalRenderable::do_animate(float time)
 	// Assign the interpolated transformations from the keyframes to the local/global transformations.
 	if (!m_localKeyframes.empty())
 	{
-		setLocalTransform(m_localKeyframes.interpolateTransformation(time, true));
+		setLocalTransform(m_localKeyframes.interpolateTransformation(time));
 	}
 	if (!m_globalKeyframes.empty())
 	{
-		setGlobalTransform(m_globalKeyframes.interpolateTransformation(time, true));
+		setGlobalTransform(m_globalKeyframes.interpolateTransformation(time));
 	}
 }
 

@@ -7,6 +7,13 @@
 
 #include "GeometricTransformation.hpp"
 
+typedef enum KeyframeInterpolationMode
+{
+	LINEAR,
+	CUBIC,
+	CONSTANT
+} KeyframeInterpolationMode;
+
 /**
  * \brief An ordered collection of keyframes.
  *
@@ -25,7 +32,7 @@ class KeyframeCollection
 	 * \param transformation The geometric transformation of the keyframe.
 	 * \param time The time of the keyframe.
 	 */
-	void add(const GeometricTransformation& transformation, float time);
+	void add(const GeometricTransformation& transformation, float time, KeyframeInterpolationMode interpolation = CUBIC);
 
 	/**
 	 * \brief Add keyframes from a file.
@@ -52,7 +59,7 @@ class KeyframeCollection
 	 * \param smooth Whether to use cubic interpolation (true) or linear interpolation (false)
 	 * \return The interpolated geometric transformation.
 	 */
-	glm::mat4 interpolateTransformation(float time, bool smooth) const;
+	glm::mat4 interpolateTransformation(float time) const;
 
 	/**
 	 * @brief Check if the collection is empty.
@@ -60,42 +67,27 @@ class KeyframeCollection
 	 */
 	bool empty() const;
 
-	const std::map<float, GeometricTransformation>& getKeyFrames() const;
-
    private:
 	/**
-	 * \brief Definition of a keyframe.
-	 *
-	 * A keyframe is, for now, a geometric transformation at a given time.
-	 * This is represented as a pair, since it is exactly how it will
-	 * be stored inside m_keyframes (avoids conversions).
-	 */
-	typedef std::pair<float, GeometricTransformation> Keyframe;
-
-	/**
-	 * \brief Get the bounding keyframes at a specific time.
-	 *
-	 * This function get the keyframes that are bounding the given time.
-	 * They will be used to interpolate the transformation at this
-	 * specific time.
-	 * \param time Interpolation time.
-	 * \return The bounding keyframes stored in this collection.
-	 * \note We could return only an iterator here, but we thought
-	 * it might be easier to understand the function interpolateTransformation()
-	 * if the result is returned this way.
-	 */
-	std::array<Keyframe, 2> getBoundingKeyframes(float time) const;
+	* \brief Definition of a keyframe.
+	*/
+	struct Keyframe
+	{
+		float time;
+		GeometricTransformation transform;
+		KeyframeInterpolationMode interpolation;
+	};
 
 	/**
 	 * \brief Internal storage of the keyframes.
 	 *
 	 * Keyframes are stored inside a map. Such collection associate
-	 * to a time a geometric transformation. Its specificity is to
+	 * to a time a Keyyframe struct. Its specificity is to
 	 * store the data in a way that it is trivial to iterate over the
 	 * keyframes in a increasing time order. Internally, a map element
 	 * is similar to a set of pair< float, GeometricTransformation >.
 	 */
-	std::map<float, GeometricTransformation> m_keyframes;
+	std::map<float, Keyframe> m_keyframes;
 };
 
 #endif

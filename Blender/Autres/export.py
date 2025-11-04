@@ -40,18 +40,23 @@ def export_mesh(obj):
 def export_animation(obj):
     output = ""
     if obj.animation_data and obj.animation_data.action:
-        frames = []
+        frames = {}
         for fcurve in obj.animation_data.action.fcurves:
             for keyframe in fcurve.keyframe_points:
-                frames.append((int(keyframe.co.x)))
+                #frames.append((int(keyframe.co.x)))
+                if int(keyframe.co.x) not in frames:
+                    frames[int(keyframe.co.x)] = [keyframe.interpolation]
+                else:
+                    frames[int(keyframe.co.x)].append(keyframe.interpolation)
         scene = bpy.context.scene
         depsgraph = bpy.context.evaluated_depsgraph_get()
-        for fr in sorted(set(frames)):
+        for fr in sorted(frames.keys()):
             scene.frame_set(fr)
             eval_obj = obj.evaluated_get(depsgraph)
             loc, rot, scale = eval_obj.matrix_world.decompose()
             t = frame_to_time(fr)
-            output += f"{t},{loc.x},{loc.y},{loc.z},{rot.x},{rot.y},{rot.z},{rot.w},{scale.x},{scale.y},{scale.z}\n"
+            most_frequent_interp = max(set(frames[fr]), key=frames[fr].count)
+            output += f"{t},{most_frequent_interp},{loc.x},{loc.y},{loc.z},{rot.x},{rot.y},{rot.z},{rot.w},{scale.x},{scale.y},{scale.z}\n"
         if output != "":
             with open(f"{export_path}/{obj.name}.animation", "w") as f:
                 f.write(output)

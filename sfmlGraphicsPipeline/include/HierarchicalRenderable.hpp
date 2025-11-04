@@ -77,7 +77,7 @@ class HierarchicalRenderable : public Renderable
 	 *
 	 * \param parent A pointer to the parent.
 	 * \param child A pointer to the child.
-	 * \param subtractParentTransform Whether to subtract the parent's global transform from the child's global transform.
+	 * \param inverse Whether to update the inverse of the parent's global transform, which will be multiplied to the child's transform whenever that changes. This allows to add a child without changing its transform (when a model is imported, for example).
 	 *
 	 * Note: the children and the parents of an instance are stored in a shared pointer.
 	 * If we want to have a member function for this functionality, we would try to use
@@ -87,7 +87,7 @@ class HierarchicalRenderable : public Renderable
 	 * with the memory management done in a shared pointer. std::enable_shared_from_this
 	 * was made just for this purpose, but here we stick to the simpler static version.
 	 */
-	static void addChild(HierarchicalRenderablePtr parent, HierarchicalRenderablePtr child, bool subtractParentTransform = false);
+	static void addChild(HierarchicalRenderablePtr parent, HierarchicalRenderablePtr child, bool inverse = false);
 
 	/** @brief Compute the model matrix of the instance.
 	 *
@@ -181,14 +181,9 @@ class HierarchicalRenderable : public Renderable
 	 */
 	glm::mat4 m_localTransform;
 	
-	/**@brief Whether to subtract the parent's global transform from the child's global transform.
-	 *
-	 * If true, when added as a child to a parent, and on subsequent global transform changes,
-	 * this instance's global transform will be adjusted to negate the effect of the parent's
-	 * global transform, effectively keeping the child in the same world position regardless
-	 * of the parent's transformation.
+	/**@brief The inverse that gets applied to the child on transformation.
 	 */
-	bool m_subtractParentTransform = false;
+	glm::mat4 m_inverse = glm::mat4(1.0);
 
 	/**\brief Perform computations before do_draw()
 	 */
