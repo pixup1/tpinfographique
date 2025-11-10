@@ -43,8 +43,8 @@ void initialize_scene(Viewer& viewer)
 	// Populate the dynamic system with particles, forcefields and create renderables associated to them for visualization.
 	// Uncomment only one of the following line
 
-	particles(viewer, system, systemRenderable);
-	// springs(viewer, system, systemRenderable);
+	// particles(viewer, system, systemRenderable);
+	springs(viewer, system, systemRenderable);
 	// collisions(viewer, system, systemRenderable);
 	// playPool(viewer, system, systemRenderable);
 
@@ -158,7 +158,7 @@ void springs(Viewer& viewer, DynamicSystemPtr& system, DynamicSystemRenderablePt
 	}
 
 	// Initialize springs attributes (stiffness, rest length, damping)
-	float stiffness = 4e3, l0 = gridWidth / (particlePerLine - 1), damping = 0.0;
+	float stiffness = 4e3, l0 = gridWidth / (particlePerLine - 1), damping = 50;
 
 	// Create springs between particles of the grid, horizontally and vertically
 	// Store them in a list
@@ -197,7 +197,7 @@ void springs(Viewer& viewer, DynamicSystemPtr& system, DynamicSystemRenderablePt
 	system->addForceField(gravityForceField);
 
 	// Initialize a force field that apply to all the particles of the system to simulate vicosity (air friction)
-	float dampingCoefficient = 0.0;
+	float dampingCoefficient = 10.0;
 	DampingForceFieldPtr dampingForceField = std::make_shared<DampingForceField>(system->getParticles(), dampingCoefficient);
 	system->addForceField(dampingForceField);
 
