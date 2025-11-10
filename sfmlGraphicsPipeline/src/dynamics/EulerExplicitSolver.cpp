@@ -14,10 +14,10 @@ void EulerExplicitSolver::do_solve(const float& dt, std::vector<ParticlePtr>& pa
 	{
 		if (!p->isFixed())
 		{
-			// TODO: Implement explicit euler solver
-			// Functions to use:
-			// Particle::getPosition(), Particle::getVelocity(), Particle::getMass(), Particle::getForce()
-			// Particle::setPosition(), Particle::setVelocity()
+			// Update particle velocity
+			p->setVelocity(p->getVelocity() + (1 / p->getMass()) * dt * p->getForce());
+			// Update particle position
+			p->setPosition(p->getPosition() + dt * p->getVelocity());
 		}
 	}
 }
