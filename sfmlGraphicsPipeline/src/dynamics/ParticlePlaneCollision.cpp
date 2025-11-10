@@ -23,11 +23,18 @@ void ParticlePlaneCollision::do_solveCollision()
 	// Plane::normal(): Return the normal of the plane
 	// Particle::getRadius(), Particle::getPosition(), Particle::getVelocity(), Particle::setPosition(), Particle::setVelocity()
 
-	// Compute particle-plane distance
-
+	// Compute interpenetration distance
+	float planeParticleDist = glm::dot(m_particle->getPosition(), m_plane->normal()) - m_plane->distanceToOrigin();
+	float interpenetrationDist = m_particle->getRadius() - planeParticleDist;
+	if (interpenetrationDist <= 0)
+		return;
+	
 	// Project the particle on the plane
+	glm::vec3 proj = m_plane->projectOnPlane(m_particle->getPosition());
+	m_particle->setPosition(proj + m_particle->getRadius() * m_plane->normal());
 
 	// Compute post-collision velocity
+	m_particle->setVelocity(m_particle->getVelocity() - (1.0f + m_restitution) * glm::dot(m_particle->getVelocity(), m_plane->normal()) * (m_plane->normal()));
 }
 
 bool testParticlePlane(const ParticlePtr& particle, const PlanePtr& plane)
@@ -55,6 +62,6 @@ bool testParticlePlane(const ParticlePtr& particle, const PlanePtr& plane)
 	// Plane::distanceToOrigin(): Return the distance to origin from the plane
 	// Plane::normal(): Return the normal of the plane
 	// Particle::getRadius(), Particle::getPosition()
-
-	return false;
+	float particlePlaneDist = glm::dot(particle->getPosition(), plane->normal()) - plane->distanceToOrigin();
+	return std::abs(particlePlaneDist) <= particle->getRadius();
 }

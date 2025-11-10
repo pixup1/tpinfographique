@@ -44,8 +44,8 @@ void initialize_scene(Viewer& viewer)
 	// Uncomment only one of the following line
 
 	// particles(viewer, system, systemRenderable);
-	springs(viewer, system, systemRenderable);
-	// collisions(viewer, system, systemRenderable);
+	// springs(viewer, system, systemRenderable);
+	collisions(viewer, system, systemRenderable);
 	// playPool(viewer, system, systemRenderable);
 
 	// Finally activate animation
@@ -222,7 +222,7 @@ void collisions(Viewer& viewer, DynamicSystemPtr& system, DynamicSystemRenderabl
 	viewer.addShaderProgram(flatShader);
 
 	// Activate collision detection
-	system->setCollisionsDetection(false);
+	system->setCollisionsDetection(true);
 
 	// Initialize the restitution coefficient for collision
 	// 1.0 = full elastic response
@@ -244,7 +244,7 @@ void collisions(Viewer& viewer, DynamicSystemPtr& system, DynamicSystemRenderabl
 	{
 		// Initialize a particle with position, velocity, mass and radius and add it to the system
 		px = glm::vec3(0.0, 1.0, 0.0);
-		pv = glm::vec3(0.0, 0.0, 0.0);
+		pv = glm::vec3(0.1, 0.0, 0.0);
 		pr = 0.1;
 		pm = 1.0;
 		ParticlePtr particle = std::make_shared<Particle>(px, pv, pm, pr);
