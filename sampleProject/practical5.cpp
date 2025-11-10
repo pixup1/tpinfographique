@@ -45,8 +45,8 @@ void initialize_scene(Viewer& viewer)
 
 	// particles(viewer, system, systemRenderable);
 	// springs(viewer, system, systemRenderable);
-	// collisions(viewer, system, systemRenderable);
-	playPool(viewer, system, systemRenderable);
+	 collisions(viewer, system, systemRenderable);
+	//playPool(viewer, system, systemRenderable);
 
 	// Finally activate animation
 	viewer.startAnimation();

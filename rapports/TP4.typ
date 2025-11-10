@@ -48,7 +48,7 @@ iMatrix = glm::scale(iMatrix, interpScale);
 return iMatrix;
 ```
 
-On insterpole chaque composante de la transformation séparément avant de les combiner, afin de conserver la forme du modèle.
+On interpole chaque composante de la transformation séparément avant de les combiner, afin de conserver la forme du modèle.
 
 Une fois que cette fonction marche, on peut s'en servir dans le fichier `practical4.cpp`. On commence par la fonction `movingCylinder`
  :
@@ -90,6 +90,8 @@ viewer.startAnimation();
 ```
 
 En plaçant des keyframes à t=0 et 5 secondes, on définit un cylindre qui fait une rotation de 270° autour de l'axe Y global, et une rotation de 270° autour de son axe local Z en 5 secondes (pour donner l'impression qu'il roule).
+
+#figure(grid(columns: (1fr,1fr,1fr), image("images/TP4/Cylindre1.png"), image("images/TP4/Cylindre2.png"), image("images/TP4/Cylindre3.png")), caption: "Déplacement du cylindre entre les keyframes")
 
 Ensuite, on s'occupe de la fonction `movingTree`, qui doit générer un arbre animé. Pour cela, on modifie la fonction `creer_branche` que nous avions écrite pour le TP précédent :
 
@@ -160,6 +162,14 @@ void movingTree(Viewer &viewer)
 ```
 
 Cela a pour résultat de faire bouger les branches de haut en bas (ce qui correspond à une rotation autour de l'axe X des branches). On peut jouer l'animation en boucle avec `viewer.setAnimationLoop(true, 5.0)`.
+
+#figure(
+  grid(
+    columns: (1fr, 1fr, 1fr),
+    image("images/TP4/Arbre1.png"), image("images/TP4/Arbre2.png"), image("images/TP4/Arbre3.png"),
+  ),
+  caption: "Mouvement de l'arbre entre les keyframes",
+)
 
 = Exercice 2
 
