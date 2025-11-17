@@ -112,8 +112,8 @@ vec3 computePointLight(PointLight light, vec3 surfel_to_camera)
     float specular_dot = clamp(dot(surfel_to_camera, reflect_direction), 0, 1);
     float specular_factor = pow(specular_dot, material.shininess);
 
-    // Attenuation: TODO
-    float attenuation = 1.0;
+    // Attenuation
+    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
 
     // Combine results    
     vec3 ambient  = attenuation *                   light.ambient  * material.ambient ;
@@ -137,11 +137,11 @@ vec3 computeSpotLight(SpotLight light, vec3 surfel_to_camera)
     float specular_dot = clamp(dot(surfel_to_camera, reflect_direction), 0, 1);
     float specular_factor = pow(specular_dot, material.shininess);
 
-    // Spotlight (soft edges): TODO
-    float intensity = 1.0;
+    // Spotlight (soft edges):
+    float intensity = max(dot(surfel_to_light, -light.spotDirection), 0.0) < cos(light.innerCutOff / 2) ? 0.0 : 1.0;
 
     // Attenuation
-    float attenuation = 1.0;
+    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
 
     // Combine results    
     vec3 ambient  =             attenuation *                   light.ambient  * material.ambient ;
