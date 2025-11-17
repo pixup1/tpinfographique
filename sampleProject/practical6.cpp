@@ -74,6 +74,27 @@ void initialize_scene(Viewer& viewer)
 	pointLightRenderable2->setLocalTransform(localTransformation);
 	viewer.addPointLight(pointLight2);
 	viewer.addRenderable(pointLightRenderable2);
+	
+	// Animated point light
+	p_position = glm::vec3(0.0, 0.0, 0.0);
+	p_ambient = glm::vec3(0.0, 0.0, 0.0);
+	p_diffuse = glm::vec3(2.0, 2.0, 2.0);
+	p_specular = glm::vec3(2.0, 2.0, 2.0);
+	p_constant = 1.0;
+	p_linear = 5e-1;
+	p_quadratic = 0;
+	PointLightPtr pointLight3 = std::make_shared<PointLight>(p_position, p_ambient, p_diffuse, p_specular, p_constant, p_linear, p_quadratic);
+	pointLight3->addGlobalTransformKeyframe(getTranslationMatrix(glm::vec3(5.0, 0.0, 2.0)), 0.0);
+	pointLight3->addGlobalTransformKeyframe(getTranslationMatrix(glm::vec3(-5.0, 0.0, 2.0)), 1.0);
+	pointLight3->addGlobalTransformKeyframe(getTranslationMatrix(glm::vec3(5.0, 0.0, 2.0)), 2.0);
+	pointLight3->addGlobalTransformKeyframe(getTranslationMatrix(glm::vec3(-5.0, 0.0, 2.0)), 3.0);
+	pointLight3->addGlobalTransformKeyframe(getTranslationMatrix(glm::vec3(5.0, 0.0, 2.0)), 4.0);
+	pointLight3->addGlobalTransformKeyframe(getTranslationMatrix(glm::vec3(-5.0, 0.0, 2.0)), 5.0);
+	pointLight3->addGlobalTransformKeyframe(getTranslationMatrix(glm::vec3(5.0, 0.0, 2.0)), 6.0);
+	pointLight3->addGlobalTransformKeyframe(getTranslationMatrix(glm::vec3(-5.0, 0.0, 2.0)), 7.0);
+	pointLight3->addGlobalTransformKeyframe(getTranslationMatrix(glm::vec3(5.0, 0.0, 2.0)), 8.0);
+	pointLight3->addGlobalTransformKeyframe(getTranslationMatrix(glm::vec3(-5.0, 0.0, 2.0)), 9.0);
+	viewer.addPointLight(pointLight3);
 
 	// Define a spot light
 	glm::vec3 s_position(0.0, 5.0, -8.0), s_spotDirection = glm::normalize(glm::vec3(0.0, -1.0, 1.0));
