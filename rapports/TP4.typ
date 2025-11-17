@@ -1,22 +1,41 @@
 #import "@preview/silky-report-insa:0.5.2": *
 #show: doc => insa-report(
-  id: 4,
-  pre-title: "Informatique Graphique",
-  title: "Animation procédurale",
-  authors: [
-    *GRAINDORGE Amance*
+    id: 4,
+    pre-title: "Informatique Graphique",
+    title: "Animation procédurale",
+    authors: [
+        *GRAINDORGE Amance*
 
-    *VERNET Hector*
-    #v(70pt)
-  ],
-  date: "20/10/2025",
-  insa: "rennes",
-  doc,
+        *VERNET Hector*
+        #v(70pt)
+    ],
+    date: "20/10/2025",
+    insa: "rennes",
+    doc,
 )
+
+#show link: it => underline(offset: 2pt)[#it]
+
+#show raw.where(block: true): it => {
+    if it.lines.first().count > 1 {
+        block(stroke: 0.5pt + black, inset: 5pt, width: 100%, grid(
+            columns: (auto, auto),
+            column-gutter: 2em,
+            row-gutter: par.leading,
+            align: (right, raw.align),
+            ..for line in it.lines {
+                (
+                    text(fill: luma(150))[#line.number],
+                    line.body,
+                )
+            },
+        ))
+    } else { it.lines.first() }
+}
 
 = Introduction
 
-Au cours de ce TP, nous nous attelerons à compléter et étender le code d'animation présent dans la pipeline fournie. Ce code aura pour but de pouvoir définir des animations de modèles à partir de _keyframes_ (ou images clés) représentant la transformation d'un objet à un point dans le temps. Une fois que les fonctions de base fonctionneront, nous pourrons les améliorer pour notre projet avec des fonctionnalités telles que l'importation depuis un logiciel d'animation, et d'autres méthodes d'interpolation.
+Au cours de ce TP, nous nous attelerons à compléter et étendre le code d'animation présent dans la pipeline fournie. Ce code aura pour but de pouvoir définir des animations de modèles à partir de _keyframes_ (ou images clés) représentant la transformation d'un objet à un point dans le temps. Une fois que les fonctions de base fonctionneront, nous pourrons les améliorer pour notre projet avec des fonctionnalités telles que l'importation depuis un logiciel d'animation, et d'autres méthodes d'interpolation.
 
 = Exercice 1
 
@@ -51,12 +70,14 @@ return iMatrix;
 On interpole chaque composante de la transformation séparément avant de les combiner, afin de conserver la forme du modèle.
 
 Une fois que cette fonction marche, on peut s'en servir dans le fichier `practical4.cpp`. On commence par la fonction `movingCylinder`
- :
+:
 
 ```cpp
 // Add shader
-ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-                                "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
+ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>(
+    "../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
+    "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl"
+);
 viewer.addShaderProgram(flatShader);
 
 // Frame
@@ -64,26 +85,49 @@ FrameRenderablePtr frame = std::make_shared<FrameRenderable>(flatShader);
 viewer.addRenderable(frame);
 
 // Animated cylinder
-auto cylinder = std::make_shared<CylinderMeshRenderable>(flatShader, false, 20, false);
+auto cylinder = std::make_shared<CylinderMeshRenderable>(
+    flatShader,
+    false,
+    20,
+    false
+);
 cylinder->setGlobalTransform(glm::mat4(1.0));
 
-cylinder->addGlobalTransformKeyframe(GeometricTransformation(glm::vec3(0.0f, 0.0f, 0.0f),
-                               glm::quat(),
-                               glm::vec3(1.0f, 1.0f, 1.0f)),
-                   0.0f);
-cylinder->addGlobalTransformKeyframe(GeometricTransformation(glm::vec3(0.0f, 0.0f, 0.0f),
-                               glm::angleAxis(M_PIf * 1.5f, glm::vec3(0.0f, 1.0f, 0.0f)),
-                               glm::vec3(1.0f, 1.0f, 1.0f)),
-                   5.0f);
+cylinder->addGlobalTransformKeyframe(
+    GeometricTransformation(
+        glm::vec3(0.0f, 0.0f, 0.0f),
+        glm::quat(),
+        glm::vec3(1.0f, 1.0f, 1.0f)
+    ),
+    0.0f
+);
+cylinder->addGlobalTransformKeyframe(
+    GeometricTransformation(
+        glm::vec3(0.0f, 0.0f, 0.0f),
+        glm::angleAxis(M_PIf * 1.5f,
+        glm::vec3(0.0f, 1.0f, 0.0f)),
+        glm::vec3(1.0f, 1.0f, 1.0f)
+    ),
+    5.0f
+);
 
-cylinder->addLocalTransformKeyframe(GeometricTransformation(glm::vec3(0.0f, 0.0f, -5.0f),
-                              glm::quat(),
-                              glm::vec3(1.0f, 1.0f, 1.0f)),
-                  0.0f);
-cylinder->addLocalTransformKeyframe(GeometricTransformation(glm::vec3(0.0f, 0.0f, -5.0f),
-                              glm::angleAxis(M_PIf * 1.5f, glm::vec3(0.0f, 0.0f, 1.0f)),
-                              glm::vec3(1.0f, 1.0f, 1.0f)),
-                  5.0f);
+cylinder->addLocalTransformKeyframe(
+    GeometricTransformation(
+        glm::vec3(0.0f, 0.0f, -5.0f),
+        glm::quat(),
+        glm::vec3(1.0f, 1.0f, 1.0f)
+    ),
+    0.0f
+);
+cylinder->addLocalTransformKeyframe(
+    GeometricTransformation(
+        glm::vec3(0.0f, 0.0f, -5.0f),
+        glm::angleAxis(M_PIf * 1.5f,
+        glm::vec3(0.0f, 0.0f, 1.0f)),
+        glm::vec3(1.0f, 1.0f, 1.0f)
+    ),
+    5.0f
+);
 
 viewer.addRenderable(cylinder);
 viewer.startAnimation();
@@ -91,72 +135,120 @@ viewer.startAnimation();
 
 En plaçant des keyframes à t=0 et 5 secondes, on définit un cylindre qui fait une rotation de 270° autour de l'axe Y global, et une rotation de 270° autour de son axe local Z en 5 secondes (pour donner l'impression qu'il roule).
 
-#figure(grid(columns: (1fr,1fr,1fr), image("images/TP4/Cylindre1.png"), image("images/TP4/Cylindre2.png"), image("images/TP4/Cylindre3.png")), caption: "Déplacement du cylindre entre les keyframes")
+#figure(
+    grid(
+        columns: (1fr, 1fr, 1fr),
+        image("images/TP4/Cylindre1.png"), image("images/TP4/Cylindre2.png"), image("images/TP4/Cylindre3.png"),
+    ),
+    caption: "Déplacement du cylindre entre les keyframes",
+)
 
 Ensuite, on s'occupe de la fonction `movingTree`, qui doit générer un arbre animé. Pour cela, on modifie la fonction `creer_branche` que nous avions écrite pour le TP précédent :
 
 ```cpp
-void creer_branche(int level, HierarchicalRenderablePtr parent, ShaderProgramPtr shaderProgram, float lengthMultiplier, float angle, int branching_branches, float thickness)
+void creer_branche(
+    int level,
+    HierarchicalRenderablePtr parent,
+    ShaderProgramPtr shaderProgram,
+    float lengthMultiplier,
+    float angle,
+    int branching_branches,
+    float thickness
+)
 {
-    if (level == 0)
-    {
-        return;
-    }
+    if (level == 0) { return; }
     for (int i = 0; i < branching_branches; ++i)
     {
         // Create child
-        auto child = std::make_shared<CylinderMeshRenderable>(shaderProgram, false, 20u, false);
+        auto child = std::make_shared<CylinderMeshRenderable>(
+            shaderProgram,
+            false,
+            20u,
+            false
+        );
         // Set global transform
         child->setGlobalTransform(glm::mat4(1.0));
-        
+
         glm::mat4 childGlobalTransform;
         childGlobalTransform *= getTranslationMatrix(0.0, 1.0, 0.0);
-        childGlobalTransform *= getRotationMatrix(glm::radians(angle + i * (360.0f / branching_branches)), glm::vec3(0.0, 1.0, 0.0));
-        childGlobalTransform *= getRotationMatrix(glm::radians(angle), glm::vec3(1.0, 0.0, 0.0));
-        childGlobalTransform *= getScaleMatrix(lengthMultiplier, lengthMultiplier, lengthMultiplier);
+        childGlobalTransform *= getRotationMatrix(
+            glm::radians(angle + i * (360.0f / branching_branches)),
+            glm::vec3(0.0, 1.0, 0.0)
+        );
+        childGlobalTransform *= getRotationMatrix(
+            glm::radians(angle),
+            glm::vec3(1.0, 0.0, 0.0)
+        );
+        childGlobalTransform *= getScaleMatrix(
+            lengthMultiplier,
+            lengthMultiplier,
+            lengthMultiplier
+        );
 
-        childGlobalTransform *= getRotationMatrix(glm::radians(10.0f), glm::vec3(1.0, 0.0, 0.0));
+        childGlobalTransform *= getRotationMatrix(
+            glm::radians(10.0f),
+            glm::vec3(1.0, 0.0, 0.0)
+        );
         child->addGlobalTransformKeyframe(childGlobalTransform, 0.0f);
         child->addGlobalTransformKeyframe(childGlobalTransform, 5.0f);
-        
-        childGlobalTransform *= getRotationMatrix(glm::radians(-10.0f), glm::vec3(1.0, 0.0, 0.0));
+
+        childGlobalTransform *= getRotationMatrix(
+            glm::radians(-10.0f),
+            glm::vec3(1.0, 0.0, 0.0)
+        );
         child->addGlobalTransformKeyframe(childGlobalTransform, 2.5f);
 
         // Set local transform
         glm::mat4 childLocalTransform;
         childLocalTransform *= getScaleMatrix(thickness, 1.0, thickness);
-        childLocalTransform *= getRotationMatrix(glm::radians(-90.0f), glm::vec3(1.0, 0.0, 0.0));
+        childLocalTransform *= getRotationMatrix(
+            glm::radians(-90.0f),
+            glm::vec3(1.0, 0.0, 0.0)
+        );
         child->setLocalTransform(childLocalTransform);
         // Define parent / children relationships
         HierarchicalRenderable::addChild(parent, child);
         // Recursive call
-        creer_branche(level - 1, child, shaderProgram, lengthMultiplier, angle, branching_branches, thickness);
+        creer_branche(
+            level - 1, child,
+            shaderProgram, lengthMultiplier,
+            angle, branching_branches,
+            thickness
+        );
     }
 }
 
 void movingTree(Viewer &viewer)
 {
     // Add shader
-    ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
-                                                                  "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl");
+    ShaderProgramPtr flatShader = std::make_shared<ShaderProgram>(
+        "../../sfmlGraphicsPipeline/shaders/flatVertex.glsl",
+        "../../sfmlGraphicsPipeline/shaders/flatFragment.glsl"
+    );
     viewer.addShaderProgram(flatShader);
 
     // Frame
     FrameRenderablePtr frame = std::make_shared<FrameRenderable>(flatShader);
     viewer.addRenderable(frame);
 
-    std::shared_ptr<CylinderMeshRenderable> root = std ::
-        make_shared<CylinderMeshRenderable>(flatShader, false, 20u, false);
-    
+    std::shared_ptr<CylinderMeshRenderable> root =
+        std::make_shared<CylinderMeshRenderable>(
+            flatShader,
+            false,
+            20u,
+            false
+        );
+
     glm::mat4 rootLocalTransform;
     rootLocalTransform *= getScaleMatrix(0.15, 1.0, 0.15);
-    rootLocalTransform *= getRotationMatrix(glm::radians(-90.0f), glm::vec3(1.0, 0.0, 0.0));
+    rootLocalTransform *= getRotationMatrix(
+        glm::radians(-90.0f),
+        glm::vec3(1.0, 0.0, 0.0)
+    );
     root->setLocalTransform(rootLocalTransform);
 
     creer_branche(5, root, flatShader, 0.75f, 35.0f, 4, 0.15);
-
     viewer.addRenderable(root);
-
     viewer.startAnimation();
 }
 ```
@@ -164,11 +256,11 @@ void movingTree(Viewer &viewer)
 Cela a pour résultat de faire bouger les branches de haut en bas (ce qui correspond à une rotation autour de l'axe X des branches). On peut jouer l'animation en boucle avec `viewer.setAnimationLoop(true, 5.0)`.
 
 #figure(
-  grid(
-    columns: (1fr, 1fr, 1fr),
-    image("images/TP4/Arbre1.png"), image("images/TP4/Arbre2.png"), image("images/TP4/Arbre3.png"),
-  ),
-  caption: "Mouvement de l'arbre entre les keyframes",
+    grid(
+        columns: (1fr, 1fr, 1fr),
+        image("images/TP4/Arbre1.png"), image("images/TP4/Arbre2.png"), image("images/TP4/Arbre3.png"),
+    ),
+    caption: "Mouvement de l'arbre entre les keyframes",
 )
 
 = Exercice 2
@@ -223,7 +315,7 @@ switch (ki1->second.interpolation)
     case CUBIC: {
         std::map<float, Keyframe>::const_iterator first = m_keyframes.begin();
         std::map<float, Keyframe>::const_iterator last = m_keyframes.end();
-        
+
         std::map<float, Keyframe>::const_iterator ki0;
         std::map<float, Keyframe>::const_iterator ki3 = std::next(ki2);
         if (ki1 == first) {
@@ -280,9 +372,21 @@ switch (ki1->second.interpolation)
         Keyframe k1 = ki1->second;
         Keyframe k2 = ki2->second;
 
-        glm::vec3 interpTranslation = glm::lerp(k1.transform.getTranslation(), k2.transform.getTranslation(), factor);
-        glm::vec3 interpScale = glm::lerp(k1.transform.getScale(), k2.transform.getScale(), factor);
-        glm::quat interpOrientation = glm::slerp(glm::normalize(k1.transform.getOrientation()), glm::normalize(k2.transform.getOrientation()), factor);
+        glm::vec3 interpTranslation = glm::lerp(
+            k1.transform.getTranslation(), 
+            k2.transform.getTranslation(), 
+            factor
+        );
+        glm::vec3 interpScale = glm::lerp(
+            k1.transform.getScale(), 
+            k2.transform.getScale(), 
+            factor
+        );
+        glm::quat interpOrientation = glm::slerp(
+            glm::normalize(k1.transform.getOrientation()),
+            glm::normalize(k2.transform.getOrientation()),
+            factor
+        );
 
         iMatrix = glm::translate(iMatrix, interpTranslation);
         iMatrix *= glm::toMat4(interpOrientation);
@@ -384,19 +488,42 @@ Ce script rajoute également une propriété `TRANSFORM` au fichier `.obj`, qui 
 Après exécution, on se retrouve avec un fichier `.obj` et un fichier `.animation` par objet. Pour parser ces fichiers, nous écrivons la méthode suivante :
 
 ```cpp
-void KeyframeCollection::addFromFile(const std::string &animation_filename, float time_shift) {
+void KeyframeCollection::addFromFile(
+    const std::string &animation_filename, 
+    float time_shift
+) {
     std::ifstream is(animation_filename);
     std::string str;
     while (getline(is, str))
     {
         std::regex regexz(",");
-        std::vector<std::string> split(std::sregex_token_iterator(str.begin(), str.end(), regexz, -1),
-                                      std::sregex_token_iterator());
+        std::vector<std::string> split(
+            std::sregex_token_iterator(
+                str.begin(), 
+                str.end(), 
+                regexz, -1
+            ),
+            std::sregex_token_iterator()
+        );
+
         // Don't forget to convert to Y-up !
-        glm::vec3 loc = glm::vec3(std::stof(split[2]), std::stof(split[4]), -std::stof(split[3]));
-        glm::vec3 size = glm::vec3(std::stof(split[9]), std::stof(split[11]), std::stof(split[10]));
-        glm::quat rot = glm::quat(std::stof(split[8]), std::stof(split[5]), std::stof(split[7]), -std::stof(split[6]));
-        
+        glm::vec3 loc = glm::vec3(
+            std::stof(split[2]), 
+            std::stof(split[4]), 
+            -std::stof(split[3])
+        );
+        glm::vec3 size = glm::vec3(
+            std::stof(split[9]), 
+            std::stof(split[11]), 
+            std::stof(split[10])
+        );
+        glm::quat rot = glm::quat(
+            std::stof(split[8]), 
+            std::stof(split[5]), 
+            std::stof(split[7]), 
+            -std::stof(split[6])
+        );
+
         // Default interpolation is cubic
         KeyframeInterpolationMode interp = CUBIC;
         if (split[1] == "LINEAR") {
@@ -407,7 +534,9 @@ void KeyframeCollection::addFromFile(const std::string &animation_filename, floa
             interp = CUBIC;
         }
 
-        this->add(GeometricTransformation(loc, glm::normalize(rot), size), std::stof(split[0]) + time_shift, interp);
+        this->add(
+            GeometricTransformation(loc, glm::normalize(rot), size), 
+            std::stof(split[0]) + time_shift, interp);
     }
 }
 ```
