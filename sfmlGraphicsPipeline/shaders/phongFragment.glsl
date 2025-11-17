@@ -138,7 +138,8 @@ vec3 computeSpotLight(SpotLight light, vec3 surfel_to_camera)
     float specular_factor = pow(specular_dot, material.shininess);
 
     // Spotlight (soft edges):
-    float intensity = max(dot(surfel_to_light, -light.spotDirection), 0.0) < cos(light.innerCutOff / 2) ? 0.0 : 1.0;
+    float cos_phi = max(dot(surfel_to_light, -light.spotDirection), 0.0);
+    float intensity = clamp((cos_phi - cos(light.outerCutOff / 2))/(cos(light.outerCutOff / 2) - cos(light.innerCutOff / 2)),0,1);
 
     // Attenuation
     float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
