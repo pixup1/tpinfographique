@@ -32,19 +32,19 @@ void initialize_scene(Viewer& viewer)
 	viewer.addShaderProgram(texShader);
 
 	{  // Exercice 1 : Textured bunny
-		viewer.getCamera().setViewMatrix(glm::lookAt(glm::vec3(0, 0, 2), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
+		/* viewer.getCamera().setViewMatrix(glm::lookAt(glm::vec3(0, 0, 2), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
 		std::string bunny_mesh_path = "./../../sfmlGraphicsPipeline/meshes/bunny.obj";
 		std::string bunny_texture_path = "./../../sfmlGraphicsPipeline/textures/bunny_texture.png";
 		auto bunny = std::make_shared<TexturedMeshRenderable>(texShader, bunny_mesh_path, bunny_texture_path);
-		viewer.addRenderable(bunny);
+		viewer.addRenderable(bunny); */
 	}
 
 	{   // Exercice 2 & 3 : wrapping & filtering options
-		/* viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(0, 0, 8 ), glm::vec3(0, 0, 0), glm::vec3( 0, 1, 0 ) ) );
+		viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(0, 0, 8 ), glm::vec3(0, 0, 0), glm::vec3( 0, 1, 0 ) ) );
 		std::string filename = "./../../sfmlGraphicsPipeline/textures/grass_texture.png";
 		TexturedPlaneRenderablePtr texPlane = std::make_shared<TexturedPlaneRenderable>(texShader, filename);
 		texPlane->setGlobalTransform(getScaleMatrix(10));
-		viewer.addRenderable(texPlane); */
+		viewer.addRenderable(texPlane);
 	}
 
 	{   // Exercice 4 : multi-resolution (mipmapping)
