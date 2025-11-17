@@ -40,18 +40,15 @@ void initialize_scene(Viewer& viewer)
 	}
 
 	{   // Exercice 2 & 3 : wrapping & filtering options
-		/*
-		viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(0, 0, 8 ), glm::vec3(0, 0, 0), glm::vec3( 0, 1, 0 ) ) );
+		/* viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(0, 0, 8 ), glm::vec3(0, 0, 0), glm::vec3( 0, 1, 0 ) ) );
 		std::string filename = "./../../sfmlGraphicsPipeline/textures/grass_texture.png";
 		TexturedPlaneRenderablePtr texPlane = std::make_shared<TexturedPlaneRenderable>(texShader, filename);
 		texPlane->setGlobalTransform(getScaleMatrix(10));
-		viewer.addRenderable(texPlane);
-		*/
+		viewer.addRenderable(texPlane); */
 	}
 
 	{   // Exercice 4 : multi-resolution (mipmapping)
-		/*
-		viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(1, 1, 2 ), glm::vec3(1, 0, 0), glm::vec3( 0, 1, 0 ) ) );
+		/* viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(1, 1, 2 ), glm::vec3(1, 0, 0), glm::vec3( 0, 1, 0 ) ) );
 		std::vector<std::string> mipmaps_filenames = {
 		    "./../../sfmlGraphicsPipeline/textures/mipmap1.png",
 		    "./../../sfmlGraphicsPipeline/textures/mipmap2.png",
@@ -63,13 +60,11 @@ void initialize_scene(Viewer& viewer)
 		viewer.addRenderable(mmcube);
 		auto tcube = std::make_shared<TexturedCubeRenderable>(texShader, mipmaps_filenames[0]);
 		viewer.addRenderable(tcube);
-		mmcube->setGlobalTransform(getTranslationMatrix(2,0,0));
-		*/
+		mmcube->setGlobalTransform(getTranslationMatrix(2,0,0)); */
 	}
 	{  // Exercice 5 : multi-texturing
 
-		/*
-		viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(1, 1, 2 ), glm::vec3(1, 0, 0), glm::vec3( 0, 1, 0 ) ) );
+		/* viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(1, 1, 2 ), glm::vec3(1, 0, 0), glm::vec3( 0, 1, 0 ) ) );
 		ShaderProgramPtr multiTexShader = std::make_shared<ShaderProgram>(
 		    "../../sfmlGraphicsPipeline/shaders/multiTextureVertex.glsl",
 		    "../../sfmlGraphicsPipeline/shaders/multiTextureFragment.glsl");
@@ -87,12 +82,10 @@ void initialize_scene(Viewer& viewer)
 		std::string normal_map_path = "./../../sfmlGraphicsPipeline/textures/crate_normal.jpg";
 		auto mtcube2 = std::make_shared<MultiTexturedCubeRenderable>(multiTexNormalShader, texture1_path, normal_map_path);
 		viewer.addRenderable(mtcube2);
-		mtcube2->setGlobalTransform(getTranslationMatrix(2,0,0));
-		*/
+		mtcube2->setGlobalTransform(getTranslationMatrix(2,0,0)); */
 	}
 	{   // Exercice 6 : cubemap
-		/*
-		viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(1, 1, 1 ), glm::vec3(0, 0, 0), glm::vec3( 0, 1, 0 ) ) );
+		/* viewer.getCamera().setViewMatrix( glm::lookAt( glm::vec3(1, 1, 1 ), glm::vec3(0, 0, 0), glm::vec3( 0, 1, 0 ) ) );
 		ShaderProgramPtr cubeMapShader = std::make_shared<ShaderProgram>(  "../../sfmlGraphicsPipeline/shaders/cubeMapVertex.glsl",
 		                                                            "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
 		viewer.addShaderProgram(cubeMapShader);
@@ -100,8 +93,7 @@ void initialize_scene(Viewer& viewer)
 		std::string cubemap_dir = "../../sfmlGraphicsPipeline/textures/skybox";
 		auto cubemap = std::make_shared<CubeMapRenderable>(cubeMapShader, cubemap_dir);
 
-		viewer.addRenderable(cubemap);
-		*/
+		viewer.addRenderable(cubemap); */
 	}
 }
 
