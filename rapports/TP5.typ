@@ -117,8 +117,75 @@ L'exemple de cet exercice est un filet composé de particules reliées entre ell
 
 = Exercice 3
 
+L'objectif de ce troisième exercice est d'implémenter les collisions entre plusieurs particules. Les collisions entre deux particules étant déjà fonctionnelles, nous nous sommes concentrés sur l'interaction entre une particule et un plan. Nous avons donc complété la méthode `ParticlePlaneCollision::do_solveCollision()` qui calcule la nouvelle position et vitesse d'une particule après une collision avec un plan infini. Voici le code complété :
+
+```cpp
+void ParticlePlaneCollision::do_solveCollision()
+{
+	// Don't process fixed particles (Let's assume that the ground plane is fixed)
+	if (m_particle->isFixed())
+		return;
+
+	// Compute interpenetration distance
+	float planeParticleDist = glm::dot(
+        m_particle->getPosition(),
+        m_plane->normal()
+    ) - m_plane->distanceToOrigin();
+	float interpenetrationDist = m_particle->getRadius() - planeParticleDist;
+
+	// No collision
+	if (interpenetrationDist <= 0)
+		return;
+
+	// Project the particle on the plane
+	glm::vec3 proj = m_plane->projectOnPlane(m_particle->getPosition());
+	m_particle->setPosition(proj + m_particle->getRadius() * m_plane->normal());
+
+	// Compute post-collision velocity
+	m_particle->setVelocity(
+		m_particle->getVelocity()
+		- (1.0f + m_restitution) * glm::dot(m_particle->getVelocity(),
+		m_plane->normal()) * (m_plane->normal())
+	);
+}
+```
+Nous avons également complété la fonction de test de collision `testParticlePlane()` :
+```cpp
+bool testParticlePlane(const ParticlePtr& particle, const PlanePtr& plane)
+{
+	float particlePlaneDist = glm::dot(
+		particle->getPosition(), plane->normal()
+	) - plane->distanceToOrigin();
+	return std::abs(particlePlaneDist) <= particle->getRadius();
+}
+```
+
+On teste ensuite notre implémentation avec une scène simple où une particule rebondit sur une particule fixe, et une autre particule rebondit sur un plan fixe. On ajoute également une composante horizontale à la vitesse initiale de l'une des particules pour vérifier le réalisme des interactions. Voici le résultat obtenu :
+
+#figure(
+    grid(
+        columns: (1fr, 1fr),
+        image("images/TP5/Ex3-1.png"), image("images/TP5/Ex3-2.png"),
+        image("images/TP5/Ex3-3.png"), image("images/TP5/Ex3-4.png"),
+    ),
+    caption: "Simulation de collisions entre particules et plan",
+)
+
+On voit que les collisions sont bien gérées, avec un rebond réaliste des particules. Cependant, dans le cas d'un grand nombre d'interactions, des problèmes d'interpenetration peuvent subvenir, car la position des particules n'est corrigée qu'une seule fois par itération. Des particules peuvent donc se retrouver à l'intérieur d'autres particules _après_ leur calcul de collision.
+
 = Exercice 4
 
-= Projet
+Ce dernier exercice nous propose de tester notre système de simulations dans une scène plus complexe, composée d'une table de billard et de deux particules. L'une des particules peut être controlée au clavier par l'utilisateur, en utilisant la classe `ControlledForceFieldRenderable`, tandis que l'autre réagit seulement aux collisions. Voici le résultat obtenu :
+
+#figure(
+    grid(
+        columns: (1fr, 1fr),
+        image("images/TP5/Ex4-1.png"), image("images/TP5/Ex4-2.png"),
+        image("images/TP5/Ex4-3.png"), image("images/TP5/Ex4-4.png"),
+    ),
+    caption: "Simulation d'une table de billard avec particules contrôlables",
+)
 
 = Conclusion
+
+Ce TP nous a permis de mettre en place un système de simulation physique basé sur l'application de forces à des particules. Nous avons implémenté le calcul du mouvement des particules, la gestion des ressorts entre particules, ainsi que les collisions entre particules et plans. Ces éléments constituent une base solide pour des simulations plus complexes, et pourront être utilisés dans notre projet final.
