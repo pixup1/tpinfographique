@@ -141,6 +141,9 @@ void initialize_scene(Viewer &viewer)
 	// test->addKeyframesFromFile("../Animation/Camera.animation", 0.0, false);
 	// viewer.addRenderable(test);
 
+	// Soundtrack
+	viewer.setSoundtrack("../tortuekaizen.wav");
+
 	viewer.startAnimation();
 }
 

@@ -12,3 +12,5 @@ README.html
 *.log
 *.gz
 *.out
+*.aup3-shm
+*.aup3-wal

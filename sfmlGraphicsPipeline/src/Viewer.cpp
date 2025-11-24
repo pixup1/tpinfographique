@@ -238,6 +238,11 @@ void Viewer::setAnimationLoop(bool animationLoop, float loopDuration)
 	m_loopDuration = loopDuration;
 }
 
+void Viewer::setSoundtrack(const std::string& path)
+{
+	soundtrack_path = path;
+}
+
 void Viewer::addDirectionalLight(const DirectionalLightPtr& directionalLight)
 {
 	m_directionalLights.push_back(directionalLight);
@@ -257,17 +262,31 @@ void Viewer::startAnimation()
 {
 	m_lastSimulationTimePoint = clock::now();
 	m_animationIsStarted = true;
+	if (!soundtrack_path.empty()) {
+		std::string cmd = "aplay \"" + soundtrack_path + "\" &";
+		std::system(cmd.c_str());
+	}
 }
 
 void Viewer::stopAnimation()
 {
 	m_animationIsStarted = false;
+	if (!soundtrack_path.empty())
+	{
+		std::system("pkill -f 'aplay'");
+	}
 }
 
 void Viewer::resetAnimation()
 {
 	m_lastSimulationTimePoint = clock::now();
 	m_simulationTime = 0;
+	if (!soundtrack_path.empty())
+	{
+		std::system("pkill -f 'aplay'");
+		std::string cmd = "aplay \"" + soundtrack_path + "\" &";
+		std::system(cmd.c_str());
+	}
 }
 
 void Viewer::addRenderable(const RenderablePtr& r)
@@ -499,6 +518,10 @@ void Viewer::handleEvent()
 		{
 		case sf::Event::Closed:
 			m_applicationRunning = false;
+			if (!soundtrack_path.empty())
+			{
+				std::system("pkill -f 'aplay'");
+			}
 			break;
 		case sf::Event::Resized:
 			m_window.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));

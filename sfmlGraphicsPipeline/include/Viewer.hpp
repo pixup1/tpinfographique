@@ -210,6 +210,8 @@ class Viewer
 	 */
 	void setAnimationLoop(bool animationLoop, float loopDuration = 0.0);
 	/**@}*/
+	
+	void setSoundtrack(const std::string& path);
 
 	void addDirectionalLight(const DirectionalLightPtr& directionalLight);
 
@@ -324,5 +326,7 @@ class Viewer
 
 	KeyboardState m_keyboard;        /*!< Help us to smoothly control the camera with the keyboard. */
 	TimePoint m_lastEventHandleTime; /*!< Last time all input events were handled.*/
+
+	std::string soundtrack_path;
 };
 #endif
