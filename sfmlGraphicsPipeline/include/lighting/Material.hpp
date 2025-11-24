@@ -136,7 +136,21 @@ class Material
 	 */
 	static MaterialPtr Bronze();
 
-   private:
+	static MaterialPtr Water();
+
+	static MaterialPtr Bark();
+
+	static MaterialPtr Sand();
+
+	static MaterialPtr White();
+
+	static MaterialPtr NoLighting();
+
+	static MaterialPtr PureBlack();
+
+	static MaterialPtr BrightOrange();
+
+private:
 	glm::vec3 m_ambient;  /*!< The ambient material vector defines what color this object reflects under ambient lighting. */
 	glm::vec3 m_diffuse;  /*!< The diffuse material vector defines the color of the object under diffuse lighting. */
 	glm::vec3 m_specular; /*!< The specular material vector sets the color impact a specular light has on the object. */

@@ -2,7 +2,7 @@
 #show: doc => insa-report(
     id: 5,
     pre-title: "Informatique Graphique",
-    title: "Animation procédurale",
+    title: "Animation par simulation physique",
     authors: [
         *GRAINDORGE Amance*
 

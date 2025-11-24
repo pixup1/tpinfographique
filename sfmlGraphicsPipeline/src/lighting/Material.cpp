@@ -154,3 +154,73 @@ MaterialPtr Material::Bronze()
 	float shininess = openGLFactor * 0.2;
 	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
 }
+
+MaterialPtr Material::Water()
+{
+	float openGLFactor = 128.0;
+	glm::vec3 ambient(0.0, 0.12, 0.4);
+	glm::vec3 diffuse(0.0, 0.65, 1.0);
+	glm::vec3 specular(0.7, 0.7, 0.7);
+	float shininess = openGLFactor * 0.01;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+}
+
+MaterialPtr Material::Bark()
+{
+	float openGLFactor = 128.0;
+	glm::vec3 ambient(0.2, 0.1, 0.05);
+	glm::vec3 diffuse(0.4, 0.2, 0.1);
+	glm::vec3 specular(0.1, 0.1, 0.1);
+	float shininess = openGLFactor * 0.05;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+}
+
+MaterialPtr Material::Sand()
+{
+	float openGLFactor = 128.0;
+	glm::vec3 ambient(0.4, 0.32, 0.25);
+	glm::vec3 diffuse(1.0, 0.85, 0.65);
+	glm::vec3 specular(0.7, 0.6, 0.4);
+	float shininess = openGLFactor * 0.03;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+}
+
+MaterialPtr Material::White()
+{
+	float openGLFactor = 128.0;
+	glm::vec3 ambient(0.2, 0.2, 0.2);
+	glm::vec3 diffuse(1.0, 1.0, 1.0);
+	glm::vec3 specular(0.5, 0.5, 0.5);
+	float shininess = openGLFactor * 0.01;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+}
+
+MaterialPtr Material::NoLighting()
+{
+	float openGLFactor = 128.0;
+	glm::vec3 ambient(2.0, 2.0, 2.0);
+	glm::vec3 diffuse(0.0, 0.0, 0.0);
+	glm::vec3 specular(0.0, 0.0, 0.0);
+	float shininess = openGLFactor * 0.0;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+}
+
+MaterialPtr Material::PureBlack()
+{
+	float openGLFactor = 128.0;
+	glm::vec3 ambient(0.0, 0.0, 0.0);
+	glm::vec3 diffuse(0.0, 0.0, 0.0);
+	glm::vec3 specular(0.0, 0.0, 0.0);
+	float shininess = openGLFactor * 0.0;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+}
+
+MaterialPtr Material::BrightOrange()
+{
+	float openGLFactor = 128.0;
+	glm::vec3 ambient(0.8f, 0.4f, 0.0f);
+	glm::vec3 diffuse(1.0f, 0.5f, 0.0f);
+	glm::vec3 specular(1.0f, 0.6f, 0.3f);
+	float shininess = openGLFactor * 0.25f;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+}

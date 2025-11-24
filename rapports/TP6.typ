@@ -1,6 +1,6 @@
 #import "@preview/silky-report-insa:0.5.2": *
 #show: doc => insa-report(
-  id: 5,
+  id: 6,
   pre-title: "Informatique Graphique",
   title: "Illumination locale",
   authors: [
