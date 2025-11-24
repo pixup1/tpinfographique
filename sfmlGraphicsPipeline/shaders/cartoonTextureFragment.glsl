@@ -188,7 +188,7 @@ void main()
     if(textureColor.a < 0.8)
       discard;
     
-    textureColor = textureColor * posterizeFactor(sqrt(length(textureColor)), 10.0);
+    textureColor = textureColor * posterizeFactor(sqrt(length(textureColor)), 8.0);
     
     outColor = textureColor*vec4(tmpColor,1.0);
     

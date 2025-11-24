@@ -184,7 +184,7 @@ void main()
     //tmpColor = tmpColor * cell_factor;
 
     //tmpColor = posterizeVector(tmpColor, 15.0);
-    tmpColor = tmpColor * posterizeFactor(sqrt(length(tmpColor)), 10.0);
+    tmpColor = tmpColor * posterizeFactor(sqrt(length(tmpColor)), 8.0);
 
     outColor = vec4(tmpColor,1.0);
 }

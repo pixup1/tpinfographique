@@ -123,23 +123,21 @@ void initialize_scene(Viewer &viewer)
 	DirectionalLightPtr directionalLight = std::make_shared<DirectionalLight>(d_direction, d_ambient, d_diffuse, d_specular);
 	viewer.addDirectionalLight(directionalLight);
 
-	// Define a point light
-	// float p_constant = 1.0, p_linear = 5e-1, p_quadratic = 0.0;
-	// glm::vec3 p_position = glm::vec3(2, 5.0, 5.0);
-	// glm::vec3 p_ambient = glm::vec3(0.0, 0.0, 0.2);
-	// glm::vec3 p_diffuse = glm::vec3(3.0, 3.0, 3.0);
-	// glm::vec3 p_specular = glm::vec3(3.0, 3.0, 3.0);
-	// PointLightPtr pointLight1 = std::make_shared<PointLight>(p_position, p_ambient, p_diffuse, p_specular, p_constant, p_linear, p_quadratic);
-	// viewer.addPointLight(pointLight1);
+	float p_constant = 1.0, p_linear = 5e-1, p_quadratic = 0.0;
+	glm::vec3 p_position = glm::vec3(0.0, 0.0, 0.0);
+	glm::vec3 p_ambient = glm::vec3(0.0, 0.0, 0.0);
+	glm::vec3 p_diffuse = glm::vec3(3.0, 3.0, 3.0);
+	glm::vec3 p_specular = glm::vec3(3.0, 3.0, 3.0);
+	PointLightPtr title_light1 = std::make_shared<PointLight>(p_position, p_ambient, p_diffuse * 0.9f, p_specular * 0.9f, p_constant, p_linear, p_quadratic);
+	title_light1->applyObjTransform("../ObjFiles/TitreLight1.obj");
+	PointLightPtr title_light2 = std::make_shared<PointLight>(p_position, p_ambient, p_diffuse * 0.7f, p_specular * 0.7f, p_constant, p_linear, p_quadratic);
+	title_light2->applyObjTransform("../ObjFiles/TitreLight2.obj");
+	viewer.addPointLight(title_light1);
+	viewer.addPointLight(title_light2);
 
 	// Camera
 	viewer.getCamera().setFov(0.5);
 	viewer.getCamera().addKeyframesFromFile("../Animation/Camera.animation", 0.0, false);
-
-	// const std::string test_obj_path = "../ObjFiles/Tete.obj";
-	// LightedMeshRenderablePtr test = std::make_shared<LightedMeshRenderable>(cartoonShader, test_obj_path, pearl);
-	// test->addKeyframesFromFile("../Animation/Camera.animation", 0.0, false);
-	// viewer.addRenderable(test);
 
 	// Soundtrack
 	viewer.setSoundtrack("../tortuekaizen.wav");

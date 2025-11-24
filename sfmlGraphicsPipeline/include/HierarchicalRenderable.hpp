@@ -148,6 +148,8 @@ class HierarchicalRenderable : public Renderable
 	 * @return A vector of hierarchical renderable shared pointers. */
 	std::vector<HierarchicalRenderablePtr>& getChildren();
 
+	void applyObjTransform(const std::string &filename);
+
    private:
 	/**@brief Pointer to the parent renderable.
 	 *

@@ -4,6 +4,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include <fstream>
 
 #include "../include/Viewer.hpp"
 #include "../include/gl_helper.hpp"
@@ -113,4 +114,39 @@ void HierarchicalRenderable::addChild(HierarchicalRenderablePtr parent, Hierarch
 std::vector<HierarchicalRenderablePtr>& HierarchicalRenderable::getChildren()
 {
 	return m_children;
+}
+
+void HierarchicalRenderable::applyObjTransform(const std::string &filename)
+{
+	glm::mat4 transform = glm::mat4(1.0f);
+	std::ifstream fin(filename.c_str());
+	if (fin)
+	{
+		std::string token;
+		while (fin >> token)
+		{
+			if (token == "TRANSFORM")
+			{
+				float m[16];
+				bool ok = true;
+				for (int i = 0; i < 16; ++i)
+				{
+					if (!(fin >> m[i]))
+					{
+						ok = false;
+						break;
+					}
+				}
+				if (ok)
+				{
+					for (int r = 0; r < 4; ++r)
+						for (int c = 0; c < 4; ++c)
+							// break;
+							transform[c][r] = m[r * 4 + c]; // map row-major to GLM (column-major)
+				}
+				break;
+			}
+		}
+	}
+	this->setGlobalTransform(transform);
 }
