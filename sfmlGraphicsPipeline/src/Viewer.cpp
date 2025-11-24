@@ -45,6 +45,10 @@ glm::vec3 Viewer::KeyboardState::normalized_direction()
 
 Viewer::~Viewer()
 {
+	glDeleteRenderbuffers(1, &rbo_depth);
+	glDeleteTextures(1, &fbo_texture);
+	glDeleteFramebuffers(1, &fbo);
+	glDeleteBuffers(1, &vbo_fbo_vertices);
 }
 
 Viewer::Viewer(float width, float height, const glm::vec4& background_color) : m_window{
@@ -90,6 +94,54 @@ Viewer::Viewer(float width, float height, const glm::vec4& background_color) : m
 	// engine store some data on the graphic card)
 	// m_tengine.init();
 	// m_tengine.setWindowDimensions( m_window.getSize().x, m_window.getSize().y );
+
+	/* Create back-buffer, used for post-processing */ // Shamelessly stolen from https://en.wikibooks.org/wiki/OpenGL_Programming/Post-Processing
+
+	/* Texture */
+	glActiveTexture(GL_TEXTURE0);
+	glGenTextures(1, &fbo_texture);
+	glBindTexture(GL_TEXTURE_2D, fbo_texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	/* Depth buffer */
+	glGenRenderbuffers(1, &rbo_depth);
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo_depth);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height); // We use a 24-bit depth buffer because the 16-bit had some blockiness issues (our scene is not scaled very well so it needs more precision)
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	/* Framebuffer to link everything together */
+	glGenFramebuffers(1, &fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo_texture, 0);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo_depth);
+	GLenum status;
+	if ((status = glCheckFramebufferStatus(GL_FRAMEBUFFER)) != GL_FRAMEBUFFER_COMPLETE)
+	{
+		fprintf(stderr, "glCheckFramebufferStatus: error %p", status);
+		exit(1);
+	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	GLfloat fbo_vertices[] = {
+		-1,	-1,
+		 1,	-1,
+		-1,	 1,
+		 1,	 1,
+	};
+	glGenBuffers(1, &vbo_fbo_vertices);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_fbo_vertices);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(fbo_vertices), fbo_vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// Initialize default post-process shader (identity)
+	m_postProcessShader = std::make_shared<ShaderProgram>(
+		"../../sfmlGraphicsPipeline/post_shaders/IdentityVertex.glsl",
+		"../../sfmlGraphicsPipeline/post_shaders/IdentityFragment.glsl");
 }
 
 constexpr const char* g_help_message =
@@ -125,6 +177,8 @@ constexpr const char* g_help_message =
 
 void Viewer::draw()
 {
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
 	glcheck(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 	float time = getTime();
 	for (const ShaderProgramPtr& prog : m_programs)
@@ -182,6 +236,37 @@ void Viewer::draw()
 		r->unbindShaderProgram();
 	}
 
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	m_postProcessShader->bind();
+
+	// On adapte les attributs du wiki à l'implémentation ShaderProgram
+	int attribute_v_coord_postproc = m_postProcessShader->getAttributeLocation("v_coord");
+	int uniform_fbo_texture = m_postProcessShader->getUniformLocation("fbo_texture");
+
+	glBindTexture(GL_TEXTURE_2D, fbo_texture);
+	glUniform1i(uniform_fbo_texture, /*GL_TEXTURE*/ 0);
+	glEnableVertexAttribArray(attribute_v_coord_postproc);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_fbo_vertices);
+	glVertexAttribPointer(
+		attribute_v_coord_postproc, // attribute
+		2,							// number of elements per vertex, here (x,y)
+		GL_FLOAT,					// the type of each element
+		GL_FALSE,					// take our values as-is
+		0,							// no extra data between each position
+		0							// offset of first element
+	);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glDisableVertexAttribArray(attribute_v_coord_postproc);
+
+	// The buffer swap is done by SFML, when Viewer::display() is called
+
+	m_postProcessShader->unbind();
+
 	if (m_helpDisplayRequest && !m_helpDisplayed)
 	{
 		LOG(info, g_help_message);
@@ -236,6 +321,11 @@ void Viewer::setAnimationLoop(bool animationLoop, float loopDuration)
 {
 	m_animationLoop = animationLoop;
 	m_loopDuration = loopDuration;
+}
+
+void Viewer::setPostProcessShader(const ShaderProgramPtr& shaderProgram)
+{
+	m_postProcessShader = shaderProgram;
 }
 
 void Viewer::setSoundtrack(const std::string& path)
@@ -529,6 +619,16 @@ void Viewer::handleEvent()
 			m_camera.setRatio((float)(m_window.getSize().x) / (float)(m_window.getSize().y));
 			// m_tengine.setWindowDimensions( m_window.getSize().x, m_window.getSize().y );
 			glcheck(glViewport(0, 0, event.size.width, event.size.height));
+
+			// Rescale FBO and RBO as well
+			glBindTexture(GL_TEXTURE_2D, fbo_texture);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, event.size.width, event.size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+			glBindTexture(GL_TEXTURE_2D, 0);
+
+			glBindRenderbuffer(GL_RENDERBUFFER, rbo_depth);
+			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, event.size.width, event.size.height);
+			glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
 			break;
 		case sf::Event::KeyPressed:
 			keyPressedEvent(event);

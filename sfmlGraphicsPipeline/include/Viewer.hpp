@@ -213,6 +213,8 @@ class Viewer
 	
 	void setSoundtrack(const std::string& path);
 
+	void setPostProcessShader(const ShaderProgramPtr& shaderProgram);
+
 	void addDirectionalLight(const DirectionalLightPtr& directionalLight);
 
 	void addPointLight(const PointLightPtr& pointLight);
@@ -328,5 +330,11 @@ class Viewer
 	TimePoint m_lastEventHandleTime; /*!< Last time all input events were handled.*/
 
 	std::string soundtrack_path;
+
+	ShaderProgramPtr m_postProcessShader;
+
+	GLuint fbo, fbo_texture, rbo_depth;
+
+	GLuint vbo_fbo_vertices;
 };
 #endif
