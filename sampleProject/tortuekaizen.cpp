@@ -75,15 +75,26 @@ void initialize_scene(Viewer &viewer)
 	// Shaders
 	ShaderProgramPtr cartoonShader = std::make_shared<ShaderProgram>(
 		"../../sfmlGraphicsPipeline/shaders/phongVertex.glsl",
-		"../../sfmlGraphicsPipeline/shaders/cartoonFragment.glsl");
+		"../../sfmlGraphicsPipeline/shaders/cartoonFragment.glsl"
+	);
 	ShaderProgramPtr cartoonTextureShader = std::make_shared<ShaderProgram>(
 		"../../sfmlGraphicsPipeline/shaders/textureVertex.glsl",
-		"../../sfmlGraphicsPipeline/shaders/cartoonTextureFragment.glsl");
-	ShaderProgramPtr cubeMapShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/cubeMapVertex.glsl",
-																	 "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
+		"../../sfmlGraphicsPipeline/shaders/cartoonTextureFragment.glsl"
+	);
+	ShaderProgramPtr cubeMapShader = std::make_shared<ShaderProgram>(
+		"../../sfmlGraphicsPipeline/shaders/cubeMapVertex.glsl",
+		"../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl"
+	);
 	viewer.addShaderProgram(cubeMapShader);
 	viewer.addShaderProgram(cartoonTextureShader);
 	viewer.addShaderProgram(cartoonShader);
+
+	// Post processing shader
+	ShaderProgramPtr postShader = std::make_shared<ShaderProgram>(
+		"../../sfmlGraphicsPipeline/post_shaders/IdentityVertex.glsl",
+		"../../sfmlGraphicsPipeline/post_shaders/FogFragment.glsl"
+	);
+	viewer.setPostProcessShader(postShader);
 
 	// Materials
 	MaterialPtr nolighting = Material::NoLighting();

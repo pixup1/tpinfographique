@@ -45,7 +45,7 @@ glm::vec3 Viewer::KeyboardState::normalized_direction()
 
 Viewer::~Viewer()
 {
-	glDeleteRenderbuffers(1, &rbo_depth);
+	glDeleteTextures(1, &fbo_depth);
 	glDeleteTextures(1, &fbo_texture);
 	glDeleteFramebuffers(1, &fbo);
 	glDeleteBuffers(1, &vbo_fbo_vertices);
@@ -108,17 +108,22 @@ Viewer::Viewer(float width, float height, const glm::vec4& background_color) : m
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	/* Depth buffer */
-	glGenRenderbuffers(1, &rbo_depth);
-	glBindRenderbuffer(GL_RENDERBUFFER, rbo_depth);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height); // We use a 24-bit depth buffer because the 16-bit had some blockiness issues (our scene is not scaled very well so it needs more precision)
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	/* Depth texture */
+	glActiveTexture(GL_TEXTURE1);
+	glGenTextures(1, &fbo_depth);
+	glBindTexture(GL_TEXTURE_2D, fbo_depth);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	/* Framebuffer to link everything together */
 	glGenFramebuffers(1, &fbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo_texture, 0);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo_depth);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, fbo_depth, 0);
 	GLenum status;
 	if ((status = glCheckFramebufferStatus(GL_FRAMEBUFFER)) != GL_FRAMEBUFFER_COMPLETE)
 	{
@@ -246,10 +251,18 @@ void Viewer::draw()
 	// On adapte les attributs du wiki à l'implémentation ShaderProgram
 	int attribute_v_coord_postproc = m_postProcessShader->getAttributeLocation("v_coord");
 	int uniform_fbo_texture = m_postProcessShader->getUniformLocation("fbo_texture");
+	int uniform_fbo_depth = m_postProcessShader->getUniformLocation("fbo_depth");
 
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, fbo_texture);
 	glUniform1i(uniform_fbo_texture, /*GL_TEXTURE*/ 0);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, fbo_depth);
+	glUniform1i(uniform_fbo_depth, /*GL_TEXTURE*/ 1);
 	glEnableVertexAttribArray(attribute_v_coord_postproc);
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthMask(GL_TRUE);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_fbo_vertices);
 	glVertexAttribPointer(
@@ -620,14 +633,16 @@ void Viewer::handleEvent()
 			// m_tengine.setWindowDimensions( m_window.getSize().x, m_window.getSize().y );
 			glcheck(glViewport(0, 0, event.size.width, event.size.height));
 
-			// Rescale FBO and RBO as well
+			// Rescale FBO textures
+			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, fbo_texture);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, event.size.width, event.size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 			glBindTexture(GL_TEXTURE_2D, 0);
 
-			glBindRenderbuffer(GL_RENDERBUFFER, rbo_depth);
-			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, event.size.width, event.size.height);
-			glBindRenderbuffer(GL_RENDERBUFFER, 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, fbo_depth);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, event.size.width, event.size.height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+			glBindTexture(GL_TEXTURE_2D, 0);
 
 			break;
 		case sf::Event::KeyPressed:

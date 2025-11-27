@@ -333,7 +333,7 @@ class Viewer
 
 	ShaderProgramPtr m_postProcessShader;
 
-	GLuint fbo, fbo_texture, rbo_depth;
+	GLuint fbo, fbo_texture, fbo_depth;
 
 	GLuint vbo_fbo_vertices;
 };
