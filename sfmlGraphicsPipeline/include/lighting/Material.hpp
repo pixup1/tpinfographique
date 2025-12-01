@@ -149,6 +149,8 @@ class Material
 	static MaterialPtr PureBlack();
 
 	static MaterialPtr BrightOrange();
+	
+	static MaterialPtr Rock();
 
 private:
 	glm::vec3 m_ambient;  /*!< The ambient material vector defines what color this object reflects under ambient lighting. */

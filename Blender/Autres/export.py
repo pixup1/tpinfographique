@@ -17,6 +17,8 @@ def export_mesh(obj):
     for ob in bpy.data.objects:
         ob.select_set(False)
     obj.select_set(True)
+    with open(f"{obj_path}/{obj.name}.obj", "w"):
+        pass
     bpy.ops.wm.obj_export(
         filepath=f"{obj_path}/{obj.name}.obj",
         apply_modifiers=True,

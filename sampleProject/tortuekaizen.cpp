@@ -93,6 +93,7 @@ void initialize_scene(Viewer &viewer)
 	MaterialPtr sand = Material::Sand();
 	MaterialPtr black = Material::PureBlack();
 	MaterialPtr orange = Material::BrightOrange();
+	MaterialPtr rock = Material::Rock();
 
 	// Cubemap
 	std::string cubemap_dir = "../Textures/skybox";
@@ -105,6 +106,7 @@ void initialize_scene(Viewer &viewer)
 	
 	auto ground = add_object(viewer, "Ground", sand, cartoonShader);
 	auto ground_coral = add_textured_object(viewer, "GroundCoral", nolighting, "../Textures/Corail.png", cartoonTextureShader);
+	auto ground_rocks = add_object(viewer, "GroundRocks", rock, cartoonShader);
 	auto ocean = add_object(viewer, "Ocean", water, cartoonShader);
 	auto palmiers = add_object(viewer, "Palmiers", bark, cartoonShader);
 	auto leaves = add_textured_object(viewer, "Leaves", white, "../Textures/Feuille.png", cartoonTextureShader);

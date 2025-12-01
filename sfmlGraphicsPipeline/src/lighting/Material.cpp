@@ -224,3 +224,13 @@ MaterialPtr Material::BrightOrange()
 	float shininess = openGLFactor * 0.25f;
 	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
 }
+
+MaterialPtr Material::Rock()
+{
+	float openGLFactor = 128.0;
+	glm::vec3 ambient(0.6f, 0.6f, 0.6f);
+	glm::vec3 diffuse(0.4f, 0.4f, 0.4f);
+	glm::vec3 specular(0.1f, 0.1f, 0.1f);
+	float shininess = openGLFactor * 0.05f;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+}
