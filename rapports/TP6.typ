@@ -9,7 +9,7 @@
     *VERNET Hector*
     #v(70pt)
   ],
-  date: "17/11/2025",
+  date: datetime.today().display("[day]/[month]/[year]"),
   insa: "rennes",
   doc,
 )
@@ -17,20 +17,18 @@
 #show link: it => underline(offset: 2pt)[#it]
 
 #show raw.where(block: true): it => {
-  if it.lines.first().count > 1 {
-    block(stroke: 0.5pt + black, inset: 5pt, width: 100%, grid(
-      columns: (auto, auto),
-      column-gutter: 2em,
-      row-gutter: par.leading,
-      align: (right, raw.align),
-      ..for line in it.lines {
-        (
-          text(fill: luma(150))[#line.number],
-          line.body,
-        )
-      },
-    ))
-  } else { it.lines.first() }
+  block(stroke: 0.5pt + black, inset: 5pt, width: 100%, grid(
+    columns: (auto, auto),
+    column-gutter: 2em,
+    row-gutter: par.leading,
+    align: (right, raw.align),
+    ..for line in it.lines {
+      (
+        text(fill: luma(150))[#line.number],
+        line.body,
+      )
+    },
+  ))
 }
 
 = Introduction
@@ -42,7 +40,9 @@ Dans ce TP, nous allons implémenter le modèle de Phong pour illuminer notre sc
 Cet exercice consiste simplement à vérifier que l'implémentation déjà présente fonctionne correctement. Dans `phongFragment.glsl`, pour le calcul de la lumière directionnelle (une lumière infiniment distante aux rayons parallèles, le cas le plus simple à traiter), on retrouve les trois composantes du modèle de Phong :
 
 - La composante ambiante, dépendant simplement de deux constantes :
-#raw("vec3 ambient = light.ambient \* material.ambient ;", lang: "glsl", block: true) // tabernak ça marche pas
+```glsl
+vec3 ambient = light.ambient * material.ambient;
+```
 
 - La composante diffuse, facteur du produit scalaire entre la normale et la direction de la lumière :
 ```glsl
@@ -124,10 +124,14 @@ p_constant = 1.0;
 p_linear = 5e-1;
 p_quadratic = 0;
 PointLightPtr pointLight3 = std::make_shared<PointLight>(p_position, p_ambient, p_diffuse, p_specular, p_constant, p_linear, p_quadratic);
-pointLight3->addGlobalTransformKeyframe(getTranslationMatrix(glm::vec3(5.0, 0.0, 2.0)), 0.0);
-pointLight3->addGlobalTransformKeyframe(getTranslationMatrix(glm::vec3(-5.0, 0.0, 2.0)), 1.0);
-pointLight3->addGlobalTransformKeyframe(getTranslationMatrix(glm::vec3(5.0, 0.0, 2.0)), 2.0);
-pointLight3->addGlobalTransformKeyframe(getTranslationMatrix(glm::vec3(-5.0, 0.0, 2.0)), 3.0);
+pointLight3->addGlobalTransformKeyframe(
+  getTranslationMatrix(glm::vec3(5.0, 0.0, 2.0)), 0.0);
+pointLight3->addGlobalTransformKeyframe(
+  getTranslationMatrix(glm::vec3(-5.0, 0.0, 2.0)), 1.0);
+pointLight3->addGlobalTransformKeyframe(
+  getTranslationMatrix(glm::vec3(5.0, 0.0, 2.0)), 2.0);
+pointLight3->addGlobalTransformKeyframe(
+  getTranslationMatrix(glm::vec3(-5.0, 0.0, 2.0)), 3.0);
 viewer.addPointLight(pointLight3);
 ```
 
@@ -146,7 +150,7 @@ En lançant la scène, on voit la lumière faire des aller-retours devant les Su
 Dans cet exercice, nous allons adapter le shader `cartoonFragment.glsl` pour fonctionner avec des textures et un nombre arbitraire de lumières. On écrit donc `cartoonTextureFragment.glsl` :
 
 ```glsl
-// [...] Similaire à phongFragment.glsl
+// [...] Similaire à textureFragment.glsl
 
 float posterizeFactor(float value, float steps) {
     return floor(value * steps) / steps;
@@ -157,9 +161,12 @@ void main()
     //Surface to camera vector
     vec3 surfel_to_camera = normalize( cameraPosition - surfel_position );
 
-    int clampedNumberOfDirectionalLight = max(0, min(numberOfDirectionalLight, MAX_NR_DIRECTIONAL_LIGHTS));
-    int clampedNumberOfPointLight = max(0, min(numberOfPointLight, MAX_NR_POINT_LIGHTS));
-    int clampedNumberOfSpotLight = max(0, min(numberOfSpotLight, MAX_NR_SPOT_LIGHTS));
+    int clampedNumberOfDirectionalLight =
+      max(0, min(numberOfDirectionalLight, MAX_NR_DIRECTIONAL_LIGHTS));
+    int clampedNumberOfPointLight =
+      max(0, min(numberOfPointLight, MAX_NR_POINT_LIGHTS));
+    int clampedNumberOfSpotLight =
+      max(0, min(numberOfSpotLight, MAX_NR_SPOT_LIGHTS));
 
     vec3 tmpColor = vec3(0.0, 0.0, 0.0);
 
