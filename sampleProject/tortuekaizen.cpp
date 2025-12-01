@@ -131,7 +131,7 @@ void initialize_scene(Viewer &viewer)
 	PointLightPtr title_light1 = std::make_shared<PointLight>(p_position, p_ambient, p_diffuse * 0.9f, p_specular * 0.9f, p_constant, p_linear, p_quadratic);
 	title_light1->applyObjTransform("../ObjFiles/TitreLight1.obj");
 	PointLightPtr title_light2 = std::make_shared<PointLight>(p_position, p_ambient, p_diffuse * 0.7f, p_specular * 0.7f, p_constant, p_linear, p_quadratic);
-	title_light2->applyObjTransform("../ObjFiles/TitreLight2.obj");
+	title_light2->addKeyframesFromFile("../Animation/TitreLight2.animation", 0.0, false);
 	viewer.addPointLight(title_light1);
 	viewer.addPointLight(title_light2);
 

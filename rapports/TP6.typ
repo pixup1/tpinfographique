@@ -143,4 +143,53 @@ En lançant la scène, on voit la lumière faire des aller-retours devant les Su
 
 = Exercice 6
 
+Dans cet exercice, nous allons adapter le shader `cartoonFragment.glsl` pour fonctionner avec des textures et un nombre arbitraire de lumières. On écrit donc `cartoonTextureFragment.glsl` :
+
+```glsl
+// [...] Similaire à phongFragment.glsl
+
+float posterizeFactor(float value, float steps) {
+    return floor(value * steps) / steps;
+}
+
+void main()
+{
+    //Surface to camera vector
+    vec3 surfel_to_camera = normalize( cameraPosition - surfel_position );
+
+    int clampedNumberOfDirectionalLight = max(0, min(numberOfDirectionalLight, MAX_NR_DIRECTIONAL_LIGHTS));
+    int clampedNumberOfPointLight = max(0, min(numberOfPointLight, MAX_NR_POINT_LIGHTS));
+    int clampedNumberOfSpotLight = max(0, min(numberOfSpotLight, MAX_NR_SPOT_LIGHTS));
+
+    vec3 tmpColor = vec3(0.0, 0.0, 0.0);
+
+    for(int i=0; i<clampedNumberOfDirectionalLight; ++i)
+        tmpColor += computeDirectionalLight(directionalLight[i], surfel_to_camera);
+
+    for(int i=0; i<clampedNumberOfPointLight; ++i)
+        tmpColor += computePointLight(pointLight[i], surfel_to_camera);
+
+    for(int i=0; i<clampedNumberOfSpotLight; ++i)
+        tmpColor += computeSpotLight(spotLight[i], surfel_to_camera);
+
+    vec4 textureColor = texture(texSampler, surfel_texCoord);
+    
+    if(textureColor.a < 0.8)
+      discard;
+    
+    textureColor = textureColor * posterizeFactor(sqrt(length(textureColor)), 8.0);
+    
+    outColor = textureColor*vec4(tmpColor,1.0);
+    
+}
+```
+
+En réalité, l'effet n'est plus vraiment "cartoon" car la postérisation a beaucoup d'étapes (8), mais cela permet d'appliquer le shader à toute la scène sans trop sacrifier de qualité visuelle avec des grands zones sombres. Le résultat est tout de même assez stylisé et donne un look retro (ce qui n'est de tout façon pas évitable à cause de la simplicité du modèle d'éclairage, donc autant en jouer) :
+
+#figure(image("images/TP6/titre.png", width: 60%), caption: "Titre de l'animation postérisé")
+
+En terme d'autres améliorations, nous aimerions aussi ajouter un effet de contour noir autour des objets, et un effet de brouillard lorsque la caméra est sous l'eau (avec un shader de post processing, SFML le permet assez facilement normalement).
+
 = Conclusion
+
+En conclusion, ce TP nous a permis d'implémenter le modèle d'illumination de Phong avec différentes sources lumineuses et des effets d'atténuation et de spot. Nous avons également adapté le shader cartoon pour fonctionner de manière plus universelle, ce qui donne rendu stylisé à notre scène.
