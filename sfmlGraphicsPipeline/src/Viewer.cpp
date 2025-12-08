@@ -229,17 +229,10 @@ void Viewer::draw()
 				glUniform1i(texsamplerLocation, 0);
 			}
 		}
-		if (r->getRenderMode() <= Renderable::RENDER_MODE::WINDOW_TEXTURE)
-		{
-			r->draw();
-		}
-		if (r->getRenderMode() >= Renderable::RENDER_MODE::WINDOW_TEXTURE)
-		{
-			m_texture.setActive(true);
-			r->draw();
-			m_texture.display();
-			m_texture.setActive(false);
-		}
+		m_texture.setActive(true);
+		r->draw();
+		m_texture.display();
+		m_texture.setActive(false);
 		if (r->getShaderProgram())
 		{
 			sf::Texture::bind(0);
@@ -694,12 +687,21 @@ bool Viewer::isRunning() const
 
 void Viewer::display()
 {
+	sf::Sprite screen(m_texture.getTexture());
+	
+	m_window.draw(screen, m_postShader.get());
+
 	m_window.display();
 }
 
 void Viewer::addShaderProgram(const ShaderProgramPtr& program)
 {
 	m_programs.insert(program);
+}
+
+void Viewer::setPostShader(const std::shared_ptr<sf::Shader> &program)
+{
+	m_postShader = program;
 }
 
 void Viewer::reloadShaderPrograms()

@@ -92,6 +92,9 @@ class Viewer
 	 * @param program The shader program to manage.
 	 */
 	void addShaderProgram(const ShaderProgramPtr &program);
+
+	void setPostShader(const std::shared_ptr<sf::Shader> &program);
+
 	/**@brief Reload managed shader programs from its sources.
 	 *
 	 * Reload each managed shader program, to use possibly newer shader sources.
@@ -291,6 +294,7 @@ class Viewer
 	std::vector<SpotLightPtr> m_spotLights;                         /*!< Vector of pointer to the spot lights. */
 
 	std::unordered_set<ShaderProgramPtr> m_programs;
+	std::shared_ptr<sf::Shader> m_postShader;
 
 	// TextEngine m_tengine; /*!< Engine to display textual information. */
 	// TimePoint m_modeInformationTextDisappearanceTime; /*!< Duration of appearance for textual information in seconds. */

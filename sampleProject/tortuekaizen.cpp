@@ -96,6 +96,10 @@ void initialize_scene(Viewer& viewer, RadialImpulseForceFieldPtr& explosion, Mus
 	viewer.addShaderProgram(cartoonTextureShader);
 	viewer.addShaderProgram(cartoonShader);
 
+	std::shared_ptr<sf::Shader> postProcessShader = std::make_shared<sf::Shader>();
+	postProcessShader->loadFromFile("../../sfmlGraphicsPipeline/post_shaders/grayscale.glsl", sf::Shader::Type::Fragment);
+	viewer.setPostShader(postProcessShader);
+
 	// Materials
 	MaterialPtr nolighting = Material::NoLighting();
 	MaterialPtr white = Material::White();
