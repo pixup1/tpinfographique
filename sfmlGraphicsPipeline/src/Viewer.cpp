@@ -142,7 +142,29 @@ void Viewer::draw()
 			glcheck(glUniform1f(timeLocation, time));
 	}
 
-	for (const RenderablePtr& r : m_renderables)
+	// Separate opaque and transparent objects
+	std::vector<RenderablePtr> opaque_renderables;
+	std::vector<RenderablePtr> transparent_renderables;
+
+	for (const RenderablePtr &r : m_renderables)
+	{
+		LightedMeshRenderablePtr lm = std::dynamic_pointer_cast<LightedMeshRenderable>(r);
+		if (lm != nullptr && lm->getMaterial()->alpha() < 1.0f)
+		{
+			transparent_renderables.push_back(r);
+		}
+		else
+		{
+			opaque_renderables.push_back(r);
+		}
+	}
+	
+	// We drawn the opaque objects first so that they can always appear behind the transparent ones
+	std::vector<RenderablePtr> sorted_renderables;
+	sorted_renderables.insert(sorted_renderables.end(), opaque_renderables.begin(), opaque_renderables.end());
+	sorted_renderables.insert(sorted_renderables.end(), transparent_renderables.begin(), transparent_renderables.end());
+
+	for (const RenderablePtr& r : sorted_renderables)
 	{
 		if (r->getShaderProgram())
 		{

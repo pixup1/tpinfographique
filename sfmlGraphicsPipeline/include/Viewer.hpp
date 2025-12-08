@@ -10,6 +10,7 @@
 
 #include "Camera.hpp"
 #include "Renderable.hpp"
+#include "lighting/LightedMeshRenderable.hpp"
 #include "lighting/Light.hpp"
 // #include "TextEngine.hpp"
 #include <GL/glew.h>

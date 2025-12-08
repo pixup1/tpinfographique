@@ -190,7 +190,7 @@ MaterialPtr Material::Water()
 	glm::vec3 diffuse(0.0, 0.65, 1.0);
 	glm::vec3 specular(0.7, 0.7, 0.7);
 	float shininess = openGLFactor * 0.01;
-	float alpha = 0.75f;
+	float alpha = 0.7f;
 	return std::make_shared<Material>(ambient, diffuse, specular, shininess, alpha);
 }
 
