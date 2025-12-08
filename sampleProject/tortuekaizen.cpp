@@ -91,7 +91,8 @@ void initialize_scene(Viewer &viewer)
 	MaterialPtr water = Material::Water();
 	MaterialPtr bark = Material::Bark();
 	MaterialPtr sand = Material::Sand();
-	MaterialPtr black = Material::PureBlack();
+	MaterialPtr pureblack = Material::PureBlack();
+	MaterialPtr black = Material::Black();
 	MaterialPtr orange = Material::BrightOrange();
 	MaterialPtr rock = Material::Rock();
 
@@ -102,7 +103,7 @@ void initialize_scene(Viewer &viewer)
 
 	// Objects
 	auto titre = add_object(viewer, "Titre", orange, cartoonShader);
-	auto titre_blackdrop = add_object(viewer, "TitreBlackdrop", black, cartoonShader);
+	auto titre_blackdrop = add_object(viewer, "TitreBlackdrop", pureblack, cartoonShader);
 	
 	auto ground = add_object(viewer, "Ground", sand, cartoonShader);
 	auto ground_coral = add_textured_object(viewer, "GroundCoral", nolighting, "../Textures/Corail.png", cartoonTextureShader);
@@ -111,12 +112,28 @@ void initialize_scene(Viewer &viewer)
 	auto palmiers = add_object(viewer, "Palmiers", bark, cartoonShader);
 	auto leaves = add_textured_object(viewer, "Leaves", white, "../Textures/Feuille.png", cartoonTextureShader);
 
-	auto shell = add_object(viewer, "Carapace", white, cartoonShader);
-	auto nag_ard = add_object(viewer, "Nag-ArD", white, cartoonShader, shell);
-	auto nag_arg = add_object(viewer, "Nag-ArG", white, cartoonShader, shell);
-	auto nag_avd = add_object(viewer, "Nag-AvD", white, cartoonShader, shell);
-	auto nag_avg = add_object(viewer, "Nag-AvG", white, cartoonShader, shell);
-	auto tete = add_object(viewer, "Tete", white, cartoonShader, shell);
+	auto house2 = add_object(viewer, "maison.001", white, cartoonShader);
+	auto clock = add_textured_object(viewer, "Clock", nolighting, "../Textures/clock.jpg", cartoonTextureShader);
+	auto hour_hand = add_object(viewer, "Hours", white, cartoonShader, clock);
+	auto minute_hand = add_object(viewer, "Minutes", white, cartoonShader, clock);
+	auto bed_frame = add_object(viewer, "BedFrame", bark, cartoonShader);
+	auto bed_sheets = add_object(viewer, "BedSheets", white, cartoonShader);
+
+	auto shell = add_textured_object(viewer, "Carapace.001", white, "../Textures/Tortue_bleue.png", cartoonTextureShader);
+	auto nag_ard = add_textured_object(viewer, "Nag-ArD.001", white, "../Textures/Tortue_bleue.png", cartoonTextureShader, shell);
+	auto nag_arg = add_textured_object(viewer, "Nag-ArG.001", white, "../Textures/Tortue_bleue.png", cartoonTextureShader, shell);
+	auto nag_avd = add_textured_object(viewer, "Nag-AvD.001", white, "../Textures/Tortue_bleue.png", cartoonTextureShader, shell);
+	auto nag_avg = add_textured_object(viewer, "Nag-AvG.001", white, "../Textures/Tortue_bleue.png", cartoonTextureShader, shell);
+	auto tete = add_textured_object(viewer, "Tete.001", white, "../Textures/Tortue_bleue.png", cartoonTextureShader, shell);
+
+	auto shell2 = add_textured_object(viewer, "Carapace.002", white, "../Textures/Tortue_orange.png", cartoonTextureShader);
+	auto nag_ard2 = add_textured_object(viewer, "Nag-ArD.002", white, "../Textures/Tortue_orange.png", cartoonTextureShader, shell2);
+	auto nag_arg2 = add_textured_object(viewer, "Nag-ArG.002", white, "../Textures/Tortue_orange.png", cartoonTextureShader, shell2);
+	auto nag_avd2 = add_textured_object(viewer, "Nag-AvD.002", white, "../Textures/Tortue_orange.png", cartoonTextureShader, shell2);
+	auto nag_avg2 = add_textured_object(viewer, "Nag-AvG.002", white, "../Textures/Tortue_orange.png", cartoonTextureShader, shell2);
+	auto tete2 = add_textured_object(viewer, "Tete.002", white, "../Textures/Tortue_orange.png", cartoonTextureShader, shell2);
+
+	auto tear = add_object(viewer, "Larme", water, cartoonShader);
 
 	// Lights
 	// Sun

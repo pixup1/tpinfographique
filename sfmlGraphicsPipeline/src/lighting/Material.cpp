@@ -12,14 +12,16 @@ Material::Material()
 	m_diffuse = glm::vec3(0.0, 0.0, 0.0);
 	m_specular = glm::vec3(0.0, 0.0, 0.0);
 	m_shininess = 0.0;
+	m_alpha = 1.0;
 }
 
-Material::Material(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, const float& shininess)
+Material::Material(const glm::vec3 &ambient, const glm::vec3 &diffuse, const glm::vec3 &specular, const float &shininess, const float &alpha)
 {
 	m_ambient = ambient;
 	m_diffuse = diffuse;
 	m_specular = specular;
 	m_shininess = shininess;
+	m_alpha = alpha;
 }
 
 Material::Material(const Material& material)
@@ -28,6 +30,7 @@ Material::Material(const Material& material)
 	m_diffuse = material.m_diffuse;
 	m_specular = material.m_specular;
 	m_shininess = material.m_shininess;
+	m_alpha = material.m_alpha;
 }
 
 const glm::vec3& Material::ambient() const
@@ -68,6 +71,16 @@ void Material::setShininess(float shininess)
 const float& Material::shininess() const
 {
 	return m_shininess;
+}
+
+void Material::setAlpha(float alpha)
+{
+	m_alpha = alpha;
+}
+
+const float &Material::alpha() const
+{
+	return m_alpha;
 }
 
 bool Material::sendToGPU(const ShaderProgramPtr& program, const MaterialPtr& material)
@@ -122,6 +135,18 @@ bool Material::sendToGPU(const ShaderProgramPtr& program, const MaterialPtr& mat
 		success = false;
 	}
 
+	location = program->getUniformLocation("material.alpha");
+	if (location != ShaderProgram::null_location)
+	{
+		// Just a small hack for pow(0,0) = NaN on NVidia hardware
+		float actual_alpha = std::max(1e-4f, material->alpha());
+		glcheck(glUniform1f(location, actual_alpha));
+	}
+	else
+	{
+		success = false;
+	}
+
 	return success;
 }
 
@@ -132,7 +157,8 @@ MaterialPtr Material::Pearl()
 	glm::vec3 diffuse(1.0, 0.829, 0.829);
 	glm::vec3 specular(0.296648, 0.296648, 0.296648);
 	float shininess = openGLFactor * 0.088;
-	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+	float alpha = 1.0f;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess, alpha);
 }
 
 MaterialPtr Material::Emerald()
@@ -142,7 +168,8 @@ MaterialPtr Material::Emerald()
 	glm::vec3 diffuse(0.07568, 0.61424, 0.07568);
 	glm::vec3 specular(0.633, 0.727811, 0.633);
 	float shininess = openGLFactor * 0.6;
-	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+	float alpha = 1.0f;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess, alpha);
 }
 
 MaterialPtr Material::Bronze()
@@ -152,7 +179,8 @@ MaterialPtr Material::Bronze()
 	glm::vec3 diffuse(0.714, 0.4284, 0.18144);
 	glm::vec3 specular(0.393548, 0.271906, 0.166721);
 	float shininess = openGLFactor * 0.2;
-	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+	float alpha = 1.0f;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess, alpha);
 }
 
 MaterialPtr Material::Water()
@@ -162,7 +190,8 @@ MaterialPtr Material::Water()
 	glm::vec3 diffuse(0.0, 0.65, 1.0);
 	glm::vec3 specular(0.7, 0.7, 0.7);
 	float shininess = openGLFactor * 0.01;
-	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+	float alpha = 0.75f;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess, alpha);
 }
 
 MaterialPtr Material::Bark()
@@ -172,7 +201,8 @@ MaterialPtr Material::Bark()
 	glm::vec3 diffuse(0.4, 0.2, 0.1);
 	glm::vec3 specular(0.1, 0.1, 0.1);
 	float shininess = openGLFactor * 0.05;
-	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+	float alpha = 1.0f;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess, alpha);
 }
 
 MaterialPtr Material::Sand()
@@ -182,7 +212,8 @@ MaterialPtr Material::Sand()
 	glm::vec3 diffuse(1.0, 0.85, 0.65);
 	glm::vec3 specular(0.7, 0.6, 0.4);
 	float shininess = openGLFactor * 0.03;
-	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+	float alpha = 1.0f;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess, alpha);
 }
 
 MaterialPtr Material::White()
@@ -192,7 +223,8 @@ MaterialPtr Material::White()
 	glm::vec3 diffuse(1.0, 1.0, 1.0);
 	glm::vec3 specular(0.5, 0.5, 0.5);
 	float shininess = openGLFactor * 0.01;
-	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+	float alpha = 1.0f;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess, alpha);
 }
 
 MaterialPtr Material::NoLighting()
@@ -202,7 +234,8 @@ MaterialPtr Material::NoLighting()
 	glm::vec3 diffuse(0.0, 0.0, 0.0);
 	glm::vec3 specular(0.0, 0.0, 0.0);
 	float shininess = openGLFactor * 0.0;
-	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+	float alpha = 1.0f;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess, alpha);
 }
 
 MaterialPtr Material::PureBlack()
@@ -212,7 +245,19 @@ MaterialPtr Material::PureBlack()
 	glm::vec3 diffuse(0.0, 0.0, 0.0);
 	glm::vec3 specular(0.0, 0.0, 0.0);
 	float shininess = openGLFactor * 0.0;
-	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+	float alpha = 1.0f;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess, alpha);
+}
+
+MaterialPtr Material::Black()
+{
+	float openGLFactor = 128.0;
+	glm::vec3 ambient(0.02f, 0.02f, 0.02f);
+	glm::vec3 diffuse(0.01f, 0.01f, 0.01f);
+	glm::vec3 specular(0.4f, 0.4f, 0.4f);
+	float shininess = openGLFactor * 0.078125f;
+	float alpha = 1.0f;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess, alpha);
 }
 
 MaterialPtr Material::BrightOrange()
@@ -222,7 +267,8 @@ MaterialPtr Material::BrightOrange()
 	glm::vec3 diffuse(1.0f, 0.5f, 0.0f);
 	glm::vec3 specular(1.0f, 0.6f, 0.3f);
 	float shininess = openGLFactor * 0.25f;
-	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+	float alpha = 1.0f;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess, alpha);
 }
 
 MaterialPtr Material::Rock()
@@ -232,5 +278,6 @@ MaterialPtr Material::Rock()
 	glm::vec3 diffuse(0.4f, 0.4f, 0.4f);
 	glm::vec3 specular(0.1f, 0.1f, 0.1f);
 	float shininess = openGLFactor * 0.05f;
-	return std::make_shared<Material>(ambient, diffuse, specular, shininess);
+	float alpha = 1.0f;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess, alpha);
 }

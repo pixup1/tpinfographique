@@ -33,7 +33,7 @@ void initialize_scene(Viewer& viewer)
 	std::string bunny_texture_path = "../../sfmlGraphicsPipeline/textures/bunny_texture.png";
 
 	// One can try multiple material with different diffuse and specular color
-	auto mat = std::make_shared<Material>(glm::vec3(0), glm::vec3(1), glm::vec3(1), 100.0f);
+	auto mat = std::make_shared<Material>(glm::vec3(0), glm::vec3(1), glm::vec3(1), 100.0f, 1.0f);
 
 	auto envmapBunny = std::make_shared<EnvMapMeshRenderable>(
 	    envmapShader,

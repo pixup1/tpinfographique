@@ -46,8 +46,9 @@ class Material
 	 * @param diffuse The diffuse vector of the material.
 	 * @param specular The specular vector of the material.
 	 * @param shininess The shininess coefficient of the material.
+	 * @param alpha The alpha of the material.
 	 */
-	Material(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, const float& shininess);
+	Material(const glm::vec3 &ambient, const glm::vec3 &diffuse, const glm::vec3 &specular, const float &shininess, const float &alpha);
 
 	/**
 	 * @brief Access to the ambient vector of the material.
@@ -110,6 +111,21 @@ class Material
 	void setShininess(float shininess);
 
 	/**
+	 * @brief Access to the alpha channel of the material.
+	 *
+	 * @return A const reference to m_alpha.
+	 */
+	const float &alpha() const;
+
+	/**
+	 * @brief Set the alpha alph of the material.
+	 *
+	 * Set the value of m_alpha.
+	 * @param alpha The new alpha value of the material.
+	 */
+	void setAlpha(float shininess);
+
+	/**
 	 * @brief Get location for the attributes of the material and send the data to the GPU as uniforms.
 	 *
 	 * @param program A pointer to the shader program where to get the locations.
@@ -148,6 +164,8 @@ class Material
 
 	static MaterialPtr PureBlack();
 
+	static MaterialPtr Black();
+
 	static MaterialPtr BrightOrange();
 	
 	static MaterialPtr Rock();
@@ -157,6 +175,7 @@ private:
 	glm::vec3 m_diffuse;  /*!< The diffuse material vector defines the color of the object under diffuse lighting. */
 	glm::vec3 m_specular; /*!< The specular material vector sets the color impact a specular light has on the object. */
 	float m_shininess;    /*!< The shininess impacts the scattering/radius of the specular highlight. */
+	float m_alpha;	      /*!< The alpha is the transparency of the material. */
 };
 
 typedef std::shared_ptr<Material> MaterialPtr; /*!< Smart pointer to a material */

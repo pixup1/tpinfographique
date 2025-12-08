@@ -32,7 +32,12 @@ def export_mesh(obj):
         (0, -1, 0, 0),
         (0, 0, 0, 1)
     ))
-    y_up_matrix = y_up_rot @ obj.matrix_world @ y_up_rot.inverted()
+    if obj.parent is not None:
+        parent_matrix = obj.parent.matrix_world
+        inv_parent_matrix = parent_matrix.inverted()
+        y_up_matrix = y_up_rot @ inv_parent_matrix @ obj.matrix_world @ y_up_rot.inverted()
+    else:
+        y_up_matrix = y_up_rot @ obj.matrix_world @ y_up_rot.inverted()
     with open(f"{obj_path}/{obj.name}.obj", "a") as f:
         f.write("\nTRANSFORM")
         for row in y_up_matrix:
@@ -67,10 +72,18 @@ def export_animation(obj):
             scene.frame_set(fr)
             eval_obj = obj.evaluated_get(depsgraph)
             loc, rot, scale = eval_obj.matrix_world.decompose()
+            # Subtract parent transform if present
+            if obj.parent is not None:
+                parent_eval = obj.parent.evaluated_get(depsgraph)
+                parent_matrix = parent_eval.matrix_world
+                parent_loc, parent_rot, parent_scale = parent_matrix.decompose()
+                inv_parent_matrix = parent_matrix.inverted()
+                local_matrix = inv_parent_matrix @ eval_obj.matrix_world
+                loc, rot, scale = local_matrix.decompose()
             if obj.type == 'CAMERA': # Cameras aren't the same in sfml and Blender
                 rot = rot @ mathutils.Euler((math.radians(-90), 0, 0), 'XYZ').to_quaternion()
             # Ensure quaternion continuity to avoid flipping
-            if prev_rot is not None and rot.dot(prev_rot) < 0: # ngl copilot did this so idk (it avoids the camera flipping)
+            if prev_rot is not None and rot.dot(prev_rot) < 0:
                 rot = -rot
             prev_rot = rot.copy()
             t = frame_to_time(fr)

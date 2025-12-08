@@ -22,7 +22,8 @@ const glm::mat4& HierarchicalRenderable::getGlobalTransform() const
 
 void HierarchicalRenderable::setGlobalTransform(const glm::mat4& globalTransform)
 {
-	m_globalTransform = m_inverse * globalTransform;
+	//m_globalTransform = m_inverse * globalTransform;
+	m_globalTransform = globalTransform;
 }
 
 void HierarchicalRenderable::updateModelMatrix()

@@ -10,6 +10,7 @@ struct Material
     vec3 diffuse;
     vec3 specular;
     float shininess;
+    float alpha;
 };
 
 struct DirectionalLight
@@ -186,5 +187,5 @@ void main()
     //tmpColor = posterizeVector(tmpColor, 15.0);
     tmpColor = tmpColor * posterizeFactor(sqrt(length(tmpColor)), 8.0);
 
-    outColor = vec4(tmpColor,1.0);
+    outColor = vec4(tmpColor,material.alpha);
 }

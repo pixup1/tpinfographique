@@ -115,7 +115,7 @@ void initialize_scene(Viewer& viewer)
 	// Define materials
 	glm::vec3 mAmbient(0.0), mDiffuse(0.0), mSpecular(0.0);
 	float mShininess = 0.0;
-	MaterialPtr myMaterial = std::make_shared<Material>(mAmbient, mDiffuse, mSpecular, mShininess);
+	MaterialPtr myMaterial = std::make_shared<Material>(mAmbient, mDiffuse, mSpecular, mShininess, 1.0f);
 
 	// Lighted Cube
 	MaterialPtr pearl = Material::Pearl();

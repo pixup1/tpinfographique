@@ -35,7 +35,7 @@ void initialize_scene(Viewer& viewer)
 	viewer.addRenderable(frame);
 	frame->setLocalTransform(getScaleMatrix(10, 10, 10));
 
-	auto mat = std::make_shared<Material>(glm::vec3(0), glm::vec3(1), glm::vec3(0), 100.0f);
+	auto mat = std::make_shared<Material>(glm::vec3(0), glm::vec3(1), glm::vec3(0), 100.0f, 1.0f);
 
 	auto lighted_cube = std::make_shared<LightedCubeRenderable>(phongShader, false, mat);
 	lighted_cube->setLocalTransform(getScaleMatrix(5, .2, 5));

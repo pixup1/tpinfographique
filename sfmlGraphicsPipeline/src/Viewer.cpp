@@ -81,6 +81,8 @@ Viewer::Viewer(float width, float height, const glm::vec4& background_color) : m
 	// Initialize OpenGL context
 	setBackgroundColor(m_background_color);
 	glcheck(glEnable(GL_DEPTH_TEST));
+	glcheck(glEnable(GL_BLEND));
+	glcheck(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 	glcheck(glDepthFunc(GL_LESS));
 	glcheck(glEnable(GL_VERTEX_PROGRAM_POINT_SIZE));
 	glcheck(glEnable(GL_TEXTURE_2D));
