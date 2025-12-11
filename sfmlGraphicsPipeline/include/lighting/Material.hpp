@@ -166,8 +166,12 @@ class Material
 
 	static MaterialPtr Black();
 
+	static MaterialPtr DarkGreen();
+
 	static MaterialPtr BrightOrange();
-	
+
+	static MaterialPtr BrightRed();
+
 	static MaterialPtr Rock();
 
 private:

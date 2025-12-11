@@ -94,7 +94,9 @@ void initialize_scene(Viewer &viewer)
 	MaterialPtr pureblack = Material::PureBlack();
 	MaterialPtr black = Material::Black();
 	MaterialPtr orange = Material::BrightOrange();
+	MaterialPtr red = Material::BrightRed();
 	MaterialPtr rock = Material::Rock();
+	MaterialPtr darkgreen = Material::DarkGreen();
 
 	// Cubemap
 	std::string cubemap_dir = "../Textures/skybox";
@@ -105,12 +107,15 @@ void initialize_scene(Viewer &viewer)
 	auto titre = add_object(viewer, "Titre", orange, cartoonShader);
 	auto titre_blackdrop = add_object(viewer, "TitreBlackdrop", pureblack, cartoonShader);
 	
+	auto backdrop = add_textured_object(viewer, "FondIle", nolighting, "../Textures/FondIle.png", cartoonTextureShader);
 	auto ground = add_object(viewer, "Ground", sand, cartoonShader);
 	auto ground_coral = add_textured_object(viewer, "GroundCoral", nolighting, "../Textures/Corail.png", cartoonTextureShader);
 	auto ground_rocks = add_object(viewer, "GroundRocks", rock, cartoonShader);
 	auto ocean = add_object(viewer, "Ocean", water, cartoonShader);
 	auto palmiers = add_object(viewer, "Palmiers", bark, cartoonShader);
 	auto leaves = add_textured_object(viewer, "Leaves", white, "../Textures/Feuille.png", cartoonTextureShader);
+	auto skipper = add_textured_object(viewer, "Skipper", white, "../Textures/Skipper.png", cartoonTextureShader);
+	auto vietnam = add_object(viewer, "Red Beach Vietnam", red, cartoonShader);
 
 	auto house2 = add_object(viewer, "maison.001", white, cartoonShader);
 	auto clock = add_textured_object(viewer, "Clock", nolighting, "../Textures/clock.jpg", cartoonTextureShader);
@@ -118,6 +123,7 @@ void initialize_scene(Viewer &viewer)
 	auto minute_hand = add_object(viewer, "Minutes", white, cartoonShader, clock);
 	auto bed_frame = add_object(viewer, "BedFrame", bark, cartoonShader);
 	auto bed_sheets = add_object(viewer, "BedSheets", white, cartoonShader);
+	auto sakado = add_object(viewer, "Sakado", darkgreen, cartoonShader);
 	
 	// Tortues marines
 	auto shell = add_textured_object(viewer, "Carapace.001", white, "../Textures/Tortue_bleue.png", cartoonTextureShader);
@@ -187,7 +193,7 @@ void initialize_scene(Viewer &viewer)
 int main()
 {
 	glm::vec4 background_color(0.8, 0.8, 0.8, 1);
-	Viewer viewer(1280, 720, background_color);
+	Viewer viewer(background_color);
 	initialize_scene(viewer);
 
 	while (viewer.isRunning())

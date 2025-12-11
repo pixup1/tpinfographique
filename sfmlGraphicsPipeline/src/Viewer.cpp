@@ -94,6 +94,47 @@ Viewer::Viewer(float width, float height, const glm::vec4& background_color) : m
 	// m_tengine.setWindowDimensions( m_window.getSize().x, m_window.getSize().y );
 }
 
+Viewer::Viewer(const glm::vec4 &background_color) :
+	m_applicationRunning{true}, m_animationLoop{false}, m_animationIsStarted{false}, m_loopDuration{120}, m_simulationTime{0}, m_screenshotCounter{0}, m_helpDisplayed{false}, m_helpDisplayRequest{false}, m_lastEventHandleTime{clock::now()}, m_background_color{background_color}
+{
+	sf::Vector2u windowSize;
+	sf::Uint32 style;
+	
+	windowSize.x = sf::VideoMode::getDesktopMode().width;
+	windowSize.y = sf::VideoMode::getDesktopMode().height;
+	style = sf::Style::Fullscreen;
+
+	m_window.create(sf::VideoMode(windowSize.x, windowSize.y), "Computer Graphics Practicals", style, sf::ContextSettings{24 /* depth*/, 8 /*stencil*/, 4 /*anti aliasing level*/, 4 /*GL major version*/, 0 /*GL minor version*/});
+
+	sf::ContextSettings settings = m_window.getSettings();
+	LOG(info, "Settings of OPENGL Context created by SFML");
+	LOG(info, "\tdepth bits:         " << settings.depthBits);
+	LOG(info, "\tstencil bits:       " << settings.stencilBits);
+	LOG(info, "\tantialiasing level: " << settings.antialiasingLevel);
+	LOG(info, "\tGL version:         " << glGetString(GL_VERSION));
+	LOG(info, "\tGL renderer:        " << glGetString(GL_RENDERER));
+
+	// Initialize the camera
+	float ratio = windowSize.x / windowSize.y;
+	m_camera.setRatio(ratio);
+	// Set up GLEW
+	initializeGL();
+	// Initialize OpenGL context
+	setBackgroundColor(m_background_color);
+	glcheck(glEnable(GL_DEPTH_TEST));
+	glcheck(glEnable(GL_BLEND));
+	glcheck(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+	glcheck(glDepthFunc(GL_LESS));
+	glcheck(glEnable(GL_VERTEX_PROGRAM_POINT_SIZE));
+	glcheck(glEnable(GL_TEXTURE_2D));
+
+	m_texture.create(windowSize.x, windowSize.y, sf::ContextSettings{0 /* depth*/, 0 /*stencil*/, 4 /*anti aliasing level*/, 4 /*GL major version*/, 0 /*GL minor version*/});
+	// Initialize the text engine (this SHOULD be done after initializeGL, as the text
+	// engine store some data on the graphic card)
+	// m_tengine.init();
+	// m_tengine.setWindowDimensions( m_window.getSize().x, m_window.getSize().y );
+}
+
 constexpr const char* g_help_message =
     "VIEWER SHORTCUTS:\n"
     "      [F1]  Display/Hide this help message\n"
@@ -159,7 +200,7 @@ void Viewer::draw()
 		}
 	}
 	
-	// We drawn the opaque objects first so that they can always appear behind the transparent ones
+	// We draw the opaque objects first so that they can always appear behind the transparent ones
 	std::vector<RenderablePtr> sorted_renderables;
 	sorted_renderables.insert(sorted_renderables.end(), opaque_renderables.begin(), opaque_renderables.end());
 	sorted_renderables.insert(sorted_renderables.end(), transparent_renderables.begin(), transparent_renderables.end());
@@ -681,6 +722,39 @@ glm::vec3 Viewer::worldToWindow(const glm::vec3& worldCoordinate)
 {
 	sf::Vector2u size = m_window.getSize();
 	return glm::project(worldCoordinate, m_camera.viewMatrix(), m_camera.projectionMatrix(), glm::vec4(0, 0, size.x, size.y));
+}
+
+void Viewer::setFullscreen(bool fullscreen) {
+	sf::Vector2u windowSize;
+	sf::Uint32 style;
+	if (fullscreen)
+	{
+		windowSize.x = sf::VideoMode::getDesktopMode().width;
+		windowSize.y = sf::VideoMode::getDesktopMode().height;
+		style = sf::Style::Fullscreen;
+	}
+	else
+	{
+		windowSize = sf::Vector2u(1024, 768);
+		style = sf::Style::Default;
+	}
+	m_window.create(sf::VideoMode(windowSize.x, windowSize.y), "Computer Graphics Practicals", style, m_window.getSettings());
+
+	// Re-initialize OpenGL state after creating the new context
+	initializeGL();
+	setBackgroundColor(m_background_color);
+	glcheck(glEnable(GL_DEPTH_TEST));
+	glcheck(glEnable(GL_BLEND));
+	glcheck(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+	glcheck(glDepthFunc(GL_LESS));
+	glcheck(glEnable(GL_VERTEX_PROGRAM_POINT_SIZE));
+	glcheck(glEnable(GL_TEXTURE_2D));
+	reloadShaderPrograms();
+
+	m_window.setView(sf::View(sf::FloatRect({0, 0}, {(float)windowSize.x, (float)windowSize.y})));
+	m_texture.create(windowSize.x, windowSize.y, sf::ContextSettings{0, 0, 4, 4, 0});
+	m_camera.setRatio((float)(windowSize.x) / (float)(windowSize.y));
+	glcheck(glViewport(0, 0, windowSize.x, windowSize.y));
 }
 
 void Viewer::setBackgroundColor(const glm::vec4& color)

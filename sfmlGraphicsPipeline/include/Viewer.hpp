@@ -69,6 +69,12 @@ class Viewer
 	 * \param height Height of the window in pixel.
 	 */
 	Viewer(float width, float height, const glm::vec4& color = glm::vec4(1.0, 1.0, 1.0, 1.0));
+
+	/**@brief Fullscreen constructor
+	 *
+	 * Construct a new viewer that will display the scene in fullscreen.
+	 */
+	Viewer(const glm::vec4 &background_color);
 	/**@}*/
 
 	/** @name Shader Program management
@@ -85,7 +91,7 @@ class Viewer
 	 * Add a shader program to the list of managed programs.
 	 * @param program The shader program to manage.
 	 */
-	void addShaderProgram(const ShaderProgramPtr& program);
+	void addShaderProgram(const ShaderProgramPtr &program);
 	/**@brief Reload managed shader programs from its sources.
 	 *
 	 * Reload each managed shader program, to use possibly newer shader sources.
@@ -222,7 +228,9 @@ class Viewer
 
 	void setBackgroundColor(const glm::vec4& color);
 
-	const glm::vec4& getBackgroundColor() const;
+	void setFullscreen(bool fullscreen);
+
+	const glm::vec4 &getBackgroundColor() const;
 	// void displayText(std::string text, Viewer::Duration duration = std::chrono::seconds(3));
 
    private:
