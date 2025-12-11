@@ -62,6 +62,6 @@ bool testParticlePlane(const ParticlePtr& particle, const PlanePtr& plane)
 	// Plane::distanceToOrigin(): Return the distance to origin from the plane
 	// Plane::normal(): Return the normal of the plane
 	// Particle::getRadius(), Particle::getPosition()
-	float particlePlaneDist = glm::dot(particle->getPosition(), plane->normal()) - plane->distanceToOrigin();
-	return std::abs(particlePlaneDist) <= particle->getRadius();
+	float dist = glm::dot(particle->getPosition(), plane->normal()) - plane->distanceToOrigin();
+	return dist <= particle->getRadius();
 }

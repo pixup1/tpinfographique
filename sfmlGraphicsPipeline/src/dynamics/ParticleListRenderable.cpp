@@ -138,7 +138,7 @@ void ParticleListRenderable::update_positions_buffer()
 
 void ParticleListRenderable::update_normals_buffer()
 {
-	glcheck(glBindBuffer(GL_ARRAY_BUFFER, m_pBuffer));
+	glcheck(glBindBuffer(GL_ARRAY_BUFFER, m_nBuffer));
 	glcheck(glBufferData(GL_ARRAY_BUFFER, m_normals.size() * sizeof(glm::vec3), m_normals.data(), GL_STATIC_DRAW));
 }
 
