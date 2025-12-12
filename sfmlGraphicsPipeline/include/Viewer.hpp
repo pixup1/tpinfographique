@@ -227,8 +227,8 @@ class Viewer
 	void addSpotLight(const SpotLightPtr& spotLight);
 
 	void setBackgroundColor(const glm::vec4& color);
-
-	void setFullscreen(bool fullscreen);
+	
+	void setTimeFactor(float factor);
 
 	const glm::vec4 &getBackgroundColor() const;
 	// void displayText(std::string text, Viewer::Duration duration = std::chrono::seconds(3));
@@ -301,6 +301,7 @@ class Viewer
 	bool m_animationIsStarted;           /*!< True if the animation is running. False otherwise. */
 	float m_loopDuration;                /*!< Duration of the animation loop in seconds. */
 	float m_simulationTime;              /*!< Current simulation time in the animation loop. */
+	float m_timeFactor; 			     /*!< Factor to speed up or slow down the animation (higher values speed it up, values closer to 0 slow it down). */
 	TimePoint m_lastSimulationTimePoint; /*!< Date of the last simulation. */
 	glm::vec4 m_background_color;
 

@@ -79,7 +79,7 @@ TexturedLightedMeshRenderablePtr add_textured_object(Viewer& viewer,
 	return obj;
 }
 
-void initialize_scene(Viewer& viewer, RadialImpulseForceFieldPtr& explosion, MushroomForceFieldPtr& mushroom)
+void initialize_scene(Viewer& viewer, RadialImpulseForceFieldPtr& explosion, MushroomForceFieldPtr& mushroom, PointLightPtr& explosion_light)
 {
 	// Shaders
 	ShaderProgramPtr cartoonShader = std::make_shared<ShaderProgram>(
@@ -197,10 +197,13 @@ void initialize_scene(Viewer& viewer, RadialImpulseForceFieldPtr& explosion, Mus
 	title_light2->addKeyframesFromFile("../Animation/TitreLight2.animation", 0.0, false);
 	p_diffuse = glm::vec3(3.0, 1.0, 1.0);
 	PointLightPtr house_light1 = std::make_shared<PointLight>(p_position, p_ambient, p_diffuse * 0.4f, p_diffuse * 0.4f, p_constant, p_linear, p_quadratic);
+	p_position = glm::vec3(-14.5, 0.5, 16.0);
+	explosion_light = std::make_shared<PointLight>(p_position, p_ambient, p_ambient, p_ambient, p_constant, p_linear, p_quadratic);
 	house_light1->applyObjTransform("../ObjFiles/HouseLight1.obj");
 	viewer.addPointLight(title_light1);
 	viewer.addPointLight(title_light2);
 	viewer.addPointLight(house_light1);
+	viewer.addPointLight(explosion_light);
 
 	// Camera
 	viewer.getCamera().setFov(0.5);
@@ -284,21 +287,39 @@ int main()
 {
 	glm::vec4 background_color(0.8, 0.8, 0.8, 1);
 	Viewer viewer(background_color);
+	viewer.setTimeFactor(1.004f); // Correct weird audio sync issue
 	RadialImpulseForceFieldPtr explosion;
 	MushroomForceFieldPtr mushroom;
-	initialize_scene(viewer, explosion, mushroom);
+	PointLightPtr explosion_light;
+	initialize_scene(viewer, explosion, mushroom, explosion_light);
 
+	glm::vec3 explosion_color = glm::vec3(3.0, 2.0, 1.0);
+	float explosion_strength = 0.0f;
 	bool explosionTriggered = false;
 	while (viewer.isRunning())
 	{
+		if (viewer.getTime() >= 99.0f) // End
+		{
+			break;
+		}
 		viewer.handleEvent();
 		viewer.animate();
-		if (!explosionTriggered && viewer.getTime() >= 95.87f)
+		if (viewer.getTime() >= 95.87f)
 		{
-			if (explosion) explosion->trigger();
-			if (mushroom) mushroom->trigger();
-			explosionTriggered = true;
+			if (!explosionTriggered) {
+				if (explosion)
+					explosion->trigger();
+				if (mushroom)
+					mushroom->trigger();
+				explosionTriggered = true;
+			}
+			if (explosion_strength >= 0.0f) {
+				explosion_strength = 10.0f - (viewer.getTime() - 95.87f) * 5.0f;
+				explosion_light->setDiffuse(explosion_color * std::max(explosion_strength, 0.0f));
+				explosion_light->setSpecular(explosion_color * std::max(explosion_strength, 0.0f));
+			}
 		}
+		
 		viewer.draw();
 		viewer.display();
 	}

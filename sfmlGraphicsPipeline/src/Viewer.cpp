@@ -59,6 +59,7 @@ Viewer::Viewer(float width, float height, const glm::vec4& background_color) : m
                                                                                m_animationIsStarted{false},
                                                                                m_loopDuration{120},
                                                                                m_simulationTime{0},
+                                                                               m_timeFactor{1.0f},
                                                                                m_screenshotCounter{0},
                                                                                m_helpDisplayed{false},
                                                                                m_helpDisplayRequest{false},
@@ -95,7 +96,7 @@ Viewer::Viewer(float width, float height, const glm::vec4& background_color) : m
 }
 
 Viewer::Viewer(const glm::vec4 &background_color) :
-	m_applicationRunning{true}, m_animationLoop{false}, m_animationIsStarted{false}, m_loopDuration{120}, m_simulationTime{0}, m_screenshotCounter{0}, m_helpDisplayed{false}, m_helpDisplayRequest{false}, m_lastEventHandleTime{clock::now()}, m_background_color{background_color}
+	m_applicationRunning{true}, m_animationLoop{false}, m_animationIsStarted{false}, m_loopDuration{120}, m_simulationTime{0}, m_timeFactor{1.0f}, m_screenshotCounter{0}, m_helpDisplayed{false}, m_helpDisplayRequest{false}, m_lastEventHandleTime{clock::now()}, m_background_color{background_color}
 {
 	sf::Vector2u windowSize;
 	sf::Uint32 style;
@@ -277,7 +278,7 @@ float Viewer::getTime()
 	}
 	if (m_animationLoop && m_simulationTime >= m_loopDuration)
 		m_simulationTime = std::fmod(m_simulationTime, m_loopDuration);
-	return m_simulationTime;
+	return m_simulationTime * m_timeFactor;
 }
 
 void Viewer::animate()
@@ -724,39 +725,6 @@ glm::vec3 Viewer::worldToWindow(const glm::vec3& worldCoordinate)
 	return glm::project(worldCoordinate, m_camera.viewMatrix(), m_camera.projectionMatrix(), glm::vec4(0, 0, size.x, size.y));
 }
 
-void Viewer::setFullscreen(bool fullscreen) {
-	sf::Vector2u windowSize;
-	sf::Uint32 style;
-	if (fullscreen)
-	{
-		windowSize.x = sf::VideoMode::getDesktopMode().width;
-		windowSize.y = sf::VideoMode::getDesktopMode().height;
-		style = sf::Style::Fullscreen;
-	}
-	else
-	{
-		windowSize = sf::Vector2u(1024, 768);
-		style = sf::Style::Default;
-	}
-	m_window.create(sf::VideoMode(windowSize.x, windowSize.y), "Computer Graphics Practicals", style, m_window.getSettings());
-
-	// Re-initialize OpenGL state after creating the new context
-	initializeGL();
-	setBackgroundColor(m_background_color);
-	glcheck(glEnable(GL_DEPTH_TEST));
-	glcheck(glEnable(GL_BLEND));
-	glcheck(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-	glcheck(glDepthFunc(GL_LESS));
-	glcheck(glEnable(GL_VERTEX_PROGRAM_POINT_SIZE));
-	glcheck(glEnable(GL_TEXTURE_2D));
-	reloadShaderPrograms();
-
-	m_window.setView(sf::View(sf::FloatRect({0, 0}, {(float)windowSize.x, (float)windowSize.y})));
-	m_texture.create(windowSize.x, windowSize.y, sf::ContextSettings{0, 0, 4, 4, 0});
-	m_camera.setRatio((float)(windowSize.x) / (float)(windowSize.y));
-	glcheck(glViewport(0, 0, windowSize.x, windowSize.y));
-}
-
 void Viewer::setBackgroundColor(const glm::vec4& color)
 {
 	m_background_color = color;
@@ -764,6 +732,11 @@ void Viewer::setBackgroundColor(const glm::vec4& color)
 	                     m_background_color.g,
 	                     m_background_color.b,
 	                     m_background_color.a));
+}
+
+void Viewer::setTimeFactor(float factor)
+{
+	m_timeFactor = factor;
 }
 
 const glm::vec4& Viewer::getBackgroundColor() const
