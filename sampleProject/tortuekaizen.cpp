@@ -1,21 +1,30 @@
 #include <CylinderMeshRenderable.hpp>
 #include <FrameRenderable.hpp>
 #include <MeshRenderable.hpp>
-#include <lighting/LightedMeshRenderable.hpp>
 #include <ShaderProgram.hpp>
 #include <Viewer.hpp>
-#include <lighting/PointLightRenderable.hpp>
-#include <lighting/DirectionalLightRenderable.hpp>
-#include <texturing/CubeMapRenderable.hpp>
+#include <dynamics/ConstantForceField.hpp>
+#include <dynamics/DampingForceField.hpp>
+#include <dynamics/DynamicSystem.hpp>
+#include <dynamics/DynamicSystemRenderable.hpp>
+#include <dynamics/EulerExplicitSolver.hpp>
+#include <dynamics/MushroomForceField.hpp>
+#include <dynamics/ParticleListRenderable.hpp>
+#include <dynamics/RadialImpulseForceField.hpp>
 #include <fstream>
+#include <glm/gtc/random.hpp>
 #include <iostream>
+#include <lighting/DirectionalLightRenderable.hpp>
+#include <lighting/LightedMeshRenderable.hpp>
+#include <lighting/PointLightRenderable.hpp>
+#include <texturing/CubeMapRenderable.hpp>
 #include <texturing/TexturedLightedMeshRenderable.hpp>
 
-LightedMeshRenderablePtr add_object(Viewer &viewer,
-									const std::string &name,
-									const MaterialPtr &material,
-									ShaderProgramPtr &shaderProgram,
-									HierarchicalRenderablePtr parent = nullptr)
+LightedMeshRenderablePtr add_object(Viewer& viewer,
+                                    const std::string& name,
+                                    const MaterialPtr& material,
+                                    ShaderProgramPtr& shaderProgram,
+                                    HierarchicalRenderablePtr parent = nullptr)
 {
 	std::string obj_path = "../ObjFiles/" + name + ".obj";
 	std::ifstream file(obj_path);
@@ -40,12 +49,12 @@ LightedMeshRenderablePtr add_object(Viewer &viewer,
 	return obj;
 }
 
-TexturedLightedMeshRenderablePtr add_textured_object(Viewer &viewer,
-													 const std::string &name,
-													 const MaterialPtr &material,
-													 const std::string &texture_path,
-													 ShaderProgramPtr &shaderProgram,
-													 HierarchicalRenderablePtr parent = nullptr)
+TexturedLightedMeshRenderablePtr add_textured_object(Viewer& viewer,
+                                                     const std::string& name,
+                                                     const MaterialPtr& material,
+                                                     const std::string& texture_path,
+                                                     ShaderProgramPtr& shaderProgram,
+                                                     HierarchicalRenderablePtr parent = nullptr)
 {
 	std::string obj_path = "../ObjFiles/" + name + ".obj";
 	std::ifstream file(obj_path);
@@ -70,17 +79,19 @@ TexturedLightedMeshRenderablePtr add_textured_object(Viewer &viewer,
 	return obj;
 }
 
-void initialize_scene(Viewer &viewer)
+void initialize_scene(Viewer& viewer, RadialImpulseForceFieldPtr& explosion, MushroomForceFieldPtr& mushroom)
 {
 	// Shaders
 	ShaderProgramPtr cartoonShader = std::make_shared<ShaderProgram>(
-		"../../sfmlGraphicsPipeline/shaders/phongVertex.glsl",
-		"../../sfmlGraphicsPipeline/shaders/cartoonFragment.glsl");
+	    "../../sfmlGraphicsPipeline/shaders/phongVertex.glsl",
+	    "../../sfmlGraphicsPipeline/shaders/cartoonFragment.glsl");
 	ShaderProgramPtr cartoonTextureShader = std::make_shared<ShaderProgram>(
-		"../../sfmlGraphicsPipeline/shaders/textureVertex.glsl",
-		"../../sfmlGraphicsPipeline/shaders/cartoonTextureFragment.glsl");
+	    "../../sfmlGraphicsPipeline/shaders/textureVertex.glsl",
+	    "../../sfmlGraphicsPipeline/shaders/cartoonTextureFragment.glsl");
 	ShaderProgramPtr cubeMapShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/cubeMapVertex.glsl",
-																	 "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
+	                                                                 "../../sfmlGraphicsPipeline/shaders/cubeMapFragment.glsl");
+	ShaderProgramPtr particleShader = std::make_shared<ShaderProgram>("../../sfmlGraphicsPipeline/shaders/partVertex.glsl",
+	                                                                  "../../sfmlGraphicsPipeline/shaders/partFragment.glsl");
 	viewer.addShaderProgram(cubeMapShader);
 	viewer.addShaderProgram(cartoonTextureShader);
 	viewer.addShaderProgram(cartoonShader);
@@ -106,7 +117,7 @@ void initialize_scene(Viewer &viewer)
 	// Objects
 	auto titre = add_object(viewer, "Titre", orange, cartoonShader);
 	auto titre_blackdrop = add_object(viewer, "TitreBlackdrop", pureblack, cartoonShader);
-	
+
 	auto backdrop = add_textured_object(viewer, "FondIle", nolighting, "../Textures/FondIle.png", cartoonTextureShader);
 	auto ground = add_object(viewer, "Ground", sand, cartoonShader);
 	auto ground_coral = add_textured_object(viewer, "GroundCoral", nolighting, "../Textures/Corail.png", cartoonTextureShader);
@@ -124,7 +135,7 @@ void initialize_scene(Viewer &viewer)
 	auto bed_frame = add_object(viewer, "BedFrame", bark, cartoonShader);
 	auto bed_sheets = add_object(viewer, "BedSheets", white, cartoonShader);
 	auto sakado = add_object(viewer, "Sakado", darkgreen, cartoonShader);
-	
+
 	// Tortues marines
 	auto shell = add_textured_object(viewer, "Carapace.001", white, "../Textures/Tortue_bleue.png", cartoonTextureShader);
 	auto nag_ard = add_textured_object(viewer, "Nag-ArD.001", white, "../Textures/Tortue_bleue.png", cartoonTextureShader, shell);
@@ -141,7 +152,7 @@ void initialize_scene(Viewer &viewer)
 	auto tete2 = add_textured_object(viewer, "Tete.002", white, "../Textures/Tortue_orange.png", cartoonTextureShader, shell2);
 
 	auto tear = add_object(viewer, "Larme", water, cartoonShader);
-	
+
 	// Tortues terrestres
 	auto shell_ter = add_textured_object(viewer, "Carapace-ter", white, "../Textures/Tortue_orange.png", cartoonTextureShader);
 	auto pat_ard = add_textured_object(viewer, "Pat-ArD", white, "../Textures/Tortue_orange.png", cartoonTextureShader, shell_ter);
@@ -187,6 +198,74 @@ void initialize_scene(Viewer &viewer)
 	// Soundtrack
 	viewer.setSoundtrack("../tortuekaizen.wav");
 
+	// Physical simulation
+	DynamicSystemPtr system = std::make_shared<DynamicSystem>();
+	system->setDt(1.0f / 240.0f);
+	system->setSolver(std::make_shared<EulerExplicitSolver>());
+	system->setRestitution(0.6f);
+
+	std::vector<ParticlePtr> particles;
+	const unsigned int count = 500u;
+	for (unsigned int i = 0; i < count; ++i)
+	{
+		glm::vec3 pos = glm::ballRand(0.35f) + glm::vec3(-14.5f, -1.0f, 16.0f);
+		pos.y += 0.35f;  // start close to ground cluster
+		float const weight = std::max(glm::gaussRand(20.0f, 5.0f), 10.0f);
+		float const radius = glm::linearRand(0.05f, 0.1f);
+		ParticlePtr p = std::make_shared<Particle>(pos, glm::vec3(0.0f), weight, radius);
+		particles.push_back(p);
+		system->addParticle(p);
+	}
+
+	// Gravity
+	ConstantForceFieldPtr gravity = std::make_shared<ConstantForceField>(particles, DynamicSystem::gravity);
+	system->addForceField(gravity);
+
+	// Damping to tame speeds and reduce tunneling
+	DampingForceFieldPtr damping = std::make_shared<DampingForceField>(particles, 0.8f);
+	system->addForceField(damping);
+
+	// Radial Impulse Explosion Field
+	glm::vec3 explosionPosition = glm::vec3(-14.5f, -2.0f, 16.0f);
+	float explosionStrength = 4000.0f;      // 9000
+	float explosionRadius = 5.0f;           // 5
+	float explosionImpulseDuration = 0.2f;  // 0.2
+	explosion = std::make_shared<RadialImpulseForceField>(particles,
+	                                                      explosionPosition,
+	                                                      explosionStrength,
+	                                                      explosionRadius,
+	                                                      explosionImpulseDuration,
+	                                                      1.0f / 240.0f);
+	system->addForceField(explosion);
+
+	// Vortex Ring Mushroom Field
+	glm::vec3 ringCenter = glm::vec3(-14.5f, -1.1f, 16.0f);
+	float ringRadius = 10.0f;  // 20
+	float ringHeight = 6.0f;   // 12
+	float strength = 400.0f;   // 400
+	float riseSpeed = 1.0f;    // 0.5
+	float radialSpeed = 0.9f;  // 0.6
+	mushroom = std::make_shared<MushroomForceField>(particles,
+	                                                ringCenter,
+	                                                ringRadius,
+	                                                ringHeight,
+	                                                strength,
+	                                                riseSpeed,
+	                                                radialSpeed);
+	system->addForceField(mushroom);
+
+	// Ground plane for collisions
+	PlanePtr groundPlane = std::make_shared<Plane>(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, -1.4f, 0.0f));
+	system->addPlaneObstacle(groundPlane);
+
+	// Renderables bound to the dynamic system
+	auto systemRenderable = std::make_shared<DynamicSystemRenderable>(system);
+	systemRenderable->setStartTime(92.87f);
+	viewer.addRenderable(systemRenderable);
+
+	auto particlesRenderable = std::make_shared<ParticleListRenderable>(particleShader, particles, 12u, 16u);
+	HierarchicalRenderable::addChild(systemRenderable, particlesRenderable);
+
 	viewer.startAnimation();
 }
 
@@ -194,12 +273,21 @@ int main()
 {
 	glm::vec4 background_color(0.8, 0.8, 0.8, 1);
 	Viewer viewer(background_color);
-	initialize_scene(viewer);
+	RadialImpulseForceFieldPtr explosion;
+	MushroomForceFieldPtr mushroom;
+	initialize_scene(viewer, explosion, mushroom);
 
+	bool explosionTriggered = false;
 	while (viewer.isRunning())
 	{
 		viewer.handleEvent();
 		viewer.animate();
+		if (!explosionTriggered && viewer.getTime() >= 95.87f)
+		{
+			if (explosion) explosion->trigger();
+			if (mushroom) mushroom->trigger();
+			explosionTriggered = true;
+		}
 		viewer.draw();
 		viewer.display();
 	}

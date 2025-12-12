@@ -15,7 +15,7 @@ DynamicSystemRenderable::~DynamicSystemRenderable()
 {
 }
 
-DynamicSystemRenderable::DynamicSystemRenderable(DynamicSystemPtr system) : HierarchicalRenderable(nullptr), m_lastUpdateTime(0)
+DynamicSystemRenderable::DynamicSystemRenderable(DynamicSystemPtr system) : HierarchicalRenderable(nullptr), m_lastUpdateTime(0), m_startTime(0.0f)
 {
 	m_system = system;
 }
@@ -26,6 +26,10 @@ void DynamicSystemRenderable::do_draw()
 
 void DynamicSystemRenderable::do_animate(float time)
 {
+	if (time < m_startTime)
+	{
+		return;
+	}
 	if (time - m_lastUpdateTime >= m_system->getDt())
 	{
 		// Dynamic system step
@@ -37,6 +41,11 @@ void DynamicSystemRenderable::do_animate(float time)
 void DynamicSystemRenderable::setDynamicSystem(const DynamicSystemPtr& system)
 {
 	m_system = system;
+}
+
+void DynamicSystemRenderable::setStartTime(float startTime)
+{
+	m_startTime = startTime;
 }
 
 void DynamicSystemRenderable::do_keyPressedEvent(sf::Event& e)

@@ -36,6 +36,13 @@ class DynamicSystemRenderable : public HierarchicalRenderable
 	 */
 	void setDynamicSystem(const DynamicSystemPtr& system);
 
+	/**@brief Set the start time of the simulation.
+	 *
+	 * The simulation will only start updating after this time.
+	 * @param startTime The time at which the simulation should start.
+	 */
+	void setStartTime(float startTime);
+
    protected:
 	void do_draw();
 	/**@brief Update the dynamic system.
@@ -76,6 +83,10 @@ class DynamicSystemRenderable : public HierarchicalRenderable
 	 * keep updating the dynamic system at the specified time interval.
 	 */
 	float m_lastUpdateTime;
+
+	/**@brief Time when the simulation starts.
+	 */
+	float m_startTime;
 };
 
 typedef std::shared_ptr<DynamicSystemRenderable> DynamicSystemRenderablePtr;
