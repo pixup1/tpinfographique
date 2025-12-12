@@ -108,6 +108,7 @@ void initialize_scene(Viewer& viewer, RadialImpulseForceFieldPtr& explosion, Mus
 	MaterialPtr red = Material::BrightRed();
 	MaterialPtr rock = Material::Rock();
 	MaterialPtr darkgreen = Material::DarkGreen();
+	MaterialPtr green = Material::Green();
 
 	// Cubemap
 	std::string cubemap_dir = "../Textures/skybox";
@@ -135,6 +136,16 @@ void initialize_scene(Viewer& viewer, RadialImpulseForceFieldPtr& explosion, Mus
 	auto bed_frame = add_object(viewer, "BedFrame", bark, cartoonShader);
 	auto bed_sheets = add_object(viewer, "BedSheets", white, cartoonShader);
 	auto sakado = add_object(viewer, "Sakado", darkgreen, cartoonShader);
+	
+	// Militaire
+	auto soldats = add_object(viewer, "Soldats", green, cartoonShader);
+	auto tank = add_object(viewer, "Tank", green, cartoonShader);
+	auto tank1 = add_object(viewer, "Tank.001", green, cartoonShader);
+	auto tank2 = add_object(viewer, "Tank.002", green, cartoonShader);
+	auto tank3 = add_object(viewer, "Tank.003", green, cartoonShader);
+	auto tank4 = add_object(viewer, "Tank.004", green, cartoonShader);
+	auto avion = add_object(viewer, "Avion", green, cartoonShader);
+	auto bombe = add_textured_object(viewer, "Bombe", white, "../Textures/Bombe.png", cartoonTextureShader);
 
 	// Tortues marines
 	auto shell = add_textured_object(viewer, "Carapace.001", white, "../Textures/Tortue_bleue.png", cartoonTextureShader);

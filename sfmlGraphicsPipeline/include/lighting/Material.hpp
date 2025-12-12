@@ -168,6 +168,8 @@ class Material
 
 	static MaterialPtr DarkGreen();
 
+	static MaterialPtr Green();
+
 	static MaterialPtr BrightOrange();
 
 	static MaterialPtr BrightRed();
