@@ -79,7 +79,7 @@ TexturedLightedMeshRenderablePtr add_textured_object(Viewer& viewer,
 	return obj;
 }
 
-void initialize_scene(Viewer &viewer, RadialImpulseForceFieldPtr &explosion, MushroomForceFieldPtr &mushroom, PointLightPtr &explosion_light, LightedMeshRenderablePtr &filter)
+void initialize_scene(Viewer& viewer, RadialImpulseForceFieldPtr& explosion, MushroomForceFieldPtr& mushroom, PointLightPtr& explosion_light, LightedMeshRenderablePtr& filter)
 {
 	// Shaders
 	ShaderProgramPtr cartoonShader = std::make_shared<ShaderProgram>(
@@ -137,7 +137,7 @@ void initialize_scene(Viewer &viewer, RadialImpulseForceFieldPtr &explosion, Mus
 	auto bed_frame = add_object(viewer, "BedFrame", bark, cartoonShader);
 	auto bed_sheets = add_object(viewer, "BedSheets", white, cartoonShader);
 	auto sakado = add_object(viewer, "Sakado", darkgreen, cartoonShader);
-	
+
 	// Militaire
 	auto soldats = add_object(viewer, "Soldats", green, cartoonShader);
 	auto tank = add_object(viewer, "Tank", green, cartoonShader);
@@ -209,9 +209,9 @@ void initialize_scene(Viewer &viewer, RadialImpulseForceFieldPtr &explosion, Mus
 	// Camera
 	viewer.getCamera().setFov(0.5);
 	viewer.getCamera().addKeyframesFromFile("../Animation/Camera.animation", 0.0, false);
-	
+
 	// Blue filter
-	filter = add_object(viewer, "Filter", nolightingblue, cartoonShader); 
+	filter = add_object(viewer, "Filter", nolightingblue, cartoonShader);
 
 	// Soundtrack
 	viewer.setSoundtrack("../tortuekaizen.wav");
@@ -245,9 +245,9 @@ void initialize_scene(Viewer &viewer, RadialImpulseForceFieldPtr &explosion, Mus
 
 	// Radial Impulse Explosion Field
 	glm::vec3 explosionPosition = glm::vec3(-14.5f, -2.0f, 16.0f);
-	float explosionStrength = 4000.0f;      // 9000
-	float explosionRadius = 5.0f;           // 5
-	float explosionImpulseDuration = 0.2f;  // 0.2
+	float explosionStrength = 4000.0f;
+	float explosionRadius = 5.0f;
+	float explosionImpulseDuration = 0.2f;
 	explosion = std::make_shared<RadialImpulseForceField>(particles,
 	                                                      explosionPosition,
 	                                                      explosionStrength,
@@ -258,11 +258,11 @@ void initialize_scene(Viewer &viewer, RadialImpulseForceFieldPtr &explosion, Mus
 
 	// Vortex Ring Mushroom Field
 	glm::vec3 ringCenter = glm::vec3(-14.5f, -1.1f, 16.0f);
-	float ringRadius = 10.0f;  // 20
-	float ringHeight = 6.0f;   // 12
-	float strength = 400.0f;   // 400
-	float riseSpeed = 1.0f;    // 0.5
-	float radialSpeed = 0.9f;  // 0.6
+	float ringRadius = 10.0f;
+	float ringHeight = 6.0f;
+	float strength = 400.0f;
+	float riseSpeed = 1.0f;
+	float radialSpeed = 0.9f;
 	mushroom = std::make_shared<MushroomForceField>(particles,
 	                                                ringCenter,
 	                                                ringRadius,
@@ -291,7 +291,7 @@ int main()
 {
 	glm::vec4 background_color(0.8, 0.8, 0.8, 1);
 	Viewer viewer(background_color);
-	viewer.setTimeFactor(1.004f); // Correct weird audio sync issue
+	viewer.setTimeFactor(1.004f);  // Correct weird audio sync issue
 	RadialImpulseForceFieldPtr explosion;
 	MushroomForceFieldPtr mushroom;
 	PointLightPtr explosion_light;
@@ -304,7 +304,7 @@ int main()
 	bool explosionTriggered = false;
 	while (viewer.isRunning())
 	{
-		if (viewer.getTime() >= 100.0f) // End
+		if (viewer.getTime() >= 100.0f)  // End
 		{
 			break;
 		}
@@ -312,23 +312,28 @@ int main()
 		viewer.animate();
 		if (viewer.getTime() >= 95.87f)
 		{
-			if (!explosionTriggered) {
+			if (!explosionTriggered)
+			{
 				if (explosion)
 					explosion->trigger();
 				if (mushroom)
 					mushroom->trigger();
 				explosionTriggered = true;
 			}
-			if (explosion_strength >= 0.0f) {
+			if (explosion_strength >= 0.0f)
+			{
 				explosion_strength = 10.0f - (viewer.getTime() - 95.87f) * 5.0f;
 				explosion_light->setDiffuse(explosion_color * std::max(explosion_strength, 0.0f));
 				explosion_light->setSpecular(explosion_color * std::max(explosion_strength, 0.0f));
 			}
 		}
-		if (viewer.getTime() >= 2.6666f && viewer.getTime() <= 66.7f) {
+		if (viewer.getTime() >= 2.6666f && viewer.getTime() <= 66.7f)
+		{
 			filter->setGlobalTransform(viewer.getCamera().getGlobalTransform());
-		} else {
-			filter->setGlobalTransform(getTranslationMatrix(0.0, -50000.0, 0.0)); // Hide filter by moving it very very far
+		}
+		else
+		{
+			filter->setGlobalTransform(getTranslationMatrix(0.0, -50000.0, 0.0));  // Hide filter by moving it very very far
 		}
 
 		viewer.draw();

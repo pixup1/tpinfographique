@@ -101,7 +101,7 @@ void MushroomForceField::do_addForce()
 		float fVertical = tangent.y * intensity;
 
 		// Add radial inflow/outflow speed
-		fRadial *= (r < m_ringRadius) ? m_radialSpeed : -m_radialSpeed;
+		fRadial *= m_radialSpeed;
 
 		// Add global rise speed (buoyancy)
 		fVertical *= m_riseSpeed;
