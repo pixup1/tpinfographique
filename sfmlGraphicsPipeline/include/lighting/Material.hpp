@@ -162,6 +162,8 @@ class Material
 
 	static MaterialPtr NoLighting();
 
+	static MaterialPtr NoLightingBlue();
+
 	static MaterialPtr PureBlack();
 
 	static MaterialPtr Black();

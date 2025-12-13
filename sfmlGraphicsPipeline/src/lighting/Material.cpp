@@ -238,6 +238,17 @@ MaterialPtr Material::NoLighting()
 	return std::make_shared<Material>(ambient, diffuse, specular, shininess, alpha);
 }
 
+MaterialPtr Material::NoLightingBlue()
+{
+	float openGLFactor = 128.0;
+	glm::vec3 ambient(0.0, 0.0, 2.0);
+	glm::vec3 diffuse(0.0, 0.0, 0.0);
+	glm::vec3 specular(0.0, 0.0, 0.0);
+	float shininess = openGLFactor * 0.0;
+	float alpha = 0.3f;
+	return std::make_shared<Material>(ambient, diffuse, specular, shininess, alpha);
+}
+
 MaterialPtr Material::PureBlack()
 {
 	float openGLFactor = 128.0;

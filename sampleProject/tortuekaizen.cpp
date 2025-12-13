@@ -79,7 +79,7 @@ TexturedLightedMeshRenderablePtr add_textured_object(Viewer& viewer,
 	return obj;
 }
 
-void initialize_scene(Viewer& viewer, RadialImpulseForceFieldPtr& explosion, MushroomForceFieldPtr& mushroom, PointLightPtr& explosion_light)
+void initialize_scene(Viewer &viewer, RadialImpulseForceFieldPtr &explosion, MushroomForceFieldPtr &mushroom, PointLightPtr &explosion_light, LightedMeshRenderablePtr &filter)
 {
 	// Shaders
 	ShaderProgramPtr cartoonShader = std::make_shared<ShaderProgram>(
@@ -98,6 +98,7 @@ void initialize_scene(Viewer& viewer, RadialImpulseForceFieldPtr& explosion, Mus
 
 	// Materials
 	MaterialPtr nolighting = Material::NoLighting();
+	MaterialPtr nolightingblue = Material::NoLightingBlue();
 	MaterialPtr white = Material::White();
 	MaterialPtr water = Material::Water();
 	MaterialPtr bark = Material::Bark();
@@ -208,6 +209,9 @@ void initialize_scene(Viewer& viewer, RadialImpulseForceFieldPtr& explosion, Mus
 	// Camera
 	viewer.getCamera().setFov(0.5);
 	viewer.getCamera().addKeyframesFromFile("../Animation/Camera.animation", 0.0, false);
+	
+	// Blue filter
+	filter = add_object(viewer, "Filter", nolightingblue, cartoonShader); 
 
 	// Soundtrack
 	viewer.setSoundtrack("../tortuekaizen.wav");
@@ -291,14 +295,16 @@ int main()
 	RadialImpulseForceFieldPtr explosion;
 	MushroomForceFieldPtr mushroom;
 	PointLightPtr explosion_light;
-	initialize_scene(viewer, explosion, mushroom, explosion_light);
+	LightedMeshRenderablePtr filter;
+	initialize_scene(viewer, explosion, mushroom, explosion_light, filter);
+	filter->setLocalTransform(getTranslationMatrix(0.0, 0.0, -0.1));
 
 	glm::vec3 explosion_color = glm::vec3(3.0, 2.0, 1.0);
 	float explosion_strength = 0.0f;
 	bool explosionTriggered = false;
 	while (viewer.isRunning())
 	{
-		if (viewer.getTime() >= 99.0f) // End
+		if (viewer.getTime() >= 100.0f) // End
 		{
 			break;
 		}
@@ -319,7 +325,12 @@ int main()
 				explosion_light->setSpecular(explosion_color * std::max(explosion_strength, 0.0f));
 			}
 		}
-		
+		if (viewer.getTime() >= 2.6666f && viewer.getTime() <= 66.7f) {
+			filter->setGlobalTransform(viewer.getCamera().getGlobalTransform());
+		} else {
+			filter->setGlobalTransform(getTranslationMatrix(0.0, -50000.0, 0.0)); // Hide filter by moving it very very far
+		}
+
 		viewer.draw();
 		viewer.display();
 	}
