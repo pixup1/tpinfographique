@@ -43,7 +43,7 @@
 
 = Introduction
 
-Dans ce rapport, nous allons détailler la réalisation de notre projet d'informatique graphique et plus spécifiquement, les éléments techniques que nous avons ajouté au code fourni pour obtenir le résultat final.
+Dans ce rapport, nous allons détailler la réalisation de notre projet d'informatique graphique et, plus spécifiquement, les éléments techniques que nous avons ajouté au code fourni pour obtenir le résultat final.
 
 L'animation ne comporte aucun montage, elle peut donc être lancée directement depuis la racine de ce repo avec `./make\&run.sh tortuekaizen`. Un enregistrement est également disponible sur Youtube : https://youtu.be/EZeGAYSm5xw.
 
@@ -317,7 +317,7 @@ On peut maintenant créer le matériau `Water` avec un `alpha` de 0.7, et la sc�
 
 Depuis le début du projet, la question du post-processing se posait : la moitié de l'animation se passant sous l'eau, il semble assez important de le montrer avec, pourquoi pas, un effet de "brouillard" bleu.
 
-Cependant, ajouter des shaders de post-processing avec SFML s'est avéré complexe et nous avons trouvé une solution suffisante au vu de la qualité visuelle globale de notre animation : Utiliser la transparence précédemment détaillée pour placer un filtre bleu directement devant la caméra. On crée donc un plan auquel on assigne un matériau bleu transparent et on le "parente" à la caméra en copiant sa position à chaque image de l'animation où on veut appliquer le filtre :
+Cependant, ajouter des shaders de post-processing avec SFML s'est avéré complexe et nous avons trouvé une solution suffisante au vu de la qualité visuelle globale de notre animation : utiliser la transparence précédemment détaillée pour placer un filtre bleu directement devant la caméra. On crée donc un plan auquel on assigne un matériau bleu transparent et on l'apparente à la caméra en copiant sa position à chaque image de l'animation où on veut appliquer le filtre :
 
 ```cpp
 if (viewer.getTime() >= 2.6666f && viewer.getTime() <= 66.7f) {
@@ -348,7 +348,7 @@ for (unsigned int i = 0; i < count; ++i)
 
 L'intérêt de ces paramètres initiaux est que les particules se répartissent de manière naturelle sur le plan de la simulation.
 
-La classe `DynamicSystemRenderable` a été modifié pour pouvoir spécifier un temps de début de la simulation :
+La classe `DynamicSystemRenderable` a été modifiée pour pouvoir spécifier un temps de début de la simulation :
 
 ```cpp
 auto systemRenderable = std::make_shared<DynamicSystemRenderable>(system);
@@ -356,7 +356,7 @@ systemRenderable->setStartTime(92.87f);
 viewer.addRenderable(systemRenderable);
 ```
 
-L'explosion en elle-même est simulée avec deux champs de force, en plus de la gravité : un champ de force radial qui pousse les particules vers l'extérieur par rapport à un point, et un champ de force qui donne une forme de champignon à l'explosion. Les deux nouvelles classes `RadialImpulseForceField` et `MushroomForceField` héritent de `ForceField`, et possèdent leur propre implémentation de la méthode `do_addForce()`.
+L'explosion en elle-même est simulée avec deux champs de force, en plus de la gravité et du damping: un champ de force radial qui pousse les particules vers l'extérieur par rapport à un point, et un champ de force qui donne une forme de champignon à l'explosion. Les deux nouvelles classes `RadialImpulseForceField` et `MushroomForceField` héritent de `ForceField`, et possèdent leur propre implémentation de la méthode `do_addForce()`.
 
 *RadialImpulseForceField*
 
