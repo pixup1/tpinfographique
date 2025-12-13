@@ -39,15 +39,241 @@
   ))
 }
 
+#outline()
+
 = Introduction
 
 Dans ce rapport, nous allons détailler la réalisation de notre projet d'informatique graphique et plus spécifiquement, les éléments techniques que nous avons ajouté au code fourni pour obtenir le résultat final.
 
+L'animation ne comporte aucun montage, elle peut donc être lancée directement depuis la racine de ce repo avec `./make\&run.sh tortuekaizen`. Un enregistrement est également disponible sur Youtube : https://youtu.be/EZeGAYSm5xw.
+
+Le fichier source principal de l'animation est `sampleProject/tortuekaizen.cpp`.
+
 = Animation
+
+Pour ce projet, nous avons développé quelques outils à la fois pour améliorer la pipeline d'animation existante, mais aussi pour pouvoir animer plus efficacement. Grâce à ces outils, nous avons pu créer une animation assez complexe d'1min40s, ce qui aurait été impossible dans le laps de temps imparti sans eux.
 
 == Modes d'interpolation
 
+La pipeline existante comporte une interpolation linéaire. Cela fonctionne pour des mouvements simples, mais dès qu'on veut avoir des personnages et une caméra qui bougent de façon organique, ça ne suffit clairement plus. L'interpolation la plus flexible que nous pourrions implémenter est celle de Bézier, qui permet de contrôler précisément la courbe d'interpolation en ajoutant des points de contrôle aux keyframes.
+
+Cependant, cette méthode est assez lourde à mettre en place, et gérer les points de contrôle pour chaque keyframe aurait été fastidieux. Nous avons donc opté pour un compromis avec l'interpolation cubique. Cette interpolation n'utilise pas de points de contrôle, mais elle prend en compte les quatre keyframes les plus proches du point actuel, contrairement à l'interpolation linéaire qui n'en utilise que deux.
+
+Nous avons également implémenté une interpolation constante, qui n'est pas vraiment une interpolation, mais qui permet de faire des cuts propres sans avoir quelques frames où la caméra vole entre deux positions.
+
+#grid(columns: (1fr, 1fr), row-gutter: 1.2em,
+  figure(
+    image("images/Projet/linear.png", height: 110pt),
+    caption: "Interpolation linéaire."
+  ),
+  figure(
+    image("images/Projet/cubic.png", height: 110pt),
+    caption: "Interpolation cubique."
+  ),
+  figure(
+    image("images/Projet/bezier.png", height: 110pt),
+    caption: "Interpolation Bézier."
+  ),
+  figure(
+    image("images/Projet/constant.png", height: 110pt),
+    caption: "Interpolation constante."
+  )
+)
+
+Pour spécifier le mode d'interpolation, on déclare la structure `Keyframe` dans `KeyframeCollection.h` comme suit :
+
+```cpp
+typedef enum KeyframeInterpolationMode
+{
+	LINEAR,
+	CUBIC,
+	CONSTANT
+} KeyframeInterpolationMode;
+
+struct Keyframe
+{
+	float time;
+	GeometricTransformation transform;
+	KeyframeInterpolationMode interpolation;
+};
+```
+
+Ensuite, dans `KeyframeCollection::interpolateTransformation`, on fait un switch sur le mode d'interpolation de la keyframe précédant l'instant actuel, en implémentant chaque mode d'interpolation. Cette méthode étant assez longue, nous vous invitons à aller la voir directement dans `KeyframeCollection.cpp`.
+
 == Import depuis Blender
+
+Le scénario que nous avons écrit étant relativement ambitieux en terme de longueur, il serait intéressant de pouvoir animer nos objets dans un logiciel adapté comme Blender, ce qui permettrait d'aller infiniment plus vite que d'écrire des keyframes à la main. C'est donc la fonctionnalité que nous avons développée dans un script Python utilisant l'API de Blender `bpy`. Cette API permet d'accéder à toutes les données d'une scène Blender, et plus particulièrement les objets et leurs animations, ce qui est parfait pour notre application.
+
+Ce script est disponible dans `Blender/Autres/export.py`.
+
+=== Objets
+
+On va commencer par exporter tous les objets de la scène en format Wavefront `.obj`. Attention toutefois, une complication de ce format est qu'il ne fait pas de séparation entre les transformations globales et locales. En d'autre termes, il ne permet pas d'avoir un origine différent de celui du monde. Pour rémédier à cela, avant d'exporter chaque objet, on annule sa tranformation globale, qu'on enregistre séparément des positions des sommets dans le même fichier.
+
+Il y a une autre subtilité dûe au fait que dans Blender, le haut est l'axe Z+, tandis que dans notre pipeline, c'est l'axe Y+. On peut rémédier à cela en appliquant une matrice de rotation avant d'exporter chaque objet.
+
+```python
+def export_mesh(obj):
+    for ob in bpy.data.objects: # Deselect all other objects just to be sure
+        ob.select_set(False)
+    obj.select_set(True)
+    with open(f"{obj_path}/{obj.name}.obj", "w"):
+        pass
+    bpy.ops.wm.obj_export(
+        filepath=f"{obj_path}/{obj.name}.obj",
+        apply_modifiers=True,
+        export_selected_objects=True,
+        export_materials=False,
+        apply_transform=False
+    )
+    y_up_rot = mathutils.Matrix((
+        (1, 0, 0, 0),
+        (0, 0, 1, 0),
+        (0, -1, 0, 0),
+        (0, 0, 0, 1)
+    ))
+    if obj.parent is not None: # Subtract parent transform, we will handle that ourselves
+        parent_matrix = obj.parent.matrix_world
+        inv_parent_matrix = parent_matrix.inverted()
+        y_up_matrix = y_up_rot @ inv_parent_matrix @ obj.matrix_world @ y_up_rot.inverted()
+    else:
+        y_up_matrix = y_up_rot @ obj.matrix_world @ y_up_rot.inverted()
+    with open(f"{obj_path}/{obj.name}.obj", "a") as f:
+        f.write("\nTRANSFORM") # Write global transform directly at the end of the file
+        for row in y_up_matrix:
+            for val in row:
+                f.write(f" {val}")
+        f.write("\n")
+    obj.select_set(False)
+```
+
+La fonction `bpy.ops.wm.obj_export` (dont la documentation est #link("https://docs.blender.org/api/current/bpy.ops.wm.html#bpy.ops.wm.obj_export")[ici]) effectue le changement vers Y+ elle même, mais il faut tout de même le faire pour la transformation globale.
+
+=== Fichiers `.animation`
+
+L'animation 3D est un vaste domaine, et en conséquence les formats ayant pour but de l'exporter sont très complexes. Nous avons donc opté pour créer notre propre format, comprenant simplement un repère temporel, le type de keyframe, et la matrice de transformation globale pour chaque keyframe.
+
+La structure de données d'animation dans Blender est également très complexe, donc la fonction `export_animation` est plus imbuvable que celle d'export des objets. L'approche globale est celle-ci : pour un objet, on stocke les temps et les modes d'interpolation de toutes ses keyframes, puis on parcourt l'animation en enregistrant la transformation globale de l'objet à chaque temps de keyframe.
+
+```python
+def export_animation(obj):
+    output = ""
+    anim_data = obj.animation_data
+    if anim_data is not None and anim_data.action is not None:
+        action = anim_data.action
+        slot = anim_data.action_slot
+        if slot is None:
+            slot = anim_data.action_suitable_slots[0]
+            anim_data.action_slot = slot
+        channelbag = anim_utils.action_get_channelbag_for_slot(action, slot)
+        frames = {}
+        # Gather all the interpolation modes for all the keyframes
+        for fcurve in channelbag.fcurves:
+            for keyframe in fcurve.keyframe_points:
+                frame = int(keyframe.co.x)
+                interp = keyframe.interpolation
+                if frame not in frames:
+                    frames[frame] = [interp]
+                else:
+                    frames[frame].append(interp)
+        scene = bpy.context.scene
+        depsgraph = bpy.context.evaluated_depsgraph_get()
+        prev_rot = None
+        for fr in sorted(frames.keys()):
+            # Go to the frame in question
+            scene.frame_set(fr)
+            eval_obj = obj.evaluated_get(depsgraph)
+            loc, rot, scale = eval_obj.matrix_world.decompose()
+            # Subtract parent transform if present
+            if obj.parent is not None:
+                parent_eval = obj.parent.evaluated_get(depsgraph)
+                parent_matrix = parent_eval.matrix_world
+                inv_parent_matrix = parent_matrix.inverted()
+                local_matrix = inv_parent_matrix @ eval_obj.matrix_world
+                loc, rot, scale = local_matrix.decompose()
+            if obj.type == 'CAMERA': # Cameras don't point in the same direction in sfml and Blender
+                rot = rot @ mathutils.Euler((math.radians(-90), 0, 0), 'XYZ').to_quaternion()
+            # Ensure quaternion continuity to avoid flipping
+            if prev_rot is not None and rot.dot(prev_rot) < 0:
+                rot = -rot
+            prev_rot = rot.copy()
+            t = frame_to_time(fr)
+            # For a keyframe with multiple interpolation modes, choose the most frequent one
+            most_frequent_interp = max(set(frames[fr]), key=frames[fr].count)
+            output += f"{t},{most_frequent_interp},{loc.x},{loc.y},{loc.z},{rot.x},{rot.y},{rot.z},{rot.w},{scale.x},{scale.y},{scale.z}\n"
+        if output != "":
+            with open(f"{anim_path}/{obj.name}.animation", "w") as f:
+                f.write(output)
+```
+
+De manière un peu arbitraire, pour l'animation, on applique la transformation en Y+ up non pas lors de l'export, mais lors de l'import dans notre pipeline.
+
+=== Import
+
+Nous n'irons pas dans le détail de l'import des fichiers `.obj` modifiés et `.animation` dans ce rapport, mais vous pouvez retrouver les modifications apportées dans la fonction `HierarchicalRenderable::applyObjTransform` du fichier `HierarchicalRenderable.cpp`, ainsi que dans la fonction `KeyframeCollection::addFromFile` dans `KeyframeCollection.cpp`.
+
+Dans notre projet en particulier, nous avons défini des fonctions `add_object` et `add_textured_object` pour ajouter facilement un objet et son animation dans la scène en une ligne. Ces fonctions peuvent aussi ajouter un objet en tant que fils d'un autre.
+
+```cpp
+LightedMeshRenderablePtr add_object(Viewer& viewer,
+                                    const std::string& name,
+                                    const MaterialPtr& material,
+                                    ShaderProgramPtr& shaderProgram,
+                                    HierarchicalRenderablePtr parent = nullptr)
+{
+	std::string obj_path = "../ObjFiles/" + name + ".obj";
+	std::ifstream file(obj_path);
+	if (!file.good())
+	{
+		std::cerr << "Error: File " << obj_path << " does not exist." << std::endl;
+		return nullptr;
+	}
+	auto obj = std::make_shared<LightedMeshRenderable>(shaderProgram, obj_path, material);
+	if (parent != nullptr)
+	{
+		HierarchicalRenderable::addChild(parent, obj, true);
+	}
+	std::string anim_path = "../Animation/" + name + ".animation";
+	std::ifstream anim_file(anim_path);
+	if (anim_file.good())
+	{
+		obj->addKeyframesFromFile(anim_path, 0.0, false);
+	}
+	viewer.addRenderable(obj);
+
+	return obj;
+}
+
+TexturedLightedMeshRenderablePtr add_textured_object(Viewer& viewer,
+                                                     const std::string& name,
+                                                     const MaterialPtr& material,
+                                                     const std::string& texture_path,
+                                                     ShaderProgramPtr& shaderProgram,
+                                                     HierarchicalRenderablePtr parent = nullptr)
+{
+	std::string obj_path = "../ObjFiles/" + name + ".obj";
+	std::ifstream file(obj_path);
+	if (!file.good())
+	{
+		std::cerr << "Error: File " << obj_path << " does not exist." << std::endl;
+		return nullptr;
+	}
+	auto obj = std::make_shared<TexturedLightedMeshRenderable>(shaderProgram, obj_path, material, texture_path);
+	if (parent != nullptr)
+	{
+		HierarchicalRenderable::addChild(parent, obj, true);
+	}
+	std::string anim_path = "../Animation/" + name + ".animation";
+	std::ifstream anim_file(anim_path);
+	if (anim_file.good())
+	{
+		obj->addKeyframesFromFile(anim_path, 0.0, false);
+	}
+	viewer.addRenderable(obj);
+
+	return obj;
+}
+```
 
 = Matériaux avec transparence
 
@@ -85,7 +311,21 @@ sorted_renderables.insert(sorted_renderables.end(), transparent_renderables.begi
 
 On peut maintenant créer le matériau `Water` avec un `alpha` de 0.7, et la scène s'affiche comme prévu.
 
+#figure(image("images/Projet/transparence.png", height: 140pt),caption: "Tortues terrestres vues par dessous la surface de l'eau.")
+
 = Post-processing
+
+Depuis le début du projet, la question du post-processing se posait : la moitié de l'animation se passant sous l'eau, il semble assez important de le montrer avec, pourquoi pas, un effet de "brouillard" bleu.
+
+Cependant, ajouter des shaders de post-processing avec SFML s'est avéré complexe et nous avons trouvé une solution suffisante au vu de la qualité visuelle globale de notre animation : Utiliser la transparence précédemment détaillée pour placer un filtre bleu directement devant la caméra. On crée donc un plan auquel on assigne un matériau bleu transparent et on le "parente" à la caméra en copiant sa position à chaque image de l'animation où on veut appliquer le filtre :
+
+```cpp
+if (viewer.getTime() >= 2.6666f && viewer.getTime() <= 66.7f) {
+	filter->setGlobalTransform(viewer.getCamera().getGlobalTransform());
+} else {
+	filter->setGlobalTransform(getTranslationMatrix(0.0, -50000.0, 0.0)); // Hide filter by moving it very very far
+}
+```
 
 = Simulation
 
@@ -245,4 +485,14 @@ void Viewer::startAnimation()
 }
 ```
 
+Cependant, après avoir ajouté notre bande son, nous avons remarqué que l'animation et l'audio se décalaient très légèrement au fil du temps. Nous n'avons pas vraiment trouvé la source de ce décalage minime. Nous avons simplement ajouté une propriété `m_timeFactor` dans la class `Viewer`. Ce facteur est simplement multiplié par le temps réel à chaque appel de `Viewer::getTime()`:
+
+```cpp
+return m_simulationTime * m_timeFactor;
+```
+
+Ainsi, on peut modifier la vitesse de toute l'animation arbitrairement. Par l'expérimentation, nous avons déterminé que `1.004` est la meilleure valeur de ce facteur pour synchroniser l'animation et l'audio.
+
 = Conclusion
+
+En conclusion, ce projet nous a permis de nous familiariser avec plusieurs aspects de l'informatique graphique, notamment la modélisation, l'animation et la simulation. Le résultat final est une animation qui raconte une histoire et qui est tout à fait regardable, avec même quelques gags visuels, ce projet est donc un succès.

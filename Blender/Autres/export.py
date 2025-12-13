@@ -14,7 +14,7 @@ def frame_to_time(frame: int):
     return (frame - bpy.context.scene.frame_start) / bpy.context.scene.render.fps
 
 def export_mesh(obj):
-    for ob in bpy.data.objects:
+    for ob in bpy.data.objects: # Deselect all other objects just to be sure
         ob.select_set(False)
     obj.select_set(True)
     with open(f"{obj_path}/{obj.name}.obj", "w"):
@@ -32,14 +32,14 @@ def export_mesh(obj):
         (0, -1, 0, 0),
         (0, 0, 0, 1)
     ))
-    if obj.parent is not None:
+    if obj.parent is not None: # Subtract parent transform, we will handle that ourselves
         parent_matrix = obj.parent.matrix_world
         inv_parent_matrix = parent_matrix.inverted()
         y_up_matrix = y_up_rot @ inv_parent_matrix @ obj.matrix_world @ y_up_rot.inverted()
     else:
         y_up_matrix = y_up_rot @ obj.matrix_world @ y_up_rot.inverted()
     with open(f"{obj_path}/{obj.name}.obj", "a") as f:
-        f.write("\nTRANSFORM")
+        f.write("\nTRANSFORM") # Write global transform directly at the end of the file
         for row in y_up_matrix:
             for val in row:
                 f.write(f" {val}")
@@ -57,6 +57,7 @@ def export_animation(obj):
             anim_data.action_slot = slot
         channelbag = anim_utils.action_get_channelbag_for_slot(action, slot)
         frames = {}
+        # Gather all the interpolation modes for all the keyframes
         for fcurve in channelbag.fcurves: # pyright: ignore[reportAttributeAccessIssue]
             for keyframe in fcurve.keyframe_points:
                 frame = int(keyframe.co.x)
@@ -69,6 +70,7 @@ def export_animation(obj):
         depsgraph = bpy.context.evaluated_depsgraph_get()
         prev_rot = None
         for fr in sorted(frames.keys()):
+            # Go to the frame in question
             scene.frame_set(fr)
             eval_obj = obj.evaluated_get(depsgraph)
             loc, rot, scale = eval_obj.matrix_world.decompose()
@@ -76,17 +78,17 @@ def export_animation(obj):
             if obj.parent is not None:
                 parent_eval = obj.parent.evaluated_get(depsgraph)
                 parent_matrix = parent_eval.matrix_world
-                parent_loc, parent_rot, parent_scale = parent_matrix.decompose()
                 inv_parent_matrix = parent_matrix.inverted()
                 local_matrix = inv_parent_matrix @ eval_obj.matrix_world
                 loc, rot, scale = local_matrix.decompose()
-            if obj.type == 'CAMERA': # Cameras aren't the same in sfml and Blender
+            if obj.type == 'CAMERA': # Cameras don't point in the same direction in sfml and Blender
                 rot = rot @ mathutils.Euler((math.radians(-90), 0, 0), 'XYZ').to_quaternion()
             # Ensure quaternion continuity to avoid flipping
             if prev_rot is not None and rot.dot(prev_rot) < 0:
                 rot = -rot
             prev_rot = rot.copy()
             t = frame_to_time(fr)
+            # For a keyframe with multiple interpolation modes, choose the most frequent one
             most_frequent_interp = max(set(frames[fr]), key=frames[fr].count)
             output += f"{t},{most_frequent_interp},{loc.x},{loc.y},{loc.z},{rot.x},{rot.y},{rot.z},{rot.w},{scale.x},{scale.y},{scale.z}\n"
         if output != "":

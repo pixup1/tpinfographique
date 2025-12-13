@@ -99,7 +99,7 @@ glm::mat4 KeyframeCollection::interpolateTransformation(float time) const
 			std::map<float, Keyframe>::const_iterator last = m_keyframes.end();
 
 			std::map<float, Keyframe>::const_iterator ki0 = std::prev(ki1);
-			if (ki1 == first || ki0->second.interpolation != CUBIC)
+			if (ki1 == first || ki0->second.interpolation != CUBIC) // Only take cubic keyframes into account
 			{
 				ki0 = ki1;
 			}
@@ -110,6 +110,7 @@ glm::mat4 KeyframeCollection::interpolateTransformation(float time) const
 			}
 			GeometricTransformation g0 = ki0->second.transform;
 			GeometricTransformation g1 = ki1->second.transform;
+			// Current instant is between these two keyframes
 			GeometricTransformation g2 = ki2->second.transform;
 			GeometricTransformation g3 = ki3->second.transform;
 			glm::vec3 t0 = g0.getTranslation();
@@ -167,6 +168,7 @@ glm::mat4 KeyframeCollection::interpolateTransformation(float time) const
 		}
 		case CONSTANT:
 		{
+			// Just use the previous keyframe's transform
 			iMatrix = ki1->second.transform.toMatrix();
 
 			break;

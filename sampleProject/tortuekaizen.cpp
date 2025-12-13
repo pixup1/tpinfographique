@@ -297,6 +297,7 @@ int main()
 	PointLightPtr explosion_light;
 	LightedMeshRenderablePtr filter;
 	initialize_scene(viewer, explosion, mushroom, explosion_light, filter);
+	// Place filter just in front of the camera (when its global transform is the the same as the camera's)
 	filter->setLocalTransform(getTranslationMatrix(0.0, 0.0, -0.1));
 
 	glm::vec3 explosion_color = glm::vec3(3.0, 2.0, 1.0);
